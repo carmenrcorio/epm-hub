@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "1P EPM Hub QA",
+  "version": "1.0",
+  "description": "QA and insight tool for the 1Password EPM Hub",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": [
+    "https://epm-hub.vercel.app/*",
+    "https://*.vercel.app/*",
+    "http://localhost/*",
+    "file:///*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://epm-hub.vercel.app/*",
+        "https://*.vercel.app/*",
+        "http://localhost/*",
+        "file:///*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
