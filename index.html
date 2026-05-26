@@ -4252,6 +4252,485 @@ function cbUpdateGovernancePanels() {
   if (container) container.innerHTML = '';
 }
 
+const TRELICA_FEATURES = [
+  {
+    id: 'multi-source-discovery',
+    section: 'discovery',
+    sectionLabel: '🔍 Discovery & Visibility',
+    n: 'Multi-Source App Discovery',
+    badge: 'core',
+    color: '#3A9EFF',
+    prob: 'Your IdP shows you the apps IT approved. It has no idea about the other 60–80% employees are actually using — OAuth grants, expense-card subscriptions, browser logins, and credentials stored in password managers.',
+    how: '1Password SaaS Manager pulls from 5 distinct discovery sources: Identity Provider, OAuth/Active Consent, Finance & Expense Systems, Browser Extension, and 1Password EPM vault data. Only SaaS manager that uses password vault data as a discovery signal.',
+    stat: 'Avg 2–4× more apps than IdP alone shows',
+    usecases: [
+      'Surface shadow IT before auditors do — 96 avg newly discovered apps on first run',
+      'Detect OAuth grants employees clicked "Sign in with Google" on — invisible to IT',
+      'Find expense-card SaaS subscriptions that never touched the IdP',
+      'Identify apps employees store credentials for in 1Password vaults'
+    ],
+    personas: ['IT Admin', 'CISO / Security Lead', 'VP IT', 'Finance / Procurement'],
+    replaces: 'IdP-only inventory (40–60% of real usage), expense report spot-checks, manual "reply with what apps you use" email'
+  },
+  {
+    id: 'shadow-it-detection',
+    section: 'discovery',
+    sectionLabel: '🔍 Discovery & Visibility',
+    n: 'Shadow IT Detection & Risk Scoring',
+    badge: 'security',
+    color: '#3A9EFF',
+    prob: 'IT learns about shadow apps only when a security event occurs. 34% of apps in the average org bypass SSO entirely — each one is an offboarding gap and an unmanaged access risk.',
+    how: 'Apps get risk categories assigned automatically. Single-user flags catch forgotten trials. Competitor password manager detection. Shadow AI detection flags ChatGPT, Cursor, and similar tools bypassing SSO. The average customer finds 96 newly discovered apps on first inventory run.',
+    stat: '34% of apps bypass SSO — SaaS Manager finds them',
+    usecases: [
+      'Detect AI tools (ChatGPT, Cursor, Copilot) bypassing SSO and accessing company data',
+      'Flag competitor password managers employees are using alongside 1Password',
+      'Surface single-user apps — forgotten trials expensed to the company',
+      'Auto-triage shadow IT: email user, create IT task, notify manager'
+    ],
+    personas: ['CISO / Security Lead', 'IT Admin', 'GRC / Compliance Officer', 'Security Operations'],
+    replaces: 'Discovery-by-incident model; the well-meaning employee who mentions shadow apps in passing'
+  },
+  {
+    id: 'app-catalog',
+    section: 'discovery',
+    sectionLabel: '🔍 Discovery & Visibility',
+    n: 'App Profile & Security Catalog',
+    badge: 'core',
+    color: '#3A9EFF',
+    prob: 'When an app comes up for renewal, IT can\'t find the SOC 2 report, doesn\'t know who owns it internally, and has no idea what users are actually doing with it.',
+    how: '40,000+ app library auto-enriches every discovered app with category, compliance links, and similar-app signals. Every app gets a rich profile with ownership roles, utilisation data, access levels, and custom fields your team defines.',
+    stat: '40,000+ app library with compliance docs',
+    usecases: [
+      'Run access reviews 3× faster when app profiles are populated with owners and context',
+      'Direct links to SOC 2 Type II and ISO 27001 reports from the 40K app library',
+      'Custom fields: add Risk tier, Data classification, Procurement contact per app',
+      'Venn diagram overlap analysis — prove consolidation to budget owners with data'
+    ],
+    personas: ['IT Admin', 'App Owner (any dept)', 'GRC / Compliance Officer', 'Procurement'],
+    replaces: 'Scattered app notes in wikis, compliance report bookmarks, ownership tracked in spreadsheets'
+  },
+  {
+    id: 'access-reviews',
+    section: 'governance',
+    sectionLabel: '🔐 Access Governance',
+    n: 'Automated Access Reviews',
+    badge: 'compliance',
+    color: '#3A9EFF',
+    prob: 'SOC 2 requires demonstrating access review on a schedule. Most orgs do it manually in spreadsheets. It takes 2 weeks of IT time per cycle and produces point-in-time snapshots that don\'t satisfy continuous monitoring requirements.',
+    how: 'Configure review frequency per app (monthly, quarterly, or custom). 350+ direct app integrations provide actual access levels — not just "user exists." One-click revocation from within the review. Full audit trail exportable with supplemental material for auditors.',
+    stat: '150–250 IT hours saved per audit cycle',
+    usecases: [
+      'SOC 2 Type II: complete access review history with timestamped evidence',
+      'ISO 27001: annual access control documentation ready on demand',
+      'HIPAA: PHI system access documentation with per-user revocation trail',
+      'PCI-DSS: privileged access review logs exportable for QSA'
+    ],
+    personas: ['GRC / Compliance Officer', 'CISO / Security Lead', 'IT Admin', 'Legal / Risk'],
+    replaces: 'Quarterly spreadsheet exports from each app, 2-week IT sprint before every audit cycle'
+  },
+  {
+    id: 'onboarding-workflows',
+    section: 'governance',
+    sectionLabel: '🔐 Access Governance',
+    n: 'Automated Onboarding Workflows',
+    badge: 'automation',
+    color: '#3A9EFF',
+    prob: 'New hires wait days for app access. IT chases department heads for lists. Productivity is lost on day one — every time. Manual onboarding creates 3–5 day wait times and IT ticket queues.',
+    how: 'No-code workflow builder triggers on HRIS events (Workday, BambooHR, Rippling). Role-based provisioning maps each job role to a defined app stack. Provisions to IdP groups, direct app accounts, and notifies IT and manager — all in sequence.',
+    stat: '50–70% faster time-to-productivity for new hires',
+    usecases: [
+      'New Software Engineer: auto-provision GitHub, Jira, Confluence, Slack, 1Password before start date',
+      'HRIS departure triggers complete multi-app revocation — minutes not days',
+      'Birthright access: define apps every role gets on day one automatically',
+      'Contractor workflows: scoped access with automatic expiry at engagement end'
+    ],
+    personas: ['IT Admin', 'HR / People Ops', 'Hiring Managers', 'IT Helpdesk'],
+    replaces: 'Manual onboarding checklists, "request form" email chains with IT, 3–5 day wait for app access'
+  },
+  {
+    id: 'offboarding-workflows',
+    section: 'governance',
+    sectionLabel: '🔐 Access Governance',
+    n: 'Automated Offboarding Workflows',
+    badge: 'security critical',
+    color: '#EF4444',
+    prob: 'When someone leaves, IT manually revokes access from every app individually. The average org takes 7+ days. Former employees retain live SaaS access the entire time — including non-SSO apps that IdP group removal doesn\'t touch.',
+    how: 'One workflow closes every door. Triggers on HRIS departure or manual initiation. Covers non-SSO apps via direct API — not just IdP group removal. Device offboarding (lock/wipe via MDM/EDR) runs in the same workflow. Every revocation timestamped and exportable.',
+    stat: 'Avg 7 days → minutes. The single highest-ROI workflow.',
+    usecases: [
+      'Revoke Salesforce, GitHub, Notion access the moment HRIS marks departure',
+      'Lock or wipe device via Jamf, Intune, or CrowdStrike in the same workflow',
+      'Complete audit trail: every revocation timestamped, exportable for auditors',
+      'Non-SSO apps covered: OAuth grants, expense-card subscriptions, browser-discovered apps'
+    ],
+    personas: ['CISO / Security Lead', 'IT Admin', 'HR / People Ops', 'Compliance Officer'],
+    replaces: 'Manual offboarding checklist, HR-to-IT email chain, 7-day access gap, audit finding on offboarding lag'
+  },
+  {
+    id: 'license-rightsizing',
+    section: 'spend',
+    sectionLabel: '💸 Spend Optimisation',
+    n: 'License Utilisation & Rightsizing',
+    badge: 'spend',
+    color: '#10B981',
+    prob: 'Paying for 200 Zoom Pro licences with no idea how many are active. Somewhere between 70 and 200 — nobody knows. 20–30% of licences go unused every cycle across the average org.',
+    how: 'Three data layers: live account lists from app API, contracted seats from uploaded contracts, and workflow-triggered reclaim. Utilisation bar shows purchased vs. active vs. actually-logged-in. Inactivity rules flag users by 30/60/90 days. Automated reclaim workflow notifies, confirms with manager, revokes on no response.',
+    stat: '20–35% SaaS spend recovered in first cycle',
+    usecases: [
+      '"The utilisation bar on Salesforce showed 85 seats, 52 active users. Reclaim paid for SaaS Manager 18 months."',
+      'Downgrade workflows: identify users on Pro tier using only Free-tier features',
+      'Role-change detection: users who changed department but carry old-role licences',
+      'AI contract extraction: upload PDF → renewal date, seat count, cost per seat auto-extracted'
+    ],
+    personas: ['IT Admin', 'Finance / Procurement', 'CFO', 'App Owners'],
+    replaces: 'Manual licence reconciliation, "guess and hope" renewal approach, spreadsheet always out of date'
+  },
+  {
+    id: 'savings-tracker',
+    section: 'spend',
+    sectionLabel: '💸 Spend Optimisation',
+    n: 'Savings Tracker & CFO Reporting',
+    badge: 'spend',
+    color: '#10B981',
+    prob: 'After 6 months of SaaS Manager, IT can\'t prove to the CFO what was actually saved. Every licence reclaimed, downgraded, or cancelled exists somewhere but there\'s no single number Finance can trust.',
+    how: 'Every licence reclaimed or downgraded through a SaaS Manager workflow is automatically recorded and rolled up into an annualised savings figure. CFO-ready export. Benchmark comparison vs. similar-size orgs. Savings by app and by action type.',
+    stat: '35% SaaS spend reduction (Flipdish) · 10× ROI in 6 months (Zuora)',
+    usecases: [
+      'CFO-ready savings export: present to Finance and leadership as a board artefact',
+      'Spend dashboard reconciles contracted costs, expense data, and integration sources',
+      'Duplicate tool detection: surfaces apps in same category where consolidation saves money',
+      'Finance integrations: Coupa, Brex, Zip, Workday Finance, NetSuite, QuickBooks, Xero, SAP'
+    ],
+    personas: ['CFO / Finance', 'IT Director', 'CTO / VP IT', 'Procurement'],
+    replaces: 'Manual cost-saving tallies, "trust us we saved money" conversation, inability to quantify IT\'s P&L contribution'
+  },
+  {
+    id: 'workflow-builder',
+    section: 'automation',
+    sectionLabel: '⚡ Automation & Workflows',
+    n: 'No-Code Workflow Builder',
+    badge: 'automation',
+    color: '#A78BFA',
+    prob: 'IT spends most of their time on repeatable tasks — onboarding, offboarding, licence checks, shadow IT notifications. No time left for strategic work. The same tasks run every hire and departure.',
+    how: 'Visual drag-and-drop workflow canvas. Triggers: HRIS event, app discovery, inactivity threshold, schedule, or manual. Actions: provision access, revoke access, change licence tier, send email/Slack, create IT task, lock/wipe device. Test mode: dry-run without side effects.',
+    stat: '0.5–1 FTE saved annually with 3+ active workflows',
+    usecases: [
+      'New app discovered (1 user) → auto-email user → create IT review task',
+      'Licence inactive 60 days → Slack user → wait 7 days → reclaim if no response',
+      '"Built onboarding, offboarding, and shadow-IT triage in one afternoon. Replaced a 6-tab spreadsheet."',
+      '350+ direct app integrations: provision users, change licence tiers, revoke access in the app — not just the IdP'
+    ],
+    personas: ['IT Admin', 'IT Operations', 'Security Engineer', 'Any technical admin'],
+    replaces: 'Manual IT checklists, recurring calendar reminders, same repeatable tasks every hire and departure'
+  },
+  {
+    id: 'mcp-server',
+    section: 'ai',
+    sectionLabel: '🤖 AI & Integrations',
+    n: 'MCP Server for Agentic AI',
+    badge: 'new',
+    color: '#A78BFA',
+    prob: 'Security teams want to build AI agents that can query SaaS inventory — apps, access, spend, renewals. There\'s no safe, programmatic way to expose that data to an LLM without custom API development.',
+    how: 'Secure, read-only MCP Server for SaaS Manager — available on AWS AI Marketplace. Agentic AI systems query SaaS inventory data safely and programmatically. Maintains security boundaries — read-only, governed access, no write actions exposed.',
+    stat: 'Available on AWS AI Marketplace',
+    usecases: [
+      '"Which apps renew in 60 days with utilisation below 50%?" — LLM queries SaaS Manager directly',
+      'Build AI-powered IT workflows without custom API development or security risk',
+      'AI contract extraction: PDF → renewal date, seat count, cost per seat in minutes',
+      'Shadow AI discovery: detect AI tools bypassing SSO at higher rates than any other app category'
+    ],
+    personas: ['IT Operations', 'Security Engineering', 'CTO / VP Engineering', 'Any LLM workflow builder'],
+    replaces: 'Custom API scripts, manual exports for AI analysis, security risk of exposing SaaS data to AI tools uncontrolled'
+  }
+];
+
+const DEVICE_TRUST_FEATURES = [
+  {
+    id: 'device-discovery',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'Device Discovery & Inventory',
+    badge: 'zero trust foundation',
+    color: '#F59E0B',
+    prob: 'Over 50% of devices accessing company apps are completely unknown to IT. MDM shows what\'s enrolled — not what\'s actually accessing company resources. Orgs typically find 30%+ more devices than their MDM inventory shows.',
+    how: 'Device Trust covers every device type: corporate-managed (Windows, macOS, Linux), BYOD, contractor, unmanaged endpoints, Linux machines MDM has never touched, and mobile devices via Device Trust for 1Password Mobile. Full discovery typically achieved in the first week.',
+    stat: '30%+ more devices found vs MDM inventory · 100% device visibility day one',
+    usecases: [
+      '"We discovered 34 unmanaged devices accessing Salesforce on day one. None were in Intune."',
+      'Linux/DevOps teams: the highest-privilege engineers are historically "out of scope" for compliance — not anymore',
+      'Contractor devices: enrolled and compliant without forcing full MDM installation',
+      'Mobile: Device Trust for 1Password Mobile — health checks before vault unlock on iOS/Android'
+    ],
+    personas: ['IT Administrator', 'CISO', 'Security Operations', 'Compliance Officer'],
+    replaces: 'Spreadsheet asset inventories, MDM enrollment gaps, "how many devices actually access our apps?" answer'
+  },
+  {
+    id: 'health-checks',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: '125+ Real-Time Device Health Checks',
+    badge: 'core capability',
+    color: '#F59E0B',
+    prob: 'SSO verifies the user. Nobody\'s verifying the device. A stolen credential from any unverified device gets in. MDM does periodic check-ins — Device Trust runs 125+ live checks at every single login attempt.',
+    how: 'LOGIN FLOW: Employee logs in → IdP redirect → Device Trust intercepts as 2nd factor → 125+ checks fire → Compliant: access granted. Non-compliant: blocked + guided remediation with exact fix instructions.',
+    stat: '92% reduction in breach risk from unmanaged/non-compliant endpoints',
+    usecases: [
+      'OS version & patches · Browser security & updates · Disk encryption (FileVault/BitLocker)',
+      'EDR installed & running (confirms CrowdStrike is actually running, not just installed) · Firewall active',
+      'Screen lock & auto-lock · Unauthorized software · VPN status · Certificate validity',
+      '"CrowdStrike costs $100–200/user/year but 10–15% of endpoints aren\'t configured correctly. MDM says it\'s installed; Device Trust confirms it\'s running."'
+    ],
+    personas: ['CISO', 'Zero Trust Architect', 'IT Administrator', 'Security Operations'],
+    replaces: 'Reactive breach discovery, periodic MDM check-ins that miss real-time configuration drift'
+  },
+  {
+    id: 'guided-remediation',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'Guided Self-Remediation',
+    badge: 'employee-first',
+    color: '#F59E0B',
+    prob: 'Blocking employees creates IT tickets, productivity loss, and resentment. The old approach: lock them out and let IT sort it out. This generates 40%+ of device-security helpdesk tickets.',
+    how: 'Instead of a generic error message, employees get exactly which check failed, step-by-step fix instructions in plain language, and an instant "check again" button. No IT ticket. No waiting. Privacy-respecting — never reads files, messages, or browsing history.',
+    stat: '40% reduction in IT helpdesk tickets · Remediation time under 5 min, no IT involvement',
+    usecases: [
+      '"Instead of forcing a restart during a sales demo, Device Trust alerted the rep that Chrome needed updating before the next login."',
+      'Eliminates: "why am I locked out?" helpdesk tickets, chasing employees to update OS/EDR/browser',
+      'Employee becomes active owner of their own device security — no training campaign needed',
+      'BYOD: employees accept a health check far more readily than a management profile'
+    ],
+    personas: ['End User / Employee', 'IT Helpdesk', 'CISO', 'HR / People Operations'],
+    replaces: '"Locked out, call IT" model; forced OS restarts mid-workday; manual patch enforcement campaigns'
+  },
+  {
+    id: 'byod-contractors',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'BYOD & Contractor Device Security',
+    badge: 'privacy-first',
+    color: '#F59E0B',
+    prob: 'MDM is too intrusive for personal devices. Contractors won\'t enroll. BYOD creates the biggest unmanaged access gap. The impossible choice: install full MDM on personal devices, or hope for the best.',
+    how: 'Device Trust is the privacy-first third option. Enforces OS version, screen lock, disk encryption, EDR, firewall — without reading personal files, photos, browsing history, or requiring MDM enrollment. Contractor one-time device registration with no ongoing surveillance.',
+    stat: 'Closes largest unmanaged gap · Contractors actually comply — lightweight, privacy-respecting',
+    usecases: [
+      'Healthcare: clinical staff personal devices accessing patient portals without MDM profiles',
+      'Legal: attorney personal devices accessing matter management systems',
+      'Financial services: BYOD traders accessing market data platforms',
+      'One-time device registration for contractors — NEVER: personal files, MDM profiles, location tracking'
+    ],
+    personas: ['CISO', 'IT Administrator', 'HR / People Ops', 'Legal / Compliance'],
+    replaces: 'Impossible MDM-vs-nothing choice; Device Trust is the third option employees and contractors actually accept'
+  },
+  {
+    id: 'idp-integration',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'IdP / SSO Integration (Zero Trust Completion)',
+    badge: 'zero trust',
+    color: '#F59E0B',
+    prob: 'SSO verifies identity. MDM manages config. Neither verifies whether the device is actually healthy at the exact moment of login. Every access event missing the device compliance signal is a Zero Trust gap.',
+    how: '"Connecting Device Trust to Okta took 2 hours. Within a week, we had device posture signals on every login event in our SIEM." Passes device identity + health signals to IdP at auth time. Per-app policy granularity — stricter for AWS, lighter for intranet.',
+    stat: 'Transforms SSO from identity layer to full Zero Trust layer',
+    usecases: [
+      'Okta · Microsoft Entra ID · Google Workspace · JumpCloud · Ping Identity · Any SAML 2.0 / OIDC',
+      'Critical: AWS/GCP/Azure — EDR running + disk encrypted + OS current + firewall active',
+      'High: Salesforce — EDR installed + OS within 2 versions + screen lock',
+      'Low: Company intranet — device enrolled + basic check passed'
+    ],
+    personas: ['IT Administrator', 'Zero Trust Architect', 'CISO', 'Security Operations'],
+    replaces: 'Assumption that SSO is sufficient for Zero Trust; periodic device checks not enforced at login moment'
+  },
+  {
+    id: 'mdm-complement',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'MDM Complement (Intune / Jamf)',
+    badge: 'complements existing',
+    color: '#F59E0B',
+    prob: 'MDM manages device configuration. It cannot verify the device is actually healthy at the exact moment someone logs into a sensitive app. And MDM can\'t touch BYOD or contractor devices at all.',
+    how: 'MDM does: push config profiles, manage software deployment, enforce settings at enrollment, periodic compliance check-ins. Device Trust adds: real-time check at every login, BYOD + contractor coverage, confirms EDR is running correctly, catches drift between check-ins, posture signal to IdP.',
+    stat: 'MDM investment protected and extended — not replaced. 30-day full compliance.',
+    usecases: [
+      'Microsoft Intune · Jamf Pro · Kandji · Mosyle · VMware WS1 — all complemented not replaced',
+      'MDM reports CrowdStrike installed; Device Trust confirms it\'s actively running on all endpoints',
+      'Managed devices: verified at login. Unmanaged: enrolled and monitored. Compliance drift: caught real-time.',
+      'No false confidence that MDM enrollment = device security compliance'
+    ],
+    personas: ['IT Administrator', 'CISO', 'Zero Trust Architect', 'Security Operations'],
+    replaces: 'False confidence that MDM enrollment = device security compliance; periodic check-ins that miss real-time drift'
+  },
+  {
+    id: 'compliance-checks',
+    section: 'compliance',
+    sectionLabel: '📋 Compliance Automation',
+    n: '125+ Pre-Built Compliance Checks',
+    badge: 'audit ready',
+    color: '#F59E0B',
+    prob: 'Most orgs can\'t prove continuous device compliance. They reconstruct evidence before every audit — and find gaps they didn\'t know existed. Auditors increasingly require real-time device security verification, not just policy existence.',
+    how: '125+ pre-built device health checks mapped directly to major compliance frameworks. Evidence collected continuously and automatically — available for export anytime. Before vs. After: point-in-time snapshots → continuous real-time evidence. Weeks of audit prep → hours.',
+    stat: '50% reduction in audit preparation time',
+    usecases: [
+      'SOC 2 Type II: continuous device security evidence — complete access review history',
+      'ISO 27001: device control documentation, annual evidence ready on demand',
+      'HIPAA: endpoint access controls for PHI — per-device, per-check, timestamped records',
+      '"Our SOC 2 auditor asked for 9 months of device compliance evidence. I exported it in 3 minutes."'
+    ],
+    personas: ['GRC / Compliance Officer', 'CISO', 'IT Administrator', 'Legal / Risk'],
+    replaces: 'Collect-evidence sprint before every SOC 2 cycle; "we think we were compliant" answer to auditors'
+  },
+  {
+    id: 'custom-osquery',
+    section: 'compliance',
+    sectionLabel: '📋 Compliance Automation',
+    n: 'Custom Policy Builder (OSquery)',
+    badge: 'customizable',
+    color: '#F59E0B',
+    prob: 'Every org has industry-specific compliance requirements that no pre-built framework covers exactly. Customer security audits, vendor risk assessments, and internal policies all need custom device checks.',
+    how: 'Write custom device health checks using OSquery — the same open-source tool used by security teams at Facebook, Uber, and Palantir. Query any device state: installed software, processes, registry keys, configs. Custom checks appear alongside standard compliance reports.',
+    stat: 'Unlimited custom policies · Unlimited compliance coverage',
+    usecases: [
+      'Is VPN client v3.2+ installed and connected on external access?',
+      'Is 1Password installed on every device?',
+      'Is the approved corporate cert valid and not expired?',
+      'Is approved file transfer software the ONLY such tool present?'
+    ],
+    personas: ['Security Engineer', 'IT Administrator', 'GRC / Compliance Officer', 'CISO'],
+    replaces: 'Manual spot-check processes, compliance gaps pre-built frameworks don\'t cover, one-off scripts run inconsistently'
+  },
+  {
+    id: 'compliance-reporting',
+    section: 'compliance',
+    sectionLabel: '📋 Compliance Automation',
+    n: 'Compliance Reporting & Audit Evidence',
+    badge: 'continuous proof',
+    color: '#F59E0B',
+    prob: 'Proving device compliance means pulling evidence from MDM, endpoint tools, and spreadsheets for every device, every check, every review cycle. Point-in-time snapshots don\'t satisfy auditors who want continuous evidence.',
+    how: 'Per-device compliance status across all health checks. Historical compliance timeline proving continuous monitoring. Failed check logs with timestamps and remediation actions taken. Exportable CSV and PDF — auditor-ready in minutes. SIEM integration: Splunk, Sentinel, Elastic, Rapid7. Scheduled reports auto-delivered before review cycles.',
+    stat: '50% faster audit prep · SIEM-native integration · Historical timeline always-on',
+    usecases: [
+      'Admin cadence: Daily review new non-compliant devices · Weekly check compliance score trend · Monthly export for leadership · Quarterly QBR inclusion',
+      'SIEM integration: Splunk, Azure Sentinel, Elastic, Rapid7 — every device event streamed',
+      'Scheduled reports auto-delivered before every compliance review cycle',
+      '"Our SOC 2 auditor commented that our device evidence was the cleanest they\'d ever seen."'
+    ],
+    personas: ['GRC / Compliance Officer', 'CISO', 'IT Administrator', 'Security Operations'],
+    replaces: 'Pre-audit evidence sprint, manually pulling logs from MDM and endpoint tools, "we think we were compliant" answer'
+  },
+  {
+    id: 'admin-dashboard',
+    section: 'admin',
+    sectionLabel: '👁️ Admin & Visibility',
+    n: 'Admin Dashboard & Device Posture',
+    badge: 'complete control',
+    color: '#F59E0B',
+    prob: 'IT security dashboards show what\'s enrolled. Device Trust shows what\'s actually secure. Those are two very different things. Reactive firefighting vs. proactive, data-driven security practice.',
+    how: 'Single pane: every device, every compliance check, every risk flag. Admins see: per-device compliance score and individual check results, which devices are failing which checks and since when, remediation status, device risk tier (Compliant / Warning / Blocked), compliance trend over time.',
+    stat: '95%+ device compliance within 30 days of rollout',
+    usecases: [
+      'Track compliance as a KPI — present posture trends to leadership',
+      'Drill into any failed check for root cause analysis',
+      'Device risk tiers: Compliant / Warning / Blocked — actionable from dashboard',
+      'Export compliance reports for audit or leadership review on demand'
+    ],
+    personas: ['IT Administrator', 'CISO', 'Security Operations', 'GRC / Compliance Officer'],
+    replaces: 'Manual device audits, fragmented visibility across MDM/EDR/endpoint tools, quarterly device compliance review'
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// COMPETITOR DATA — TRELICA (SaaS Manager)
+// ═══════════════════════════════════════════════════════════════
+const SAAS_MANAGER_COMPETITORS = {
+  nudge_security: {
+    name: 'Nudge Security',
+    overview: 'Employee-led SaaS discovery focused on nudging users toward approved tools. Lightweight, behavioral approach. Weaker on access governance and workflow automation.',
+    strengths: ['Fast deployment', 'Employee-friendly UX', 'Good shadow IT discovery via OAuth'],
+    weaknesses: ['No access review automation', 'Weaker workflow builder', 'No EPM/vault discovery integration', 'Limited spend visibility', 'No asset management'],
+    win: '1Password wins on depth: automated access reviews, no-code workflow builder, EPM vault discovery, and device offboarding in the same platform. Nudge nudges — SaaS Manager governs.',
+    battle_card: '"Nudge Security is a discovery tool. SaaS Manager is a governance platform. Discovery without the ability to act on it — automated offboarding, access reviews, licence rightsizing — doesn\'t close your compliance gap."'
+  },
+  bettercloud: {
+    name: 'BetterCloud',
+    overview: 'SaaS management platform focused on IT operations and workflow automation. Strong in G Suite/Microsoft 365 shops. Narrower integration breadth and no vault-based discovery.',
+    strengths: ['Strong Google Workspace integration', 'Mature workflow automation', 'Good DLP features'],
+    weaknesses: ['Expensive at scale', 'Weaker multi-source discovery', 'No EPM integration', 'No asset management built in', 'Limited spend intelligence vs. contract management'],
+    win: 'SaaS Manager wins on breadth: 5-source discovery (including EPM vault), AI contract extraction, hardware lifecycle in the same offboarding flow, and the architectural moat of 1Password vault data as a discovery signal.',
+    battle_card: '"BetterCloud is an automation platform with discovery bolted on. SaaS Manager starts with the most complete discovery in the market — then automates. And only 1Password can discover apps from inside a password manager vault."'
+  },
+  torii: {
+    name: 'Torii',
+    overview: 'SaaS management platform with strong discovery and workflow automation. Mid-market focused. Competes closely with SaaS Manager on core use cases.',
+    strengths: ['Good multi-source discovery', 'Clean UX', 'Workflow automation', 'Competitive pricing'],
+    weaknesses: ['No password manager integration', 'Weaker spend analytics', 'No device/asset management', 'No AI contract extraction', 'Smaller integration library vs. 350+'],
+    win: '1Password wins on the vault discovery moat (no other SMP has it), device offboarding integration, AI contract intelligence, and the platform story — EPM + SaaS Manager + Device Trust vs. a standalone point solution.',
+    battle_card: '"Torii is a solid standalone SMP. 1Password SaaS Manager is built on the only platform that sits at both the credential layer and the SaaS layer simultaneously. That\'s an architectural advantage no other vendor can match."'
+  },
+  zylo: {
+    name: 'Zylo',
+    overview: 'SaaS management focused on spend intelligence and contract management. Strong CFO story. Weaker on access governance and automation.',
+    strengths: ['Strong spend analytics', 'Benchmark data', 'Good CFO-facing reporting', 'Contract management'],
+    weaknesses: ['Expensive', 'Weak access governance', 'Limited workflow automation', 'No discovery from EPM or browser extension', 'No access reviews'],
+    win: 'SaaS Manager wins on completeness: access reviews, automated onboarding/offboarding, and discovery — not just spend. The CFO story includes security ROI, not just cost savings.',
+    battle_card: '"Zylo is a spend tool for Finance. SaaS Manager is a governance platform for IT and Security that also produces the CFO savings report. If the primary buyer is IT/Security (not Procurement), SaaS Manager wins on breadth."'
+  },
+  productiv: {
+    name: 'Productiv',
+    overview: 'SaaS analytics focused on engagement data and productivity insights. Differentiated on deep behavioural analytics per app. Less focused on access governance and automation.',
+    strengths: ['Deep engagement analytics', 'ROI measurement per app', 'Good benchmark data'],
+    weaknesses: ['No access review automation', 'No workflow automation for lifecycle', 'No EPM integration', 'Analytics-focused, not governance-focused'],
+    win: 'SaaS Manager wins on governance action: automated offboarding, access reviews, licence reclaim workflows. Productiv measures usage — SaaS Manager governs access and automates action on that data.',
+    battle_card: '"Productiv tells you which apps employees love. SaaS Manager tells you who has access to which apps, when they last used them, and closes that access the moment they leave. Analytics vs. governance."'
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// COMPETITOR DATA — DEVICE TRUST
+// ═══════════════════════════════════════════════════════════════
+const DEVICE_TRUST_COMPETITORS = {
+  jamf: {
+    name: 'Jamf (Jamf Trust / Jamf Protect)',
+    overview: 'Market leader in Apple device management (MDM). Jamf Trust is their zero-trust network access product. Strong for Apple-only orgs. Doesn\'t cover Windows, Linux, or BYOD at the same depth.',
+    strengths: ['Best-in-class Apple MDM', 'Strong Mac compliance', 'Good Jamf Pro integration', 'Mature platform'],
+    weaknesses: ['Apple-centric — Windows and Linux coverage weaker', 'BYOD friction for non-Mac devices', 'No password manager integration', 'Separate product from MDM — adds complexity'],
+    win: 'Device Trust wins on cross-platform coverage (Windows, macOS, Linux, BYOD, contractors equally) and the architectural advantage of seeing both device posture AND the credentials being used. 1Password vault + device health = unique intelligence.',
+    battle_card: '"Jamf is the best choice if you\'re Apple-only. If you have any Windows, Linux, BYOD, or contractor devices — Device Trust covers the full surface. And Device Trust can confirm CrowdStrike is running on a Jamf-managed Mac, closing the gap MDM leaves."'
+  },
+  kandji: {
+    name: 'Kandji',
+    overview: 'Modern Apple MDM with strong compliance automation. Fast-growing in tech companies. MDM-focused — doesn\'t address the BYOD and contractor gap or real-time login verification.',
+    strengths: ['Modern UX', 'Fast deployment', 'Good compliance automation for Apple devices', 'Blueprints for policy management'],
+    weaknesses: ['Apple-only MDM', 'No BYOD coverage without MDM enrollment', 'No real-time login verification', 'No cross-platform posture checks', 'No password manager integration'],
+    win: 'Device Trust + Kandji is a common architecture: Kandji manages Mac corporate devices, Device Trust fills the BYOD, Windows, Linux, and contractor gap and adds real-time login verification Kandji\'s periodic check-ins miss.',
+    battle_card: '"Kandji is great MDM for Apple. Kandji + Device Trust is the complete architecture: Kandji manages your corporate Macs, Device Trust secures everything Kandji can\'t touch — and verifies every device at every login."'
+  },
+  crowdstrike_go: {
+    name: 'CrowdStrike Falcon Go / Identity',
+    overview: 'CrowdStrike is the market leader in EDR/XDR. Falcon Identity is their identity-based threat detection product. EDR blocks active threats — it doesn\'t verify device health at login time or cover BYOD without full agent deployment.',
+    strengths: ['Best-in-class EDR', 'Strong threat detection', 'Brand recognition', 'Comprehensive endpoint data'],
+    weaknesses: ['$100–200/user/year — expensive', '10–15% of endpoints misconfigured even with CrowdStrike', 'EDR ≠ device posture verification at login', 'No BYOD without full agent', 'No password manager integration'],
+    win: 'Device Trust and CrowdStrike are complementary: Device Trust verifies CrowdStrike is actually running correctly on every device (not just installed). "CrowdStrike costs $100–200/user but 10–15% aren\'t configured correctly. MDM says it\'s installed. Device Trust confirms it\'s active." Lead with complement story, not competition.',
+    battle_card: '"If they have CrowdStrike, Device Trust makes it work better. Device Trust confirms the Falcon agent is actively running on every endpoint — because MDM says installed, Device Trust verifies active. Position as complement, not competition."'
+  },
+  kolide: {
+    name: 'Kolide (now 1Password Device Trust)',
+    overview: '1Password Device Trust IS Kolide — acquired and integrated. The Kolide launcher agent is what Device Trust runs on devices. If a prospect is evaluating Kolide, they\'re evaluating Device Trust.',
+    strengths: ['This is Device Trust. Same product, same team, same agent.'],
+    weaknesses: [],
+    win: '"Kolide is now 1Password Device Trust. Same product, same team, same open-source agent (github.com/kolide/launcher). And now it\'s part of the 1Password platform — combined with EPM and SaaS Manager, giving you something no standalone Kolide deployment could."',
+    battle_card: '"If the prospect is evaluating Kolide specifically, they\'re evaluating Device Trust. The conversation is about the platform story — EPM + Device Trust + SaaS Manager = XAM. Kolide alone is a feature. 1Password Device Trust is part of a complete identity security platform."'
+  },
+  tanium: {
+    name: 'Tanium',
+    overview: 'Enterprise endpoint management platform. Very heavy — typically 5,000+ employee enterprise deployments. Overkill for mid-market. Complex deployment, high cost.',
+    strengths: ['Extremely powerful enterprise endpoint management', 'Very deep device data', 'Strong for large federal/enterprise deployments'],
+    weaknesses: ['Enterprise-only price and complexity', 'Multi-month deployments', 'Overkill for 500–5K employee orgs', 'No password manager integration', 'No self-remediation model'],
+    win: 'Device Trust wins on time-to-value (days vs months), employee experience (guided remediation vs lockout), BYOD coverage (no MDM required), and price point for mid-market orgs. Tanium is for the Fortune 500 problem. Device Trust solves the 500–5K employee problem in days.',
+    battle_card: '"Tanium is a 6-month deployment for 10,000+ employee enterprises. Device Trust is live in days for 500–5,000 employee orgs. If the timeline, budget, and org size don\'t fit Tanium, Device Trust is the right tool. And Device Trust adds guided employee self-remediation Tanium\'s model doesn\'t."'
+  }
+};
+
+
 function showTrelicaHub() {
   document.getElementById('sidebar').style.display = '';
   document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
