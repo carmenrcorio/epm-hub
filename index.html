@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- EPM Hub v20260522-164326 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -430,6 +429,47 @@ body{background:var(--bg)!important;color:var(--t2)!important}
 .custom-item-name{font-size:12px;font-weight:600;color:var(--t1);flex:1}
 .custom-item-del{background:none;border:none;color:var(--t4);cursor:pointer;font-size:14px;padding:0 2px;transition:color .12s}
 .custom-item-del:hover{color:#EF4444}
+
+
+/* ── CUSTOMER BUILDER UPGRADES ──────────────────────────────── */
+.cb-profile-bar{display:flex;align-items:center;gap:8px;padding:10px 14px 0;flex-shrink:0;flex-wrap:wrap}
+.cb-profile-select{background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--t2);font-size:11px;padding:5px 9px;outline:none;flex:1;min-width:140px;cursor:pointer}
+.cb-profile-select:focus{border-color:#A78BFA55}
+.cb-profile-btn{padding:5px 11px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--t3);white-space:nowrap;transition:all .12s}
+.cb-profile-btn:hover{border-color:var(--border2);color:var(--t2)}
+.cb-profile-btn.save{border-color:#A78BFA44;color:#A78BFA}
+.cb-profile-btn.save:hover{background:#A78BFA10}
+.cb-ind-tags-wrap{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:5px 7px;display:flex;flex-wrap:wrap;gap:5px;min-height:36px;cursor:text;transition:border-color .12s}
+.cb-ind-tags-wrap:focus-within{border-color:#A78BFA55}
+.cb-ind-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.cb-ind-pill button{background:none;border:none;color:inherit;cursor:pointer;font-size:13px;line-height:1;padding:0;opacity:.7}
+.cb-ind-pill button:hover{opacity:1}
+.cb-ind-input{border:none;outline:none;background:transparent;color:var(--t1);font-size:12px;min-width:100px;flex:1;padding:2px 4px}
+.cb-ind-input::placeholder{color:var(--t4)}
+.cb-ind-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border2);border-radius:7px;max-height:220px;overflow-y:auto;z-index:200;box-shadow:0 8px 24px #00000060}
+.cb-ind-dropdown::-webkit-scrollbar{width:3px}
+.cb-ind-dropdown::-webkit-scrollbar-thumb{background:var(--border)}
+.cb-ind-opt{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2)}
+.cb-ind-opt:hover{background:var(--bg2)}
+.cb-ind-opt.selected{background:#A78BFA10;color:#A78BFA}
+.cb-preset-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.cb-preset{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid #A78BFA33;background:#A78BFA08;color:#A78BFA;transition:all .12s}
+.cb-preset:hover{background:#A78BFA18;border-color:#A78BFA66}
+.gov-panel{background:linear-gradient(135deg,#1769FF08,#A78BFA08);border:1px solid #A78BFA25;border-radius:8px;padding:14px 16px;margin-bottom:10px}
+.gov-panel-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.gov-panel-ico{font-size:14px}
+.gov-panel-title{font-size:10px;font-weight:800;letter-spacing:.12em;color:#A78BFA}
+.gov-panel-sub{font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.6}
+.gov-rule{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px;font-size:11px}
+.gov-rule-ico{flex-shrink:0;font-size:12px}
+.gov-rule-text{color:var(--t2);line-height:1.55}
+.gov-rule-text strong{color:var(--t1)}
+.gov-frameworks{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.gov-fw{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;background:#1769FF14;color:#70B8FF;border:1px solid #1769FF25}
+.cb-edu-section{background:var(--bg2);border:1px solid var(--border);border-left:3px solid #F59E0B;border-radius:7px;padding:12px 14px;margin-top:6px}
+.cb-edu-title{font-size:9px;font-weight:800;letter-spacing:.12em;color:#F59E0B;margin-bottom:7px}
+.cb-edu-row{display:flex;gap:8px;align-items:flex-start;font-size:11px;color:var(--t2);margin-bottom:5px;line-height:1.6}
+.cb-edu-row::before{content:"→";color:#F59E0B;flex-shrink:0;font-weight:700}
 
 /* ── BRIGHTER BODY TEXT ─────────────────────────────────────── */
 .pt, .fp-intro, .sf-desc, .ind-hook, .breach-body, .prev-body,
@@ -1388,168 +1428,159 @@ let cbLastResult = null;
 function showCustomerBuilder() {
   document.getElementById('sidebar').style.display = 'none';
 
-  const indOptions = Object.entries(INDUSTRIES).map(([iid,I]) =>
-    `<option value="${iid}">${I.emoji} ${I.name}</option>`).join('');
-
   const deptChecks = Object.entries(DEPARTMENTS).map(([did,D]) =>
     `<label class="cb-check${cbDepts.has(did)?' checked':''}" id="cbck-${did}" onclick="toggleDept('${did}')">
       <span class="cb-check-ico">${D.emoji}</span>
       <span class="cb-check-lbl">${D.name}</span>
     </label>`).join('');
 
+  const presetNames = ['Health System','Regional Bank','Law Firm','SaaS Startup','Retail Chain','Gov Contractor','University','Manufacturer','Hospital + Pharma','Media Co'];
+
   document.getElementById('detail').innerHTML = `
   <div class="cb-layout">
     <div class="cb-form">
-      <div>
+
+      <!-- Saved profiles bar -->
+      <div class="cb-profile-bar">
+        <select class="cb-profile-select" id="cb-saved-select" onchange="if(this.value)cbLoadProfile(this.value)">
+          <option value="">— Load saved profile —</option>
+        </select>
+        <button class="cb-profile-btn save" onclick="cbSaveProfile()">💾 Save</button>
+      </div>
+
+      <div style="padding:16px 18px 0">
         <div class="cb-head">✨ Customer Strategy Builder</div>
-        <div class="cb-sub">Build a complete picture of your account. Claude uses all of 1Password's product knowledge to produce a tailored feature analysis, adoption strategy, and executive narrative.</div>
+        <div class="cb-sub">Build a complete account profile. Profiles are saved to your browser. Claude uses all of 1Password's product knowledge to produce a tailored strategy.</div>
       </div>
 
-      <div class="cb-section">
-        <div class="cb-label">COMPANY NAME</div>
-        <input class="cb-input" id="cb-company" type="text" placeholder="e.g. Acme Financial Group"/>
-      </div>
+      <div style="padding:12px 18px 0;display:flex;flex-direction:column;gap:12px">
 
-      <div class="cb-section">
-        <div class="cb-label" style="display:flex;align-items:center;justify-content:space-between">
-          INDUSTRY
-          <div style="display:flex;gap:5px">
-            <button class="cb-add-custom-btn" onclick="openAddIndustryModal(null)" title="Add custom industry">✦ Add custom</button>
-            <button class="cb-add-custom-btn" onclick="openManageCustoms()" title="Manage saved" style="padding:4px 8px">⚙️</button>
+        <div class="cb-section">
+          <div class="cb-label">COMPANY NAME</div>
+          <input class="cb-input" id="cb-company" type="text" placeholder="e.g. Acme Financial Group"/>
+        </div>
+
+        <div class="cb-section">
+          <div class="cb-label" style="display:flex;align-items:center;justify-content:space-between">
+            INDUSTRIES <span style="font-size:9px;color:var(--t4);font-weight:400">select one or more</span>
+            <div style="display:flex;gap:5px">
+              <button class="cb-add-custom-btn" onclick="openAddIndustryModal(null)">✦ Add custom</button>
+              <button class="cb-add-custom-btn" onclick="openManageCustoms()" style="padding:4px 8px">⚙️</button>
+            </div>
+          </div>
+          <div style="position:relative" id="cb-ind-wrap">
+            <div class="cb-ind-tags-wrap" onclick="document.getElementById('cb-ind-input').focus()">
+              <div id="cb-ind-tags" style="display:contents"></div>
+              <input class="cb-ind-input" id="cb-ind-input" placeholder="Search or select industries…"
+                oninput="cbShowIndustryDropdown(this.value)"
+                onfocus="cbShowIndustryDropdown(this.value)"
+                onblur="setTimeout(()=>{const d=document.getElementById('cb-ind-dd');if(d)d.remove();},200)"
+              />
+            </div>
+          </div>
+          <div class="cb-preset-row">
+            ${presetNames.map(p=>`<button class="cb-preset" onclick="cbApplyPreset('${p}')" title="Preset: ${p}">${p}</button>`).join('')}
           </div>
         </div>
-        <select class="cb-input" id="cb-industry" onchange="cbIndustryChange(this.value)">
-          <option value="">— Select industry —</option>
-          ${indOptions}
-          ${Object.values(INDUSTRIES).filter(I=>I._custom).map(I=>`<option value="${Object.keys(INDUSTRIES).find(k=>INDUSTRIES[k]===I)}">${I.emoji} ${I.name} ✦</option>`).join('')}
-        </select>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label">COMPANY SIZE</div>
-        <div class="cb-chip-row" id="chips-size">
-          ${['<100','100–500','500–2K','2K–10K','10K+'].map((s,i)=>`<button class="cb-chip${i===1?' active':''}" onclick="cbChipSingle(this,'chips-size')">${s}</button>`).join('')}
-        </div>
-      </div>
+        <!-- Governance panels render here when industries selected -->
+        <div id="cb-gov-panels"></div>
 
-      <div class="cb-section">
-        <div class="cb-label">CURRENT SOLUTION</div>
-        <div class="cb-chip-row" id="chips-current">
-          ${['LastPass','Bitwarden','Keeper','Dashlane','CyberArk','Spreadsheets','Nothing','Other'].map(s=>`<button class="cb-chip" onclick="cbChipSingle(this,'chips-current')">${s}</button>`).join('')}
+        <div class="cb-section">
+          <div class="cb-label">COMPANY SIZE</div>
+          <div class="cb-chip-row" id="chips-size">
+            ${['<100','100–500','500–2K','2K–10K','10K+'].map((s,i)=>`<button class="cb-chip${i===1?' active':''}" onclick="cbChipSingle(this,'chips-size')">${s}</button>`).join('')}
+          </div>
         </div>
-        <input class="cb-input" id="cb-current-custom" type="text" placeholder="Or type custom..." style="margin-top:6px"/>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label">PRIMARY CONTACT & ROLE</div>
-        <input class="cb-input" id="cb-contact" type="text" placeholder="e.g. Sarah Chen, IT Director"/>
-        <div class="cb-chip-row" id="chips-persona" style="margin-top:6px">
-          ${['CISO','IT Director','CTO','CFO','IT Admin','VP Eng','Head of IT','Security Lead','CIO','COO','General Counsel','CHRO'].map(s=>`<button class="cb-chip" onclick="cbChipAppend('cb-contact','${s}')">${s}</button>`).join('')}
+        <div class="cb-section">
+          <div class="cb-label">CURRENT SOLUTION</div>
+          <div class="cb-chip-row" id="chips-current">
+            ${['LastPass','Bitwarden','Keeper','Dashlane','CyberArk','Spreadsheets','Nothing','Other'].map(s=>`<button class="cb-chip" onclick="cbChipSingle(this,'chips-current')">${s}</button>`).join('')}
+          </div>
+          <input class="cb-input" id="cb-current-custom" type="text" placeholder="Or type custom…" style="margin-top:6px"/>
         </div>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label" style="display:flex;align-items:center;justify-content:space-between">
-          DEPARTMENTS IN SCOPE
-          <button class="cb-add-custom-btn" onclick="openAddDeptModal(null)" title="Add custom department">✦ Add custom</button>
+        <div class="cb-section">
+          <div class="cb-label">PRIMARY CONTACT & ROLE</div>
+          <input class="cb-input" id="cb-contact" type="text" placeholder="e.g. Sarah Chen, IT Director"/>
+          <div class="cb-chip-row" id="chips-persona" style="margin-top:6px">
+            ${['CISO','IT Director','CTO','CFO','IT Admin','VP Eng','Head of IT','Security Lead','CIO','COO','General Counsel','CHRO'].map(s=>`<button class="cb-chip" onclick="cbChipAppend('cb-contact','${s}')">${s}</button>`).join('')}
+          </div>
         </div>
-        <div class="cb-checks" id="cb-dept-checks">${deptChecks}${Object.entries(DEPARTMENTS).filter(([,D])=>D._custom).map(([did,D])=>`<label class="cb-check${cbDepts.has(did)?' checked':''}" id="cbck-${did}" onclick="toggleDept('${did}')"><span class="cb-check-ico">${D.emoji}</span><span class="cb-check-lbl">${D.name} ✦</span></label>`).join('')}</div>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label">KNOWN PAIN POINTS</div>
-        <div class="cb-tag-input-wrap" id="pain-tag-wrap">
-          <div class="cb-tags" id="pain-tags"></div>
-          <input class="cb-tag-input" id="pain-input" type="text" placeholder="Type a pain point and press Enter..." onkeydown="cbTagKey(event,'pain-tags','pain-input')"/>
+        <div class="cb-section">
+          <div class="cb-label" style="display:flex;align-items:center;justify-content:space-between">
+            DEPARTMENTS IN SCOPE
+            <button class="cb-add-custom-btn" onclick="openAddDeptModal(null)">✦ Add custom</button>
+          </div>
+          <div class="cb-checks" id="cb-dept-checks">${deptChecks}${Object.entries(DEPARTMENTS).filter(([,D])=>D._custom).map(([did,D])=>`<label class="cb-check${cbDepts.has(did)?' checked':''}" id="cbck-${did}" onclick="toggleDept('${did}')"><span class="cb-check-ico">${D.emoji}</span><span class="cb-check-lbl">${D.name} ✦</span></label>`).join('')}</div>
         </div>
-        <div class="cb-suggestions" id="pain-suggestions">
-          ${[
-            'No audit trail for credential access',
-            'Offboarding gaps — ex-employees retain access',
-            'Shared credentials with no attribution',
-            'Secrets hardcoded in repos',
-            'Manual provisioning / IT ticket queue',
-            'No MFA enforcement',
-            'Contractor access never revoked',
-            'PCI-DSS / SOC 2 audit pressure',
-            'HIPAA compliance gaps',
-            'Shared workstation credentials',
-            'Shadow IT / unsanctioned tools',
-            'Agency access to social media credentials',
-            'CI/CD pipeline secrets in env variables',
-            'Departures without credential rotation',
-            'No SIEM integration for credential events',
-            'Weak password policies',
-            'Seasonal workforce access chaos',
-            'International travel security risk',
-            'Breach / recent security incident',
-            'Merger/acquisition credential sprawl'
-          ].map(p=>`<span class="cb-sug" onclick="cbAddTag('pain-tags',this.textContent)">${p}</span>`).join('')}
-        </div>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label">TECH STACK IN USE</div>
-        <div class="cb-tag-input-wrap" id="stack-tag-wrap">
-          <div class="cb-tags" id="stack-tags"></div>
-          <input class="cb-tag-input" id="stack-input" type="text" placeholder="Type a tool and press Enter..." onkeydown="cbTagKey(event,'stack-tags','stack-input')"/>
+        <div class="cb-section">
+          <div class="cb-label">KNOWN PAIN POINTS</div>
+          <div class="cb-tag-input-wrap" id="pain-tag-wrap">
+            <div class="cb-tags" id="pain-tags"></div>
+            <input class="cb-tag-input" id="pain-input" type="text" placeholder="Type a pain point and press Enter…" onkeydown="cbTagKey(event,'pain-tags','pain-input')"/>
+          </div>
+          <div class="cb-suggestions" id="pain-suggestions">
+            ${['No audit trail for credential access','Offboarding gaps — ex-employees retain access','Shared credentials with no attribution','Secrets hardcoded in repos','No MFA enforcement','Contractor access never revoked','PCI-DSS / SOC 2 audit pressure','HIPAA compliance gaps','Shared workstation credentials','Shadow IT / unsanctioned tools','Agency access to social media credentials','CI/CD pipeline secrets in env variables','Departures without credential rotation','No SIEM integration','Weak password policies','Seasonal workforce access chaos','International travel security risk','Recent security incident','Merger/acquisition credential sprawl','AI API keys ungoverned'].map(p=>`<span class="cb-sug" onclick="cbAddTag('pain-tags',this.textContent)">${p}</span>`).join('')}
+          </div>
         </div>
-        <div class="cb-suggestions" id="stack-suggestions">
-          ${[
-            'Okta','Azure AD / Entra ID','Google Workspace','JumpCloud','Ping Identity',
-            'Salesforce','Workday','ServiceNow','Slack','Microsoft 365',
-            'AWS','GCP','Azure','GitHub','GitLab',
-            'Splunk','Datadog','Elastic SIEM','Sentinel',
-            'Jira','Confluence','Asana','Monday.com',
-            'Epic EHR','Cerner','SAP','Oracle','NetSuite',
-            'Shopify','Stripe','HubSpot','Marketo',
-            'CircleCI','Jenkins','Terraform','Kubernetes',
-            'Bloomberg Terminal','Veeva Vault','iManage'
-          ].map(t=>`<span class="cb-sug" onclick="cbAddTag('stack-tags',this.textContent)">${t}</span>`).join('')}
+
+        <div class="cb-section">
+          <div class="cb-label">TECH STACK IN USE</div>
+          <div class="cb-tag-input-wrap" id="stack-tag-wrap">
+            <div class="cb-tags" id="stack-tags"></div>
+            <input class="cb-tag-input" id="stack-input" type="text" placeholder="Type a tool and press Enter…" onkeydown="cbTagKey(event,'stack-tags','stack-input')"/>
+          </div>
+          <div class="cb-suggestions" id="stack-suggestions">
+            ${['Okta','Azure AD / Entra ID','Google Workspace','JumpCloud','Salesforce','Workday','ServiceNow','Slack','Microsoft 365','AWS','GCP','Azure','GitHub','GitLab','Splunk','Datadog','Jira','Epic EHR','SAP','Shopify','Stripe','HubSpot','CircleCI','Terraform','Kubernetes','Bloomberg Terminal','Veeva Vault','iManage'].map(t=>`<span class="cb-sug" onclick="cbAddTag('stack-tags',this.textContent)">${t}</span>`).join('')}
+          </div>
         </div>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label">COMPLIANCE & REGULATORY REQUIREMENTS</div>
-        <div class="cb-chip-row" id="chips-compliance" style="flex-wrap:wrap;gap:5px">
-          ${['PCI-DSS','SOC 2','HIPAA','GDPR','ISO 27001','SOX','FISMA','CMMC','NIST CSF','ITAR','FedRAMP','CCPA','NERC CIP','21 CFR Part 11','ABA Ethics','FERPA'].map(s=>`<button class="cb-chip" onclick="cbChipToggle(this,'chips-compliance')">${s}</button>`).join('')}
+        <div class="cb-section">
+          <div class="cb-label">COMPLIANCE REQUIREMENTS</div>
+          <div class="cb-chip-row" id="chips-compliance" style="flex-wrap:wrap;gap:5px">
+            ${['PCI-DSS','SOC 2','HIPAA','GDPR','ISO 27001','SOX','FISMA','CMMC','NIST CSF','ITAR','FedRAMP','CCPA','NERC CIP','21 CFR Part 11','ABA Ethics','FERPA'].map(s=>`<button class="cb-chip" onclick="cbChipToggle(this,'chips-compliance')">${s}</button>`).join('')}
+          </div>
         </div>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label">KNOWN OBJECTIONS</div>
-        <div class="cb-chip-row" id="chips-objections" style="flex-wrap:wrap;gap:5px">
-          ${['"Too expensive"','"Happy with current tool"','"Too much change management"','"IT doesn\'t have bandwidth"','"Security team needs to approve"','"Need board sign-off"','"Already evaluated 1Password"','"Bitwarden is free"','"CyberArk covers this"','"Not a priority right now"'].map(s=>`<button class="cb-chip" onclick="cbChipToggle(this,'chips-objections')">${s}</button>`).join('')}
+        <div class="cb-section">
+          <div class="cb-label">KNOWN OBJECTIONS</div>
+          <div class="cb-chip-row" id="chips-objections" style="flex-wrap:wrap;gap:5px">
+            ${['"Too expensive"','"Happy with current tool"','"Too much change management"','"IT doesn\'t have bandwidth"','"Security team needs to approve"','"Need board sign-off"','"Bitwarden is free"','"CyberArk covers this"','"Not a priority right now"'].map(s=>`<button class="cb-chip" onclick="cbChipToggle(this,'chips-objections')">${s}</button>`).join('')}
+          </div>
         </div>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label">DEAL CONTEXT</div>
-        <div class="cb-chip-row" id="chips-stage">
-          ${['Cold outreach','Discovery done','Demo scheduled','Evaluating','Proposal sent','Negotiating','Renewal at risk','Expansion opp'].map((s,i)=>`<button class="cb-chip${i===1?' active':''}" onclick="cbChipSingle(this,'chips-stage')">${s}</button>`).join('')}
+        <div class="cb-section">
+          <div class="cb-label">DEAL STAGE</div>
+          <div class="cb-chip-row" id="chips-stage">
+            ${['Cold outreach','Discovery done','Demo scheduled','Evaluating','Proposal sent','Negotiating','Renewal at risk','Expansion opp'].map((s,i)=>`<button class="cb-chip${i===1?' active':''}" onclick="cbChipSingle(this,'chips-stage')">${s}</button>`).join('')}
+          </div>
         </div>
-      </div>
 
-      <div class="cb-section">
-        <div class="cb-label">ADDITIONAL NOTES</div>
-        <textarea class="cb-input" id="cb-notes" placeholder="Anything else — recent incidents, specific quotes from the call, executive concerns, competitive intel, internal champion details..."></textarea>
-      </div>
+        <div class="cb-section">
+          <div class="cb-label">ADDITIONAL NOTES</div>
+          <textarea class="cb-input" id="cb-notes" placeholder="Quotes from the call, recent incidents, competitive intel, internal champion details, specific concerns raised…"></textarea>
+        </div>
 
-      <button class="cb-generate" id="cb-gen-btn" onclick="runAnalysis()">⚡ Build Customer Strategy</button>
+        <button class="cb-generate" id="cb-gen-btn" onclick="runAnalysis()">⚡ Build Customer Strategy</button>
+      </div>
     </div>
     <div class="cb-output" id="cb-output">
       <div class="cb-empty">
         <div class="cb-empty-ico">⚡</div>
         <div class="cb-empty-t">Strategy will appear here</div>
-        <div class="cb-empty-s">Fill in what you know. The more context you give, the sharper the output — feature analysis, adoption roadmap, stakeholder strategy, objection handling, and an executive narrative all tailored to this account.</div>
+        <div class="cb-empty-s">Select one or more industries — governance panels will appear explaining why credential security is critical for each vertical. Then fill in the account details and build your strategy.</div>
       </div>
     </div>
   </div>`;
 
-  // Re-hydrate saved state
+  cbRenderIndustryTags();
+  cbRefreshProfileBar();
   cbRestoreState();
 }
-
 
 function toggleDept(did) {
   if (cbDepts.has(did)) cbDepts.delete(did);
@@ -1562,7 +1593,9 @@ function toggleDept(did) {
 
 async function runAnalysis() {
   const company    = document.getElementById('cb-company')?.value.trim() || 'the prospect';
-  const industryId = document.getElementById('cb-industry')?.value;
+  // Support multi-industry — use first as primary, include all in context
+  const industryId = cbSelectedIndustries[0] || '';
+  const allIndustryIds = cbSelectedIndustries.slice();
   const contact    = document.getElementById('cb-contact')?.value.trim() || 'unknown';
   const notes      = document.getElementById('cb-notes')?.value.trim() || '';
 
@@ -1593,16 +1626,19 @@ async function runAnalysis() {
   document.getElementById('cb-output').innerHTML =
     '<div class="cb-spinner"><div class="cb-spin-ring"></div><div class="cb-spin-msg">Claude is analysing your account…</div></div>';
 
-  // Build rich knowledge context
+  // Build rich knowledge context — support multiple industries
   const ind = industryId && INDUSTRIES[industryId] ? INDUSTRIES[industryId] : null;
-  const indContext = ind ? `
-Industry: ${ind.name}
-Why they come to 1Password: ${ind.why}
-Industry pain points: ${ind.pains.join(' | ')}
-Compliance: ${ind.compliance.join(', ')}
-Breach story: ${ind.breach.name} — ${ind.breach.prevention.substring(0,300)}
-Top solutions: ${ind.solutions.map(s=>s.name+': '+s.desc).join(' | ')}
-Common tech stack for this industry: ${(TECH_STACKS[industryId]||[]).slice(0,8).map(t=>t.tool+' ('+t.gap.substring(0,80)+')').join(' | ')}` : 'Industry not specified';
+  const allInds = allIndustryIds.map(iid => INDUSTRIES[iid]).filter(Boolean);
+  const indContext = allInds.length ? allInds.map(I => {
+    const iid = Object.keys(INDUSTRIES).find(k => INDUSTRIES[k] === I);
+    return `Industry: ${I.name}
+Why they come to 1Password: ${I.why}
+Key pain points: ${I.pains.join(' | ')}
+Compliance: ${I.compliance.join(', ')}
+Breach: ${I.breach.name} — ${I.breach.prevention.substring(0,200)}
+Solutions: ${I.solutions.map(s=>s.name+': '+s.desc).join(' | ')}
+Tech stack gaps: ${(TECH_STACKS[iid]||[]).slice(0,6).map(t=>t.tool+': '+t.gap.substring(0,60)).join(' | ')}`;
+  }).join('\n---\n') : 'Industry not specified';
 
   const deptContext = deptIds.length ? deptIds.map(did => {
     const D = DEPARTMENTS[did];
@@ -1625,7 +1661,7 @@ Respond ONLY with valid JSON. No preamble, no markdown fences.`;
 
 ACCOUNT:
 Company: ${company}
-Industry: ${ind ? ind.name : 'not specified'}
+Industry: ${allInds.length ? allInds.map(I=>I.name).join(' + ') : 'not specified'}
 Size: ${size}
 Current solution: ${current}
 Primary contact: ${contact}
@@ -1746,6 +1782,8 @@ Return this exact JSON schema. Be brutally specific throughout — use the compa
     const result = JSON.parse(clean);
     cbLastResult = { result, company, industryId, deptIds };
     renderStrategy(result, company, ind);
+    // Auto-save profile after successful generation
+    setTimeout(cbSaveProfile, 500);
   } catch (err) {
     document.getElementById('cb-output').innerHTML =
       `<div class="cb-out-wrap"><div class="cb-err"><strong style="color:#EF4444">Analysis failed</strong><br/>${err.message}</div></div>`;
@@ -1856,11 +1894,12 @@ function cbIndustryChange(iid) {
 }
 
 function cbRestoreState() {
-  // Re-check dept buttons from cbDepts set
   cbDepts.forEach(did => {
     const el = document.getElementById('cbck-' + did);
     if (el) el.classList.add('checked');
   });
+  // Re-render industry tags if any are already selected
+  if (cbSelectedIndustries.length) cbRenderIndustryTags();
 }
 
 
@@ -3212,6 +3251,333 @@ function confirmDeleteCustom(type, id, name) {
   // Refresh relevant sidebars
   if (document.querySelector('#sidebar .sec-hdr.industry')) buildIndustrySidebar();
   if (document.querySelector('#sidebar .sec-hdr')) buildDeptSidebar();
+}
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// CUSTOMER BUILDER — PROFILES + MULTI-INDUSTRY + GOVERNANCE
+// ═══════════════════════════════════════════════════════════════
+
+const CB_PROFILES_KEY = '1p_epm_cb_profiles_v1';
+let cbSelectedIndustries = []; // array of iids (multi-select)
+
+// ── PROFILE PERSISTENCE ──────────────────────────────────────
+function cbSaveProfile() {
+  const company = document.getElementById('cb-company')?.value.trim();
+  if (!company) { alert('Add a company name first.'); return; }
+
+  const profile = {
+    id: 'prof_' + Date.now(),
+    saved_at: new Date().toISOString(),
+    company,
+    industries: cbSelectedIndustries.slice(),
+    size: cbGetActiveChips('chips-size')[0] || '',
+    current: document.getElementById('cb-current-custom')?.value.trim() || cbGetActiveChips('chips-current')[0] || '',
+    contact: document.getElementById('cb-contact')?.value.trim() || '',
+    pains: cbGetTags('pain-tags'),
+    stack: cbGetTags('stack-tags'),
+    compliance: cbGetActiveChips('chips-compliance'),
+    objections: cbGetActiveChips('chips-objections'),
+    stage: cbGetActiveChips('chips-stage')[0] || '',
+    depts: [...cbDepts],
+    notes: document.getElementById('cb-notes')?.value.trim() || '',
+    last_result: cbLastResult || null
+  };
+
+  try {
+    const all = JSON.parse(localStorage.getItem(CB_PROFILES_KEY) || '[]');
+    // update if same company exists, else prepend
+    const idx = all.findIndex(p => p.company.toLowerCase() === company.toLowerCase());
+    if (idx >= 0) all[idx] = profile; else all.unshift(profile);
+    localStorage.setItem(CB_PROFILES_KEY, JSON.stringify(all.slice(0, 20))); // keep latest 20
+    cbRefreshProfileBar();
+    showCustomSuccessToast(`Profile saved — "${company}"`);
+  } catch(e) { alert('Could not save: ' + e.message); }
+}
+
+function cbLoadProfiles() {
+  try { return JSON.parse(localStorage.getItem(CB_PROFILES_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+
+function cbDeleteProfile(id) {
+  try {
+    const all = cbLoadProfiles().filter(p => p.id !== id);
+    localStorage.setItem(CB_PROFILES_KEY, JSON.stringify(all));
+    cbRefreshProfileBar();
+    showCustomSuccessToast('Profile deleted.');
+  } catch(e) {}
+}
+
+function cbLoadProfile(id) {
+  const p = cbLoadProfiles().find(x => x.id === id);
+  if (!p) return;
+
+  // Restore all fields
+  const setVal = (id, val) => { const el = document.getElementById(id); if(el) el.value = val||''; };
+  setVal('cb-company', p.company);
+  setVal('cb-contact', p.contact);
+  setVal('cb-current-custom', p.current);
+  setVal('cb-notes', p.notes);
+
+  // Industries
+  cbSelectedIndustries = p.industries || [];
+  cbRenderIndustryTags();
+
+  // Chips
+  const restoreChips = (groupId, vals, multi) => {
+    document.querySelectorAll(`#${groupId} .cb-chip`).forEach(b => {
+      const active = multi ? vals.includes(b.textContent.trim()) : b.textContent.trim() === vals;
+      b.classList.toggle('active', active);
+    });
+  };
+  restoreChips('chips-size', p.size, false);
+  restoreChips('chips-current', p.current, false);
+  restoreChips('chips-compliance', p.compliance || [], true);
+  restoreChips('chips-objections', p.objections || [], true);
+  restoreChips('chips-stage', p.stage, false);
+
+  // Tags
+  const restoreTags = (tagsId, vals) => {
+    const wrap = document.getElementById(tagsId); if(!wrap) return;
+    wrap.innerHTML = '';
+    (vals||[]).forEach(v => cbAddTag(tagsId, v));
+  };
+  restoreTags('pain-tags', p.pains);
+  restoreTags('stack-tags', p.stack);
+
+  // Depts
+  cbDepts.clear();
+  (p.depts||[]).forEach(did => {
+    cbDepts.add(did);
+    const el = document.getElementById('cbck-' + did);
+    if(el) el.classList.add('checked');
+  });
+  // Uncheck others
+  document.querySelectorAll('.cb-check.checked').forEach(el => {
+    const did = el.id.replace('cbck-','');
+    if(!cbDepts.has(did)) el.classList.remove('checked');
+  });
+
+  // If last result exists, show it
+  if (p.last_result) {
+    cbLastResult = p.last_result;
+    renderStrategy(p.last_result.result, p.company, cbSelectedIndustries.length ? INDUSTRIES[cbSelectedIndustries[0]] : null);
+  }
+
+  // Trigger governance panel update
+  cbUpdateGovernancePanels();
+  showCustomSuccessToast(`Loaded — "${p.company}"`);
+}
+
+function cbRefreshProfileBar() {
+  const profiles = cbLoadProfiles();
+  const sel = document.getElementById('cb-saved-select');
+  if (!sel) return;
+  sel.innerHTML = `<option value="">— Load saved profile —</option>` +
+    profiles.map(p => `<option value="${p.id}">${p.company} · ${new Date(p.saved_at).toLocaleDateString()}</option>`).join('');
+}
+
+// ── MULTI-INDUSTRY TAG INPUT ─────────────────────────────────
+function cbRenderIndustryTags() {
+  const wrap = document.getElementById('cb-ind-tags');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  cbSelectedIndustries.forEach(iid => {
+    const I = INDUSTRIES[iid]; if(!I) return;
+    const pill = document.createElement('span');
+    pill.className = 'cb-ind-pill';
+    pill.style.background = I.color + '18';
+    pill.style.color = I.color;
+    pill.style.border = '1px solid ' + I.color + '44';
+    pill.innerHTML = `${I.emoji} ${I.name}<button onclick="cbRemoveIndustry('${iid}')">×</button>`;
+    wrap.appendChild(pill);
+  });
+  cbUpdateGovernancePanels();
+}
+
+function cbAddIndustry(iid) {
+  if (!iid || cbSelectedIndustries.includes(iid)) return;
+  cbSelectedIndustries.push(iid);
+  cbRenderIndustryTags();
+  cbIndustryChange(iid); // trigger tech stack hints
+  const input = document.getElementById('cb-ind-input');
+  if(input){ input.value=''; input.focus(); }
+  const dropdown = document.getElementById('cb-ind-dd');
+  if(dropdown) dropdown.remove();
+}
+
+function cbRemoveIndustry(iid) {
+  cbSelectedIndustries = cbSelectedIndustries.filter(x => x !== iid);
+  cbRenderIndustryTags();
+}
+
+function cbShowIndustryDropdown(val) {
+  const existing = document.getElementById('cb-ind-dd');
+  if(existing) existing.remove();
+  const wrap = document.getElementById('cb-ind-wrap');
+  if(!wrap) return;
+  const filtered = Object.entries(INDUSTRIES).filter(([iid,I]) =>
+    (!val || I.name.toLowerCase().includes(val.toLowerCase())) &&
+    !cbSelectedIndustries.includes(iid)
+  ).slice(0, 12);
+  if(!filtered.length) return;
+  const dd = document.createElement('div');
+  dd.className = 'cb-ind-dropdown'; dd.id = 'cb-ind-dd';
+  dd.innerHTML = filtered.map(([iid,I]) =>
+    `<div class="cb-ind-opt" onclick="cbAddIndustry('${iid}')">${I.emoji} ${I.name}</div>`
+  ).join('');
+  wrap.appendChild(dd);
+}
+
+function cbApplyPreset(preset) {
+  // Industry presets for common account types
+  const presets = {
+    'Health System': ['healthcare','lifesciences'],
+    'Regional Bank': ['financial','fintech'],
+    'Law Firm': ['legal','professionalservices'],
+    'Hospital + Pharma': ['healthcare','lifesciences','government'],
+    'SaaS Startup': ['technology','fintech'],
+    'Retail Chain': ['retail','hospitality'],
+    'Gov Contractor': ['government','manufacturing'],
+    'University': ['education','lifesciences'],
+    'Manufacturer': ['manufacturing','energy'],
+    'Media Co': ['media','technology'],
+  };
+  const ids = presets[preset] || [];
+  ids.forEach(iid => { if (!cbSelectedIndustries.includes(iid)) cbSelectedIndustries.push(iid); });
+  cbRenderIndustryTags();
+}
+
+// ── GOVERNANCE EDUCATION PANELS ──────────────────────────────
+const GOVERNANCE_INTEL = {
+  financial: {
+    title: 'Why governance is critical in Financial Services',
+    rules: [
+      { ico: '⚖️', text: '<strong>PCI-DSS requires individual attribution</strong> on every credential touching cardholder data. A shared login fails this control — and it\'s one of the first things QSAs look for.' },
+      { ico: '📋', text: '<strong>SOC 2 continuous monitoring</strong> means auditors want to see credential access logs without a 7-day collection lag. Events API solves this.' },
+      { ico: '🚨', text: '<strong>The 7-day offboarding gap</strong> is a live threat in this sector. Every day a departed employee retains access to wire or trading systems is a reportable incident waiting to happen.' },
+      { ico: '🌍', text: '<strong>Firewall Rules matter here</strong> — wire system access from unexpected geographies is a fraud indicator, not just a policy violation.' },
+    ],
+    frameworks: ['PCI-DSS', 'SOC 2 Type II', 'SOX', 'GDPR', 'DORA', 'FFIEC'],
+    edu: ['Ask: "What\'s your current process when a trader leaves?" The answer reveals the offboarding gap.', 'Events API is the fastest path to audit readiness — lead with it for compliance-driven accounts.', 'Travel Mode resonates with partners and executives who cross borders — no competitor has it.']
+  },
+  healthcare: {
+    title: 'Why governance is critical in Healthcare',
+    rules: [
+      { ico: '🏥', text: '<strong>HIPAA requires individual attribution</strong> on every access to PHI. A shared workstation credential doesn\'t just fail this — it creates potential breach notification liability.' },
+      { ico: '👤', text: '<strong>Shared EHR logins are the #1 audit finding</strong> in healthcare credential reviews. QR Sign-In + individual 1Password accounts is the practical fix without disrupting shift workflow.' },
+      { ico: '⏱️', text: '<strong>High turnover means daily offboarding risk.</strong> The average healthcare org takes 7+ days to deprovision. In that window, departed staff retain access to patient systems.' },
+      { ico: '🔌', text: '<strong>Vendor and contractor access</strong> (HVAC, biomedical engineering, EHR consultants) routinely persists for months after engagement end — Guest Accounts + Item Expiry closes this.' },
+    ],
+    frameworks: ['HIPAA', 'HITECH', 'SOC 2', 'GDPR', 'State privacy laws'],
+    edu: ['The shared workstation conversation is the opener. Ask: "If a nurse accessed the wrong patient record today, could you prove who it was?"', 'Ascension Health ransomware (May 2024) — lateral movement through clinical systems with shared credentials. This happened.', 'Passkeys eliminate the phishing risk that drives most healthcare breaches. 30 seconds to enable.']
+  },
+  technology: {
+    title: 'Why secrets governance is critical in Tech / SaaS',
+    rules: [
+      { ico: '💻', text: '<strong>Hardcoded secrets are the #1 tech breach vector.</strong> A single API key in a public repo can expose millions of users. CLI + Secret References makes this architecturally impossible.' },
+      { ico: '🔄', text: '<strong>CI/CD pipelines run under human credentials</strong> in most orgs. When that engineer leaves, the pipeline breaks — or worse, the credential stays active.' },
+      { ico: '📊', text: '<strong>SOC 2 Type II requires continuous monitoring</strong> of credential access. Most tech teams can\'t produce this without a SIEM integration they haven\'t built.' },
+      { ico: '🤖', text: '<strong>AI API keys are the new shadow IT problem.</strong> OpenAI, Anthropic, Cohere keys scattered across developer laptops, notebooks, and Slack messages — none governed.' },
+    ],
+    frameworks: ['SOC 2 Type II', 'ISO 27001', 'GDPR', 'CCPA'],
+    edu: ['Lead with: "How many plaintext credentials would I find if I searched your repos right now?" The silence opens the deal.', 'SolarWinds started with "solarwinds123" in a public GitHub repo. Use it — it\'s always relevant.', 'Free Families drives adoption in engineering. Developers who use 1Password at home use it better at work.']
+  },
+  legal: {
+    title: 'Why governance is critical in Legal',
+    rules: [
+      { ico: '⚖️', text: '<strong>Attorney-client privilege</strong> is at risk when matter credentials travel through unencrypted email or Slack. One intercepted credential = a privilege breach.' },
+      { ico: '✈️', text: '<strong>International border crossings</strong> with full client matter access are a legal liability in jurisdictions with data disclosure requirements. Travel Mode is the only solution.' },
+      { ico: '📁', text: '<strong>Matter close-out leaves active credentials</strong> in the hands of staff who\'ve rolled off — the legal equivalent of the law firm leaving the client\'s keys behind.' },
+      { ico: '🏛️', text: '<strong>Bar ethics rules</strong> in most states require confidentiality controls that shared matter credentials cannot satisfy. This is a bar complaint waiting to happen.' },
+    ],
+    frameworks: ['ABA Model Rules', 'GDPR', 'CCPA', 'State bar requirements', 'Cyber insurance'],
+    edu: ['Open with: "When a partner crosses an international border, what controls exist to protect client matter credentials?" Watch the room.', 'Travel Mode is the only 1Password feature with no competitor equivalent. Lead with it for law firm partners.', 'The Deloitte breach (one admin account, no MFA) is the professional services reference point. Use it.']
+  },
+  retail: {
+    title: 'Why governance is critical in Retail',
+    rules: [
+      { ico: '🛍️', text: '<strong>Seasonal workforce creates cyclical ghost access</strong> — 200 workers in November, 40 in January, and nobody closed the access gap for the other 160.' },
+      { ico: '📱', text: '<strong>Social media credentials are brand assets</strong> — one compromised Instagram login to a disgruntled agency employee is a public brand crisis.' },
+      { ico: '💳', text: '<strong>PCI-DSS Level 1 requires individual attribution</strong> on every payment system credential. Shared POS logins fail this control.' },
+      { ico: '🏢', text: '<strong>Third-party vendor access</strong> (HVAC, facilities, IT contractors) is the most common breach vector in retail. The Target breach was a vendor credential. It still happens.' },
+    ],
+    frameworks: ['PCI-DSS', 'GDPR', 'CCPA', 'State privacy laws'],
+    edu: ['Ask: "When your seasonal workforce wrapped up last January, how did you confirm their credential access was revoked?" The answer tells you everything.', 'The Target breach — $292M settlement, one HVAC vendor credential, 19 days undetected. Use it.', 'Agency social media access is a brand safety conversation, not just a security one. CMOs care.']
+  },
+  manufacturing: {
+    title: 'Why governance is critical in Manufacturing / OT',
+    rules: [
+      { ico: '🏭', text: '<strong>OT credentials are physical safety risks</strong> — a compromised SCADA credential isn\'t an IT incident, it\'s a production stoppage or a safety event.' },
+      { ico: '📋', text: '<strong>NERC CIP and IEC 62443</strong> require documented individual attribution on OT system access. Spreadsheets and sticky notes on control room walls fail both.' },
+      { ico: '🔌', text: '<strong>Vendor remote access</strong> (OEM maintenance, integrators) routinely has no defined lifecycle. The Oldsmar water treatment attack used a TeamViewer credential that had never been revoked.' },
+      { ico: '🔄', text: '<strong>IT/OT convergence</strong> means previously air-gapped OT systems now share credential attack surface with the IT network. The governance gap is growing.' },
+    ],
+    frameworks: ['NERC CIP', 'IEC 62443', 'NIST CSF', 'ISO 27001', 'CMMC'],
+    edu: ['Ask: "If I asked you to list every active remote access credential to your production systems right now, how long would that take?" The answer is always too long.', 'Colonial Pipeline — one unused VPN credential, no MFA, $4.4M ransom. The most resonant OT story.', 'Oldsmar water treatment — shared TeamViewer credential, sodium hydroxide at 111x normal. No 1Password = no individual attribution, no revocation process.']
+  },
+  government: {
+    title: 'Why governance is critical in Government',
+    rules: [
+      { ico: '🏛️', text: '<strong>OMB M-22-09 mandates phishing-resistant MFA</strong> across federal agencies. Passkeys satisfy this — no hardware token procurement required.' },
+      { ico: '📊', text: '<strong>FISMA continuous monitoring</strong> requires real-time credential access evidence. Events API streaming to SIEM is the fastest path to compliance.' },
+      { ico: '👥', text: '<strong>Contractor access is the #1 FISMA audit finding.</strong> The OPM breach — 21.5 million records — started with a single contractor credential that was never revoked.' },
+      { ico: '🔒', text: '<strong>Zero Trust Architecture</strong> requires least-privilege enforcement at the credential layer. Vault segmentation + App Policies delivers this.' },
+    ],
+    frameworks: ['FISMA', 'FedRAMP', 'NIST SP 800-53', 'OMB M-22-09', 'CISA ZT Maturity'],
+    edu: ['The OPM breach is the government reference. 21.5M records. One contractor credential. Never revoked.', 'OMB M-22-09 is an active mandate — use it. Most agencies are still working to satisfy the phishing-resistant MFA requirement.', 'Multi-Tenancy is the architecture play for agencies with multiple sub-agencies or contractor organizations.']
+  },
+  education: {
+    title: 'Why governance is critical in Education',
+    rules: [
+      { ico: '🎓', text: '<strong>FERPA requires individual attribution</strong> on every access to student records. A shared SIS login is not just a security gap — it\'s a FERPA violation.' },
+      { ico: '🔬', text: '<strong>Research IP is the highest-value target</strong> in academia. Nation-state actors (APT29, APT40) specifically target university research credentials.' },
+      { ico: '👥', text: '<strong>High-turnover populations</strong> — students, adjuncts, postdocs — create a chronic credential orphaning problem. Manual offboarding at this scale doesn\'t work.' },
+      { ico: '💰', text: '<strong>GLBA applies to financial aid</strong> data — most universities don\'t realize they\'re covered. Credential governance for financial aid systems is a compliance requirement.' },
+    ],
+    frameworks: ['FERPA', 'HIPAA (campus health)', 'GLBA', 'ITAR/EAR', 'NIST CSF'],
+    edu: ['Ask: "If a PhD student graduated six months ago, are they still in your lab systems?" The answer is almost always yes.', 'CISA advisory AA20-126A warned explicitly about shared research computing credentials being targeted. Name it.', 'FERPA + shared SIS login = breach notification requirement. This resonates with every compliance officer.']
+  },
+  lifesciences: {
+    title: 'Why governance is critical in Life Sciences',
+    rules: [
+      { ico: '🔬', text: '<strong>21 CFR Part 11 requires individual electronic attribution</strong> on every regulated data access. A shared LIMS login is not compliant — and FDA inspectors know to look for it.' },
+      { ico: '🧬', text: '<strong>IP theft is the existential risk.</strong> A single compound research credential exposed to a competitor or nation-state actor can cost a clinical program.' },
+      { ico: '🤝', text: '<strong>CRO and CMO access</strong> routinely persists through trial close-out with no revocation process. Guest Accounts + Item Expiry was built for this exact scenario.' },
+      { ico: '🖥️', text: '<strong>Shared lab workstations</strong> are the 21 CFR Part 11 audit finding hiding in plain sight. QR Sign-In + individual accounts solves it without disrupting bench workflow.' },
+    ],
+    frameworks: ['FDA 21 CFR Part 11', 'GxP', 'ICH E6', 'HIPAA', 'ITAR/EAR'],
+    edu: ['The opening question: "Your HPLC workstations — are researchers logging in as individuals or sharing a service account?" The FDA inspector will ask this.', 'APT29 targeted COVID-19 vaccine research credentials in 2020 (NCSC/CISA joint advisory). Life sciences is a nation-state target.', 'Individual 1Password accounts + shared lab vault = the practical path to 21 CFR Part 11 compliance on shared equipment.']
+  },
+};
+
+function cbUpdateGovernancePanels() {
+  const container = document.getElementById('cb-gov-panels');
+  if (!container) return;
+  container.innerHTML = '';
+  cbSelectedIndustries.forEach(iid => {
+    const intel = GOVERNANCE_INTEL[iid];
+    if (!intel) return;
+    const I = INDUSTRIES[iid];
+    const panel = document.createElement('div');
+    panel.className = 'gov-panel';
+    panel.style.borderColor = (I?.color || '#A78BFA') + '40';
+    panel.innerHTML = `
+      <div class="gov-panel-hdr">
+        <span class="gov-panel-ico">${I?.emoji||'🏢'}</span>
+        <span class="gov-panel-title">${intel.title}</span>
+      </div>
+      <div class="gov-panel-sub">Why 1Password credential governance is non-negotiable in this vertical — and how to explain it to your champion.</div>
+      ${intel.rules.map(r => `<div class="gov-rule"><span class="gov-rule-ico">${r.ico}</span><span class="gov-rule-text">${r.text}</span></div>`).join('')}
+      <div class="gov-frameworks">${intel.frameworks.map(f=>`<span class="gov-fw">${f}</span>`).join('')}</div>
+      <div class="cb-edu-section">
+        <div class="cb-edu-title">💡 CSM EDUCATION — WHAT TO KNOW & SAY</div>
+        ${intel.edu.map(e=>`<div class="cb-edu-row">${e}</div>`).join('')}
+      </div>`;
+    container.appendChild(panel);
+  });
 }
 
 
