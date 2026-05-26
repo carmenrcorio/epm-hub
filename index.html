@@ -22,7 +22,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sw input::placeholder{color:#2A4060}
 .si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#2A4060}
 .layout{display:flex;flex:1;overflow:hidden}
-.sidebar{width:228px;flex-shrink:0;background:#020C17;border-right:1px solid #1A3050;overflow-y:auto}
+.sidebar{width:228px;min-width:228px;flex-shrink:0;background:#020C17;border-right:1px solid #1A3050;overflow-y:auto;display:flex;flex-direction:column}
 .sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:#1A3050}
 .sec-hdr{padding:10px 14px 4px;font-size:9px;font-weight:800;letter-spacing:.14em;flex-shrink:0}
 .sec-hdr.admin{color:#4D8EFF}.sec-hdr.enduser{color:#00C4BE}.sec-hdr.developer{color:#A78BFA}.sec-hdr.industry{color:#F59E0B}
@@ -30,7 +30,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .ni:hover{background:#0D1E3355}
 .ni.active{background:#0D1E33}
 .ni.active.na{border-left-color:#1769FF}.ni.active.ne{border-left-color:#00C4BE}.ni.active.nd{border-left-color:#A78BFA}.ni.active.ni2{border-left-color:#F59E0B}
-.nn{font-size:12px;color:#5A7A9A;flex:1;line-height:1.3}
+.nn{font-size:12px;color:#5A7A9A;flex:1;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ni.active .nn,.ni:hover .nn{color:#C8D8E8}
 .ni.active .nn{color:#F0F6FF;font-weight:600}
 .npg{font-size:10px;color:#2A4060;font-family:monospace}
@@ -464,6 +464,39 @@ body{background:var(--bg)!important;color:var(--t2)!important}
 .cb-out-wrap{padding:16px 18px}
 .cb-error{padding:14px;background:#EF444408;border:1px solid #EF444430;border-radius:7px;color:#FF9999;font-size:12px}
 
+
+/* ══ GOVERNANCE INSIGHT SLIDE-IN MODAL ══════════════════════ */
+.gov-info-btn{background:none;border:none;cursor:pointer;color:currentColor;opacity:.7;font-size:11px;font-weight:800;padding:0 3px 0 5px;line-height:1;transition:opacity .12s;vertical-align:middle}
+.gov-info-btn:hover{opacity:1}
+.gov-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;animation:govFadeIn .15s ease}
+.gov-modal-panel{position:fixed;top:44px;bottom:0;left:360px;right:0;background:var(--surface);border-left:1px solid var(--border2);z-index:1000;overflow-y:auto;display:flex;flex-direction:column;animation:govSlideIn .2s cubic-bezier(.22,.68,0,1.2)}
+.gov-modal-panel::-webkit-scrollbar{width:4px}.gov-modal-panel::-webkit-scrollbar-thumb{background:var(--border)}
+.gov-modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface);position:sticky;top:0;z-index:2}
+.gov-modal-title{display:flex;align-items:center;gap:10px}
+.gov-modal-ico{font-size:20px}
+.gov-modal-name{font-size:14px;font-weight:800;color:var(--t1)}
+.gov-modal-sub{font-size:11px;color:var(--t4);margin-top:1px}
+.gov-modal-close{background:var(--bg2);border:1px solid var(--border);border-radius:5px;color:var(--t3);font-size:13px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;flex-shrink:0}
+.gov-modal-close:hover{background:var(--border2);color:var(--t1)}
+.gov-modal-body{padding:16px 20px;flex:1}
+.gov-modal-intro{font-size:12px;color:var(--t3);font-style:italic;line-height:1.7;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.gov-modal-section-title{font-size:9px;font-weight:800;letter-spacing:.13em;margin-bottom:10px}
+.gov-risk-cards{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.gov-risk-card{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:10px 13px;cursor:default;transition:border-color .12s}
+.gov-risk-card:hover{border-color:var(--border2)}
+.gov-risk-card-hdr{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.gov-risk-card-ico{font-size:14px;flex-shrink:0}
+.gov-risk-card-text{font-size:11px;color:var(--t2);line-height:1.6}
+.gov-risk-card-text strong{color:var(--t1)}
+.gov-fw-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.gov-fw-badge{font-size:9px;font-weight:800;padding:3px 8px;border-radius:4px;background:#1769FF14;color:#70B8FF;border:1px solid #1769FF25}
+.gov-edu-block{background:var(--bg2);border:1px solid var(--border);border-left:3px solid #F59E0B;border-radius:0 7px 7px 0;padding:12px 14px}
+.gov-edu-block-title{font-size:9px;font-weight:800;letter-spacing:.12em;color:#F59E0B;margin-bottom:8px}
+.gov-edu-row{display:flex;gap:7px;align-items:flex-start;font-size:11px;color:var(--t2);margin-bottom:6px;line-height:1.6}
+.gov-edu-row::before{content:"→";color:#F59E0B;font-weight:700;flex-shrink:0}
+@keyframes govSlideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes govFadeIn{from{opacity:0}to{opacity:1}}
+
 .gov-panel-trigger{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;user-select:none;transition:background .12s}
 .gov-panel-trigger:hover{background:#1769FF08}
 .gov-panel-ico{font-size:13px;flex-shrink:0}
@@ -653,7 +686,7 @@ body{background:var(--bg)!important;color:var(--t2)!important}
   <div class="tab" id="tab-trelica" onclick="switchTab('trelica')">🔷 Trelica</div>
   <div class="tab" id="tab-dt" onclick="switchTab('dt')">🛡️ Device Trust</div>
   <div class="topbar-right">
-    <div class="sw"><span class="si">🔍</span><input type="text" id="searchInput" placeholder="Search features, industries..." oninput="doSearch(this.value)"/></div>
+    <div class="sw"><span class="si">🔍</span><input type="text" id="searchInput" placeholder="Search features, industries..." oninput="doSearch(this.value)" id="srch-input" style="transition:background .15s"/></div>
   </div>
 </div>
 <div class="product-bar" id="product-bar">
@@ -1092,6 +1125,18 @@ function doSearch(v){
   if(curTab==='features'){buildFeatureSidebar();if(!curFid)showTiles(curFilter);}
   if(curTab==='industry')buildIndustrySidebar();
   if(curTab==='departments')buildDeptSidebar();
+  // Show result count in search box placeholder area
+  const input = document.getElementById('srch-input');
+  if(input){
+    if(srch){
+      const count = document.querySelectorAll('#sidebar .ni').length;
+      input.style.background = count > 0 ? '#1769FF15' : '#EF444415';
+      input.title = count > 0 ? `${count} result${count!==1?'s':''} found` : 'No results';
+    } else {
+      input.style.background = '';
+      input.title = '';
+    }
+  }
 }
 
 // ─── DEPARTMENTS DATA ─────────────────────────────────────────
@@ -1903,6 +1948,8 @@ Return ONLY valid JSON matching this exact schema. Be surgically specific — us
     cbLastResult = { result, company, industryId, deptIds };
     renderStrategy(result, company, ind);
     setTimeout(cbSaveProfile, 500);
+    btn.disabled = false;
+    btn.textContent = '⚡ Build Customer Strategy';
   } catch (err) {
     document.getElementById('cb-output').innerHTML =
       `<div class="cb-out-wrap"><div class="cb-error">⚠️ ${err.message.includes('JSON') ? 'Claude returned malformed JSON — try re-running.' : err.message}</div></div>`;
@@ -2431,10 +2478,8 @@ function copyProfile() {
     lines.push('NEXT ACTIONS:');
     r.next_actions.forEach(a => lines.push(`• ${a.timeline}: ${a.action}`));
   }
-  navigator.clipboard.writeText(lines.join('\n')).then(() => {
-    const btn = document.querySelector('.cb-action-btn');
-    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = '📋 Copy Notes', 2000); }
-  });
+  navigator.clipboard.writeText(lines.join('\n')).then(() => { showCustomSuccessToast('📋 Notes copied to clipboard'); })
+    .catch(() => showCustomSuccessToast('⚠ Copy failed'));
 }
 
 function exportStrategyPDF() {
@@ -2647,9 +2692,11 @@ function exportStrategyPDF() {
   </div>
   <scr`+'ipt>window.onload=()=>setTimeout(()=>window.print(),500);</scr'+'ipt></body></html>';
 
-  const w = window.open('', '_blank');
-  w.document.write(html);
-  w.document.close();
+  const blob2 = new Blob([html], { type: 'text/html' });
+  const url2 = URL.createObjectURL(blob2);
+  const w = window.open(url2, '_blank');
+  if (!w) { alert('Please allow pop-ups to export PDF.'); }
+  setTimeout(() => URL.revokeObjectURL(url2), 10000);
 }
 
 
@@ -2667,10 +2714,8 @@ function copyExecNarrative() {
     'RISK OF INACTION:',
     ec.risk_of_inaction || ''
   ];
-  navigator.clipboard.writeText(lines.join('\n')).then(() => {
-    const btns = document.querySelectorAll('.cb-action-btn');
-    if (btns[1]) { btns[1].textContent = '✓ Copied!'; setTimeout(() => btns[1].textContent = '📝 Copy Exec Narrative', 2000); }
-  });
+  navigator.clipboard.writeText(lines.join('\n')).then(() => { showCustomSuccessToast('📝 Exec Narrative copied'); })
+    .catch(() => showCustomSuccessToast('⚠ Copy failed'));
 }
 
 
@@ -3372,7 +3417,7 @@ function renderBAD() {
         <button class="bad-wbtn" title="Duplicate" onclick="badDuplicateWidget('${w.id}')">⧉</button>
         <button class="bad-wbtn" title="Remove" onclick="BAD.removeWidget('${w.id}')">✕</button>
       </div></div>
-      ${bodyHTML}
+      <div class="bad-widget-body" onmousedown="event.stopPropagation()">${bodyHTML}</div>
       <div class="bad-widget-footer"><div class="bad-resize" onmousedown="badStartResize(event,'${w.id}')"></div></div>`;
     canvas.appendChild(el);
   });
@@ -3409,9 +3454,12 @@ function badDuplicateWidget(wid){
   const p=BAD.getCurrentProject();if(!p)return;
   const src=p.widgets.find(w=>w.id===wid);if(!src)return;
   const copy=JSON.parse(JSON.stringify(src));
-  copy.id='w'+Date.now();copy.x=src.x+24;copy.y=src.y+24;
+  copy.id='w'+Date.now();
+  const _maxY=Math.max(...p.widgets.map(w=>w.y+(w.h||200)),0);
+  copy.x=src.x;copy.y=_maxY+12;
   if(src.render)copy.render=src.render;
   p.widgets.push(copy);renderBAD();
+  showCustomSuccessToast('Block duplicated — placed below');
 }
 
 function badExportPDF(){
@@ -3448,7 +3496,11 @@ function badExportPDF(){
     </div>
   </div>
   <scr`+'ipt>window.onload=()=>setTimeout(()=>window.print(),400);</scr'+'ipt></body></html>';
-  const win=window.open('','_blank');win.document.write(printHTML);win.document.close();
+  const blob = new Blob([printHTML], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const win = window.open(url, '_blank');
+  if (!win) { alert('Please allow pop-ups for this site to export PDF.'); }
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 
 
@@ -3957,15 +4009,16 @@ function cbRenderIndustryTags() {
   wrap.innerHTML = '';
   cbSelectedIndustries.forEach(iid => {
     const I = INDUSTRIES[iid]; if(!I) return;
+    const hasIntel = !!GOVERNANCE_INTEL[iid];
     const pill = document.createElement('span');
     pill.className = 'cb-ind-pill';
     pill.style.background = I.color + '18';
     pill.style.color = I.color;
     pill.style.border = '1px solid ' + I.color + '44';
-    pill.innerHTML = `${I.emoji} ${I.name}<button onclick="cbRemoveIndustry('${iid}')">×</button>`;
+    pill.innerHTML = `${I.emoji} ${I.name}${hasIntel ? `<button class="gov-info-btn" onclick="openGovInsight('${iid}')" title="View governance brief">ⓘ</button>` : ''}<button onclick="cbRemoveIndustry('${iid}')">×</button>`;
     wrap.appendChild(pill);
   });
-  cbUpdateGovernancePanels();
+  // No longer auto-injects inline panels — governance is now pull-based via ⓘ
 }
 
 function cbAddIndustry(iid) {
@@ -4111,6 +4164,74 @@ const GOVERNANCE_INTEL = {
     frameworks: ['FERPA', 'HIPAA (campus health)', 'GLBA', 'ITAR/EAR', 'NIST CSF'],
     edu: ['Ask: "If a PhD student graduated six months ago, are they still in your lab systems?" The answer is almost always yes.', 'CISA advisory AA20-126A warned explicitly about shared research computing credentials being targeted. Name it.', 'FERPA + shared SIS login = breach notification requirement. This resonates with every compliance officer.']
   },
+
+  fintech: {
+    title: 'Why governance is critical in Fintech',
+    rules: [
+      { ico: '💳', text: '<strong>PCI-DSS and SOC 2 Type II are table stakes</strong> — but in fintech, one shared credential on a payment processing endpoint fails both simultaneously.' },
+      { ico: '🔑', text: '<strong>API keys are the fintech attack surface.</strong> Stripe, Plaid, and payment gateway keys sitting in .env files or engineer laptops are the highest-value target in the sector.' },
+      { ico: '🚀', text: '<strong>Rapid hiring creates onboarding chaos.</strong> Fast-growth fintech orgs provision access manually — new engineers get overly broad access because nobody has time to scope it properly.' },
+      { ico: '🏦', text: '<strong>Banking partner requirements</strong> increasingly mandate credential governance evidence as a condition of partnership — not just internal compliance.' },
+    ],
+    frameworks: ['PCI-DSS', 'SOC 2 Type II', 'GDPR', 'CCPA', 'FFIEC (banking partners)'],
+    edu: ['Ask: "When your last engineer left, how long until their Stripe API key was rotated?" The answer is almost always: too long, or never.', 'The Secrets Automation pitch for fintech is the fastest close — no .env files, no hardcoded keys, ever. Demo it.', 'SOC 2 Type II evidence is often a banking partnership requirement. Lead with the compliance enablement angle.']
+  },
+  professionalservices: {
+    title: 'Why governance is critical in Professional Services',
+    rules: [
+      { ico: '🤝', text: '<strong>Client confidentiality is a contractual obligation</strong> — not just a preference. A shared login to a client portal violates most engagement agreements.' },
+      { ico: '✈️', text: '<strong>Consultants travel internationally</strong> with client data on their devices. Border crossing with unprotected client credentials is a compliance and relationship risk.' },
+      { ico: '🔄', text: '<strong>High churn of client-facing staff</strong> means credentials to client systems routinely outlive the engagement — and IT never knows to revoke them.' },
+      { ico: '📋', text: '<strong>Cyber insurance auditors</strong> increasingly flag shared client access credentials as a policy risk. Some policies now require documented credential governance.' },
+    ],
+    frameworks: ['ISO 27001', 'SOC 2', 'GDPR', 'Cyber insurance requirements'],
+    edu: ['Travel Mode is your lead feature. No other password manager has it. Ask: "When your partners cross international borders, what protects your client credentials?" Watch the room.', 'The Deloitte breach: one admin account, no MFA, client email data exposed. This is the professional services reference. Use it.', 'Guest Accounts for client-specific project access — scoped, expiring, auditable. This maps directly to how consulting engagements work.']
+  },
+  hospitality: {
+    title: 'Why governance is critical in Hospitality',
+    rules: [
+      { ico: '🏨', text: '<strong>High seasonal turnover is structural.</strong> Hospitality orgs cycle through 30–60% of their workforce annually — manual offboarding fails at this velocity.' },
+      { ico: '💳', text: '<strong>PCI-DSS applies to every property.</strong> Shared POS terminal logins fail the individual attribution requirement that QSAs look for first.' },
+      { ico: '📱', text: '<strong>OTA and booking platform credentials</strong> (Expedia, Booking.com, Google Hotel Ads) are shared among revenue management staff with no audit trail.' },
+      { ico: '🔧', text: '<strong>Third-party maintenance and facilities vendors</strong> get property system access that persists indefinitely — same pattern as retail, same risk.' },
+    ],
+    frameworks: ['PCI-DSS', 'GDPR', 'CCPA', 'State privacy laws'],
+    edu: ['Lead with the seasonal offboarding gap. Ask: "When your last summer staff left in September, how did you confirm their PMS and POS access was revoked?" Silence is the answer.', 'OTA credential sharing is the booking-side equivalent of retail social media access — it\'s a brand and revenue risk, not just a security one.', 'Guest Accounts + Item Expiry maps perfectly to seasonal worker access: grant access for the season, set the expiry date, done.']
+  },
+  energy: {
+    title: 'Why governance is critical in Energy & Utilities',
+    rules: [
+      { ico: '⚡', text: '<strong>OT/ICS credentials are national security risks.</strong> A compromised SCADA login isn\'t an IT incident — it\'s a potential grid event. Individual attribution is essential.' },
+      { ico: '📋', text: '<strong>NERC CIP compliance</strong> requires documented individual access controls for all bulk electric system assets. Shared credentials are an automatic finding.' },
+      { ico: '🔌', text: '<strong>Contractor and vendor remote access</strong> to operational systems is the highest-risk access vector. Colonial Pipeline was a VPN credential — never revoked, no MFA.' },
+      { ico: '🔒', text: '<strong>IT/OT convergence</strong> is creating credential governance gaps that didn\'t exist when OT was air-gapped. The attack surface is growing every quarter.' },
+    ],
+    frameworks: ['NERC CIP', 'IEC 62443', 'NIST CSF', 'ISO 27001', 'TSA Pipeline Security'],
+    edu: ['Colonial Pipeline: $4.4M ransom, one unused VPN credential, no MFA. This is the energy reference that every CISO knows.', 'NERC CIP individual attribution requirement is non-negotiable. Shared credentials on BES assets are automatic findings — 1Password closes this gap.', 'Remote vendor access is the first conversation. Ask: "How do you revoke OEM vendor remote access when a maintenance contract ends?"']
+  },
+  media: {
+    title: 'Why governance is critical in Media & Entertainment',
+    rules: [
+      { ico: '📱', text: '<strong>Social media credentials are the highest-value asset</strong> in media — one compromised account is a brand crisis and a newsroom emergency simultaneously.' },
+      { ico: '🎨', text: '<strong>Agency and contractor access to creative platforms</strong> (Adobe, brand accounts, ad platforms) persists indefinitely. Agency offboarding never closes these doors.' },
+      { ico: '📰', text: '<strong>Pre-publication story access</strong> is an existential leak risk. Source credentials, story drafts, and embargoed content on shared systems are governance failures.' },
+      { ico: '💰', text: '<strong>Ad platform credentials</strong> (Google Ads, Meta, programmatic platforms) control media spend. A compromised login is immediate financial exposure.' },
+    ],
+    frameworks: ['GDPR', 'CCPA', 'Industry self-regulation (MRC)'],
+    edu: ['Social media account security is the entry point for media. Ask: "If a social media manager left today, how quickly could you rotate every brand account password?" The answer opens the deal.', 'Agency access is the unique media problem — the brief is done but the credentials linger. Guest Accounts + Item Expiry is the fix.', 'Pre-publication content security resonates with editorial leadership, not just IT. Broaden the stakeholder map.']
+  },
+  nonprofit: {
+    title: 'Why governance is critical in Nonprofit',
+    rules: [
+      { ico: '🙏', text: '<strong>Donor data is the most sensitive PII a nonprofit holds.</strong> A breach of a donor database is a trust event that can permanently damage fundraising capacity.' },
+      { ico: '💰', text: '<strong>Grant compliance requirements</strong> increasingly include data security controls. Federal grants (HHS, NIH, NSF) now require documented access governance for grant-funded systems.' },
+      { ico: '🔄', text: '<strong>High volunteer and staff churn</strong> creates the same credential orphaning problem as hospitality — manual offboarding fails at this volume.' },
+      { ico: '💳', text: '<strong>Underfunded IT means credential hygiene is an afterthought.</strong> Password reuse, shared logins, and no offboarding process are the norm, not the exception.' },
+    ],
+    frameworks: ['HIPAA (health nonprofits)', 'FERPA (education nonprofits)', 'Grant compliance (HHS, NIH)', 'State charity registration requirements'],
+    edu: ['The ROI conversation with nonprofits centers on donor trust and grant compliance, not security posture. Lead with those. IT security is the means; mission protection is the message.', 'Families plan is the fastest expansion play in nonprofits — staff get personal accounts free, which drives adoption and makes the renewal conversation easier.', 'Board members are often the hidden cybersecurity risk in nonprofits — personal devices, no MDM, full access to donor databases. Ask about it.']
+  },
+
   lifesciences: {
     title: 'Why governance is critical in Life Sciences',
     rules: [
@@ -4125,659 +4246,18 @@ const GOVERNANCE_INTEL = {
 };
 
 function cbUpdateGovernancePanels() {
+  // Governance intel is now pull-based — ⓘ button on each industry pill opens the slide-in modal
+  // Nothing injected inline into the form anymore
   const container = document.getElementById('cb-gov-panels');
-  if (!container) return;
-  container.innerHTML = '';
-  cbSelectedIndustries.forEach(iid => {
-    const intel = GOVERNANCE_INTEL[iid];
-    if (!intel) return;
-    const I = INDUSTRIES[iid];
-    const panel = document.createElement('div');
-    panel.className = 'gov-panel';
-    panel.style.borderColor = (I?.color || '#A78BFA') + '40';
-    const panelId = 'gov-' + iid;
-    panel.innerHTML = `
-      <div class="gov-panel-trigger" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.gov-panel-chevron').classList.toggle('open')">
-        <span class="gov-panel-ico">${I?.emoji||'🏢'}</span>
-        <span class="gov-panel-title">💡 ${I?.name||''} Governance Brief — compliance rules & CSM talking points</span>
-        <span class="gov-panel-chevron">▶</span>
-      </div>
-      <div class="gov-panel-body">
-        <div class="gov-panel-sub">Why credential governance is non-negotiable in this vertical.</div>
-        ${intel.rules.map(r => `<div class="gov-rule"><span class="gov-rule-ico">${r.ico}</span><span class="gov-rule-text">${r.text}</span></div>`).join('')}
-        <div class="gov-frameworks">${intel.frameworks.map(f=>`<span class="gov-fw">${f}</span>`).join('')}</div>
-        <div class="cb-edu-section">
-          <div class="cb-edu-title">💡 WHAT TO KNOW & SAY ON THE CALL</div>
-          ${intel.edu.map(e=>`<div class="cb-edu-row">${e}</div>`).join('')}
-        </div>
-      </div>`;
-    container.appendChild(panel);
-  });
+  if (container) container.innerHTML = '';
 }
 
-
-
-// ═══════════════════════════════════════════════════════════════
-// PRODUCT SYSTEM — EPM / Trelica / Device Trust
-// ═══════════════════════════════════════════════════════════════
-
-const PRODUCT_KEY = '1p_epm_hub_products_v1';
-
-// Default: EPM always on, others off
-let activeProducts = { epm: true, trelica: false, dt: false };
-
-function productInit() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(PRODUCT_KEY) || '{}');
-    activeProducts = { epm: true, trelica: false, dt: false, ...saved };
-    activeProducts.epm = true; // EPM always active
-  } catch(e) {}
-  productSyncUI();
-}
-
-function toggleProduct(pid) {
-  if (pid === 'epm') return; // EPM always on
-  activeProducts[pid] = !activeProducts[pid];
-  try { localStorage.setItem(PRODUCT_KEY, JSON.stringify(activeProducts)); } catch(e) {}
-  productSyncUI();
-  // Refresh current view to show/hide product content
-  const detail = document.getElementById('detail');
-  if (detail && detail.innerHTML.length > 100) {
-    // Rerender current tab
-    const curTabEl = document.querySelector('.tab.active');
-    if (curTabEl) {
-      const tab = curTabEl.id.replace('tab-', '');
-      if (tab === 'industry' && window.curIid) renderIndustry(window.curIid);
-      if (tab === 'departments' && window.curDid) renderDept(window.curDid);
-    }
-  }
-}
-
-function productSyncUI() {
-  ['epm','trelica','dt'].forEach(pid => {
-    const btn = document.getElementById('ptog-' + pid);
-    if (!btn) return;
-    btn.className = 'product-toggle';
-    if (activeProducts[pid]) btn.classList.add('active-' + pid);
-  });
-}
-
-function hasProduct(pid) { return !!activeProducts[pid]; }
-
-// ── Product section renderer ──────────────────────────────────
-function renderProductSection(type, title, rows, lockedMsg) {
-  if (activeProducts[type]) {
-    return `<div class="product-section ${type}">
-      <div class="product-section-hdr">
-        <span>${type === 'trelica' ? '🔷' : '🛡️'}</span>
-        <span>${title}</span>
-      </div>
-      <div class="product-section-body">
-        ${rows.map(r => `<div class="product-section-row">${r}</div>`).join('')}
-      </div>
-    </div>`;
-  }
-  return `<div class="product-locked">
-    <div class="product-locked-ico">${type === 'trelica' ? '🔷' : '🛡️'}</div>
-    <div class="product-locked-t">${lockedMsg || (type === 'trelica' ? 'Trelica · SaaS Manager' : 'Device Trust')} not active</div>
-    <div class="product-locked-s">Turn on this product in the bar above to see how it adds to this use case.</div>
-    <button class="product-locked-btn" onclick="toggleProduct('${type}')">+ Add ${type === 'trelica' ? 'Trelica' : 'Device Trust'}</button>
-  </div>`;
-}
-
-// ── Platform progression view ─────────────────────────────────
-function showPlatformView() {
-  document.getElementById('sidebar').style.display = 'none';
-  document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
-
-  const steps = [
-    { key: 'epm', label: 'FOUNDATION · ACTIVE', name: 'Enterprise Password Manager', color: '#10B981',
-      desc: 'Credentials, secrets, vaults, lifecycle. The base layer every customer starts with.',
-      features: ['Vault management + SCIM provisioning','Secrets Automation + CLI','Events API + SIEM integration','Travel Mode + Guest Accounts','Watchtower + Passkeys'] },
-    { key: 'trelica', label: hasProduct('trelica') ? 'ACTIVE' : 'NEXT STEP', name: 'Trelica · SaaS Manager', color: '#3A9EFF',
-      desc: 'Discover and govern every app, including shadow IT and AI tools.',
-      features: ['SaaS discovery (vault + browser)','Shadow AI detection (Claude, Cursor, ChatGPT)','Access lifecycle automation','Granular access requests','Account governance + spend visibility'] },
-    { key: 'dt', label: hasProduct('dt') ? 'ACTIVE' : 'NEXT STEP', name: '1Password Device Trust', color: '#F59E0B',
-      desc: 'Ensure every device accessing apps meets security requirements.',
-      features: ['Managed + unmanaged device checks','SSF integrations: Zscaler, Duo, Netskope, SailPoint','External checks: training, MFA enrollment, employment status','AI discovery on endpoints (.env files, SSH keys, API keys)','Zero Trust enforcement without full MDM'] },
-    { key: 'xam', label: 'DESTINATION', name: 'Extended Access Management (XAM)', color: '#A78BFA',
-      desc: 'Every identity, every app, every device — governed from one platform.',
-      features: ['Unified Access console','Credential discovery (machine + human)','MCP Gateway (beta)','Behavioral analytics + risk-based access','AI agent governance'] },
-  ];
-
-  const stepsHTML = steps.map(s => {
-    const isActive = s.key === 'xam' ? (hasProduct('trelica') && hasProduct('dt')) : hasProduct(s.key);
-    const feats = s.features.map(f => `<div style="font-size:10px;color:${isActive ? 'var(--t2)' : 'var(--t4)'};margin-bottom:2px;display:flex;gap:4px"><span style="color:${s.color};flex-shrink:0">${isActive ? '✓' : '○'}</span>${f}</div>`).join('');
-    return `<div style="flex:1;padding:14px;border-radius:8px;border:1px ${isActive ? 'solid' : 'dashed'};border-color:${s.color}${isActive ? '44' : '22'};background:${s.color}${isActive ? '10' : '06'};cursor:${s.key !== 'xam' && s.key !== 'epm' && !isActive ? 'pointer' : 'default'}" onclick="${s.key !== 'xam' && s.key !== 'epm' && !isActive ? `toggleProduct('${s.key}')` : ''}">
-      <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:${s.color};margin-bottom:5px">${s.label}</div>
-      <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:6px">${s.name}</div>
-      <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-bottom:10px">${s.desc}</div>
-      ${feats}
-      ${!isActive && s.key !== 'xam' ? `<div style="margin-top:8px;font-size:10px;color:${s.color};font-weight:700">Click to activate →</div>` : ''}
-    </div>`;
-  }).join('<div style="display:flex;align-items:center;padding:0 8px;color:var(--t4);font-size:16px">→</div>');
-
-  document.getElementById('detail').innerHTML = `
-    <div style="padding:20px 28px">
-      <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#A78BFA;margin-bottom:8px">◆ THE 1PASSWORD PLATFORM</div>
-      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Extended Access Management</div>
-      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:24px;max-width:600px">Every layer of access security — from your password manager to your device trust layer — unified in one platform. Start with EPM. Layer in Trelica and Device Trust. Arrive at XAM.</div>
-
-      <div style="display:flex;gap:12px;align-items:stretch;margin-bottom:28px">
-        ${stepsHTML}
-      </div>
-
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px">
-        <div style="font-size:9px;font-weight:800;letter-spacing:.13em;color:var(--t4);margin-bottom:10px">Q2 2026 — WHAT'S SHIPPING NOW</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-          <div>
-            <div style="font-size:9px;font-weight:800;color:#10B981;margin-bottom:6px">EPM</div>
-            <div style="font-size:11px;color:var(--t2);line-height:1.6">Google Workspace provisioning · Migrator tools from LastPass/Dashlane · Entra ID secret expiration · Smart login creation · Environments MCP for OpenAI Codex</div>
-          </div>
-          <div>
-            <div style="font-size:9px;font-weight:800;color:#3A9EFF;margin-bottom:6px">TRELICA</div>
-            <div style="font-size:11px;color:var(--t2);line-height:1.6">Enhanced AI integrations (Claude, Cursor, ChatGPT, OpenAI) · Onboarding wizard · Granular access requests · Account governance</div>
-          </div>
-          <div>
-            <div style="font-size:9px;font-weight:800;color:#F59E0B;margin-bottom:6px">DEVICE TRUST</div>
-            <div style="font-size:11px;color:var(--t2);line-height:1.6">SSF expansion: Zscaler, Duo, Netskope, SailPoint · External checks: training completion, MFA enrollment, employment status</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TRELICA FEATURE DATA
-// ═══════════════════════════════════════════════════════════════
-const TRELICA_FEATURES = [
-  {
-    id: 'multi-source-discovery',
-    section: 'discovery',
-    sectionLabel: '🔍 Discovery & Visibility',
-    n: 'Multi-Source App Discovery',
-    badge: 'core',
-    color: '#3A9EFF',
-    prob: 'Your IdP shows you the apps IT approved. It has no idea about the other 60–80% employees are actually using — OAuth grants, expense-card subscriptions, browser logins, and credentials stored in password managers.',
-    how: '1Password SaaS Manager pulls from 5 distinct discovery sources: Identity Provider, OAuth/Active Consent, Finance & Expense Systems, Browser Extension, and 1Password EPM vault data. Only SaaS manager that uses password vault data as a discovery signal.',
-    stat: 'Avg 2–4× more apps than IdP alone shows',
-    usecases: [
-      'Surface shadow IT before auditors do — 96 avg newly discovered apps on first run',
-      'Detect OAuth grants employees clicked "Sign in with Google" on — invisible to IT',
-      'Find expense-card SaaS subscriptions that never touched the IdP',
-      'Identify apps employees store credentials for in 1Password vaults'
-    ],
-    personas: ['IT Admin', 'CISO / Security Lead', 'VP IT', 'Finance / Procurement'],
-    replaces: 'IdP-only inventory (40–60% of real usage), expense report spot-checks, manual "reply with what apps you use" email'
-  },
-  {
-    id: 'shadow-it-detection',
-    section: 'discovery',
-    sectionLabel: '🔍 Discovery & Visibility',
-    n: 'Shadow IT Detection & Risk Scoring',
-    badge: 'security',
-    color: '#3A9EFF',
-    prob: 'IT learns about shadow apps only when a security event occurs. 34% of apps in the average org bypass SSO entirely — each one is an offboarding gap and an unmanaged access risk.',
-    how: 'Apps get risk categories assigned automatically. Single-user flags catch forgotten trials. Competitor password manager detection. Shadow AI detection flags ChatGPT, Cursor, and similar tools bypassing SSO. The average customer finds 96 newly discovered apps on first inventory run.',
-    stat: '34% of apps bypass SSO — SaaS Manager finds them',
-    usecases: [
-      'Detect AI tools (ChatGPT, Cursor, Copilot) bypassing SSO and accessing company data',
-      'Flag competitor password managers employees are using alongside 1Password',
-      'Surface single-user apps — forgotten trials expensed to the company',
-      'Auto-triage shadow IT: email user, create IT task, notify manager'
-    ],
-    personas: ['CISO / Security Lead', 'IT Admin', 'GRC / Compliance Officer', 'Security Operations'],
-    replaces: 'Discovery-by-incident model; the well-meaning employee who mentions shadow apps in passing'
-  },
-  {
-    id: 'app-catalog',
-    section: 'discovery',
-    sectionLabel: '🔍 Discovery & Visibility',
-    n: 'App Profile & Security Catalog',
-    badge: 'core',
-    color: '#3A9EFF',
-    prob: 'When an app comes up for renewal, IT can\'t find the SOC 2 report, doesn\'t know who owns it internally, and has no idea what users are actually doing with it.',
-    how: '40,000+ app library auto-enriches every discovered app with category, compliance links, and similar-app signals. Every app gets a rich profile with ownership roles, utilisation data, access levels, and custom fields your team defines.',
-    stat: '40,000+ app library with compliance docs',
-    usecases: [
-      'Run access reviews 3× faster when app profiles are populated with owners and context',
-      'Direct links to SOC 2 Type II and ISO 27001 reports from the 40K app library',
-      'Custom fields: add Risk tier, Data classification, Procurement contact per app',
-      'Venn diagram overlap analysis — prove consolidation to budget owners with data'
-    ],
-    personas: ['IT Admin', 'App Owner (any dept)', 'GRC / Compliance Officer', 'Procurement'],
-    replaces: 'Scattered app notes in wikis, compliance report bookmarks, ownership tracked in spreadsheets'
-  },
-  {
-    id: 'access-reviews',
-    section: 'governance',
-    sectionLabel: '🔐 Access Governance',
-    n: 'Automated Access Reviews',
-    badge: 'compliance',
-    color: '#3A9EFF',
-    prob: 'SOC 2 requires demonstrating access review on a schedule. Most orgs do it manually in spreadsheets. It takes 2 weeks of IT time per cycle and produces point-in-time snapshots that don\'t satisfy continuous monitoring requirements.',
-    how: 'Configure review frequency per app (monthly, quarterly, or custom). 350+ direct app integrations provide actual access levels — not just "user exists." One-click revocation from within the review. Full audit trail exportable with supplemental material for auditors.',
-    stat: '150–250 IT hours saved per audit cycle',
-    usecases: [
-      'SOC 2 Type II: complete access review history with timestamped evidence',
-      'ISO 27001: annual access control documentation ready on demand',
-      'HIPAA: PHI system access documentation with per-user revocation trail',
-      'PCI-DSS: privileged access review logs exportable for QSA'
-    ],
-    personas: ['GRC / Compliance Officer', 'CISO / Security Lead', 'IT Admin', 'Legal / Risk'],
-    replaces: 'Quarterly spreadsheet exports from each app, 2-week IT sprint before every audit cycle'
-  },
-  {
-    id: 'onboarding-workflows',
-    section: 'governance',
-    sectionLabel: '🔐 Access Governance',
-    n: 'Automated Onboarding Workflows',
-    badge: 'automation',
-    color: '#3A9EFF',
-    prob: 'New hires wait days for app access. IT chases department heads for lists. Productivity is lost on day one — every time. Manual onboarding creates 3–5 day wait times and IT ticket queues.',
-    how: 'No-code workflow builder triggers on HRIS events (Workday, BambooHR, Rippling). Role-based provisioning maps each job role to a defined app stack. Provisions to IdP groups, direct app accounts, and notifies IT and manager — all in sequence.',
-    stat: '50–70% faster time-to-productivity for new hires',
-    usecases: [
-      'New Software Engineer: auto-provision GitHub, Jira, Confluence, Slack, 1Password before start date',
-      'HRIS departure triggers complete multi-app revocation — minutes not days',
-      'Birthright access: define apps every role gets on day one automatically',
-      'Contractor workflows: scoped access with automatic expiry at engagement end'
-    ],
-    personas: ['IT Admin', 'HR / People Ops', 'Hiring Managers', 'IT Helpdesk'],
-    replaces: 'Manual onboarding checklists, "request form" email chains with IT, 3–5 day wait for app access'
-  },
-  {
-    id: 'offboarding-workflows',
-    section: 'governance',
-    sectionLabel: '🔐 Access Governance',
-    n: 'Automated Offboarding Workflows',
-    badge: 'security critical',
-    color: '#EF4444',
-    prob: 'When someone leaves, IT manually revokes access from every app individually. The average org takes 7+ days. Former employees retain live SaaS access the entire time — including non-SSO apps that IdP group removal doesn\'t touch.',
-    how: 'One workflow closes every door. Triggers on HRIS departure or manual initiation. Covers non-SSO apps via direct API — not just IdP group removal. Device offboarding (lock/wipe via MDM/EDR) runs in the same workflow. Every revocation timestamped and exportable.',
-    stat: 'Avg 7 days → minutes. The single highest-ROI workflow.',
-    usecases: [
-      'Revoke Salesforce, GitHub, Notion access the moment HRIS marks departure',
-      'Lock or wipe device via Jamf, Intune, or CrowdStrike in the same workflow',
-      'Complete audit trail: every revocation timestamped, exportable for auditors',
-      'Non-SSO apps covered: OAuth grants, expense-card subscriptions, browser-discovered apps'
-    ],
-    personas: ['CISO / Security Lead', 'IT Admin', 'HR / People Ops', 'Compliance Officer'],
-    replaces: 'Manual offboarding checklist, HR-to-IT email chain, 7-day access gap, audit finding on offboarding lag'
-  },
-  {
-    id: 'license-rightsizing',
-    section: 'spend',
-    sectionLabel: '💸 Spend Optimisation',
-    n: 'License Utilisation & Rightsizing',
-    badge: 'spend',
-    color: '#10B981',
-    prob: 'Paying for 200 Zoom Pro licences with no idea how many are active. Somewhere between 70 and 200 — nobody knows. 20–30% of licences go unused every cycle across the average org.',
-    how: 'Three data layers: live account lists from app API, contracted seats from uploaded contracts, and workflow-triggered reclaim. Utilisation bar shows purchased vs. active vs. actually-logged-in. Inactivity rules flag users by 30/60/90 days. Automated reclaim workflow notifies, confirms with manager, revokes on no response.',
-    stat: '20–35% SaaS spend recovered in first cycle',
-    usecases: [
-      '"The utilisation bar on Salesforce showed 85 seats, 52 active users. Reclaim paid for SaaS Manager 18 months."',
-      'Downgrade workflows: identify users on Pro tier using only Free-tier features',
-      'Role-change detection: users who changed department but carry old-role licences',
-      'AI contract extraction: upload PDF → renewal date, seat count, cost per seat auto-extracted'
-    ],
-    personas: ['IT Admin', 'Finance / Procurement', 'CFO', 'App Owners'],
-    replaces: 'Manual licence reconciliation, "guess and hope" renewal approach, spreadsheet always out of date'
-  },
-  {
-    id: 'savings-tracker',
-    section: 'spend',
-    sectionLabel: '💸 Spend Optimisation',
-    n: 'Savings Tracker & CFO Reporting',
-    badge: 'spend',
-    color: '#10B981',
-    prob: 'After 6 months of SaaS Manager, IT can\'t prove to the CFO what was actually saved. Every licence reclaimed, downgraded, or cancelled exists somewhere but there\'s no single number Finance can trust.',
-    how: 'Every licence reclaimed or downgraded through a SaaS Manager workflow is automatically recorded and rolled up into an annualised savings figure. CFO-ready export. Benchmark comparison vs. similar-size orgs. Savings by app and by action type.',
-    stat: '35% SaaS spend reduction (Flipdish) · 10× ROI in 6 months (Zuora)',
-    usecases: [
-      'CFO-ready savings export: present to Finance and leadership as a board artefact',
-      'Spend dashboard reconciles contracted costs, expense data, and integration sources',
-      'Duplicate tool detection: surfaces apps in same category where consolidation saves money',
-      'Finance integrations: Coupa, Brex, Zip, Workday Finance, NetSuite, QuickBooks, Xero, SAP'
-    ],
-    personas: ['CFO / Finance', 'IT Director', 'CTO / VP IT', 'Procurement'],
-    replaces: 'Manual cost-saving tallies, "trust us we saved money" conversation, inability to quantify IT\'s P&L contribution'
-  },
-  {
-    id: 'workflow-builder',
-    section: 'automation',
-    sectionLabel: '⚡ Automation & Workflows',
-    n: 'No-Code Workflow Builder',
-    badge: 'automation',
-    color: '#A78BFA',
-    prob: 'IT spends most of their time on repeatable tasks — onboarding, offboarding, licence checks, shadow IT notifications. No time left for strategic work. The same tasks run every hire and departure.',
-    how: 'Visual drag-and-drop workflow canvas. Triggers: HRIS event, app discovery, inactivity threshold, schedule, or manual. Actions: provision access, revoke access, change licence tier, send email/Slack, create IT task, lock/wipe device. Test mode: dry-run without side effects.',
-    stat: '0.5–1 FTE saved annually with 3+ active workflows',
-    usecases: [
-      'New app discovered (1 user) → auto-email user → create IT review task',
-      'Licence inactive 60 days → Slack user → wait 7 days → reclaim if no response',
-      '"Built onboarding, offboarding, and shadow-IT triage in one afternoon. Replaced a 6-tab spreadsheet."',
-      '350+ direct app integrations: provision users, change licence tiers, revoke access in the app — not just the IdP'
-    ],
-    personas: ['IT Admin', 'IT Operations', 'Security Engineer', 'Any technical admin'],
-    replaces: 'Manual IT checklists, recurring calendar reminders, same repeatable tasks every hire and departure'
-  },
-  {
-    id: 'mcp-server',
-    section: 'ai',
-    sectionLabel: '🤖 AI & Integrations',
-    n: 'MCP Server for Agentic AI',
-    badge: 'new',
-    color: '#A78BFA',
-    prob: 'Security teams want to build AI agents that can query SaaS inventory — apps, access, spend, renewals. There\'s no safe, programmatic way to expose that data to an LLM without custom API development.',
-    how: 'Secure, read-only MCP Server for SaaS Manager — available on AWS AI Marketplace. Agentic AI systems query SaaS inventory data safely and programmatically. Maintains security boundaries — read-only, governed access, no write actions exposed.',
-    stat: 'Available on AWS AI Marketplace',
-    usecases: [
-      '"Which apps renew in 60 days with utilisation below 50%?" — LLM queries SaaS Manager directly',
-      'Build AI-powered IT workflows without custom API development or security risk',
-      'AI contract extraction: PDF → renewal date, seat count, cost per seat in minutes',
-      'Shadow AI discovery: detect AI tools bypassing SSO at higher rates than any other app category'
-    ],
-    personas: ['IT Operations', 'Security Engineering', 'CTO / VP Engineering', 'Any LLM workflow builder'],
-    replaces: 'Custom API scripts, manual exports for AI analysis, security risk of exposing SaaS data to AI tools uncontrolled'
-  }
-];
-
-const DEVICE_TRUST_FEATURES = [
-  {
-    id: 'device-discovery',
-    section: 'security',
-    sectionLabel: '🔒 Security Features',
-    n: 'Device Discovery & Inventory',
-    badge: 'zero trust foundation',
-    color: '#F59E0B',
-    prob: 'Over 50% of devices accessing company apps are completely unknown to IT. MDM shows what\'s enrolled — not what\'s actually accessing company resources. Orgs typically find 30%+ more devices than their MDM inventory shows.',
-    how: 'Device Trust covers every device type: corporate-managed (Windows, macOS, Linux), BYOD, contractor, unmanaged endpoints, Linux machines MDM has never touched, and mobile devices via Device Trust for 1Password Mobile. Full discovery typically achieved in the first week.',
-    stat: '30%+ more devices found vs MDM inventory · 100% device visibility day one',
-    usecases: [
-      '"We discovered 34 unmanaged devices accessing Salesforce on day one. None were in Intune."',
-      'Linux/DevOps teams: the highest-privilege engineers are historically "out of scope" for compliance — not anymore',
-      'Contractor devices: enrolled and compliant without forcing full MDM installation',
-      'Mobile: Device Trust for 1Password Mobile — health checks before vault unlock on iOS/Android'
-    ],
-    personas: ['IT Administrator', 'CISO', 'Security Operations', 'Compliance Officer'],
-    replaces: 'Spreadsheet asset inventories, MDM enrollment gaps, "how many devices actually access our apps?" answer'
-  },
-  {
-    id: 'health-checks',
-    section: 'security',
-    sectionLabel: '🔒 Security Features',
-    n: '125+ Real-Time Device Health Checks',
-    badge: 'core capability',
-    color: '#F59E0B',
-    prob: 'SSO verifies the user. Nobody\'s verifying the device. A stolen credential from any unverified device gets in. MDM does periodic check-ins — Device Trust runs 125+ live checks at every single login attempt.',
-    how: 'LOGIN FLOW: Employee logs in → IdP redirect → Device Trust intercepts as 2nd factor → 125+ checks fire → Compliant: access granted. Non-compliant: blocked + guided remediation with exact fix instructions.',
-    stat: '92% reduction in breach risk from unmanaged/non-compliant endpoints',
-    usecases: [
-      'OS version & patches · Browser security & updates · Disk encryption (FileVault/BitLocker)',
-      'EDR installed & running (confirms CrowdStrike is actually running, not just installed) · Firewall active',
-      'Screen lock & auto-lock · Unauthorized software · VPN status · Certificate validity',
-      '"CrowdStrike costs $100–200/user/year but 10–15% of endpoints aren\'t configured correctly. MDM says it\'s installed; Device Trust confirms it\'s running."'
-    ],
-    personas: ['CISO', 'Zero Trust Architect', 'IT Administrator', 'Security Operations'],
-    replaces: 'Reactive breach discovery, periodic MDM check-ins that miss real-time configuration drift'
-  },
-  {
-    id: 'guided-remediation',
-    section: 'security',
-    sectionLabel: '🔒 Security Features',
-    n: 'Guided Self-Remediation',
-    badge: 'employee-first',
-    color: '#F59E0B',
-    prob: 'Blocking employees creates IT tickets, productivity loss, and resentment. The old approach: lock them out and let IT sort it out. This generates 40%+ of device-security helpdesk tickets.',
-    how: 'Instead of a generic error message, employees get exactly which check failed, step-by-step fix instructions in plain language, and an instant "check again" button. No IT ticket. No waiting. Privacy-respecting — never reads files, messages, or browsing history.',
-    stat: '40% reduction in IT helpdesk tickets · Remediation time under 5 min, no IT involvement',
-    usecases: [
-      '"Instead of forcing a restart during a sales demo, Device Trust alerted the rep that Chrome needed updating before the next login."',
-      'Eliminates: "why am I locked out?" helpdesk tickets, chasing employees to update OS/EDR/browser',
-      'Employee becomes active owner of their own device security — no training campaign needed',
-      'BYOD: employees accept a health check far more readily than a management profile'
-    ],
-    personas: ['End User / Employee', 'IT Helpdesk', 'CISO', 'HR / People Operations'],
-    replaces: '"Locked out, call IT" model; forced OS restarts mid-workday; manual patch enforcement campaigns'
-  },
-  {
-    id: 'byod-contractors',
-    section: 'security',
-    sectionLabel: '🔒 Security Features',
-    n: 'BYOD & Contractor Device Security',
-    badge: 'privacy-first',
-    color: '#F59E0B',
-    prob: 'MDM is too intrusive for personal devices. Contractors won\'t enroll. BYOD creates the biggest unmanaged access gap. The impossible choice: install full MDM on personal devices, or hope for the best.',
-    how: 'Device Trust is the privacy-first third option. Enforces OS version, screen lock, disk encryption, EDR, firewall — without reading personal files, photos, browsing history, or requiring MDM enrollment. Contractor one-time device registration with no ongoing surveillance.',
-    stat: 'Closes largest unmanaged gap · Contractors actually comply — lightweight, privacy-respecting',
-    usecases: [
-      'Healthcare: clinical staff personal devices accessing patient portals without MDM profiles',
-      'Legal: attorney personal devices accessing matter management systems',
-      'Financial services: BYOD traders accessing market data platforms',
-      'One-time device registration for contractors — NEVER: personal files, MDM profiles, location tracking'
-    ],
-    personas: ['CISO', 'IT Administrator', 'HR / People Ops', 'Legal / Compliance'],
-    replaces: 'Impossible MDM-vs-nothing choice; Device Trust is the third option employees and contractors actually accept'
-  },
-  {
-    id: 'idp-integration',
-    section: 'security',
-    sectionLabel: '🔒 Security Features',
-    n: 'IdP / SSO Integration (Zero Trust Completion)',
-    badge: 'zero trust',
-    color: '#F59E0B',
-    prob: 'SSO verifies identity. MDM manages config. Neither verifies whether the device is actually healthy at the exact moment of login. Every access event missing the device compliance signal is a Zero Trust gap.',
-    how: '"Connecting Device Trust to Okta took 2 hours. Within a week, we had device posture signals on every login event in our SIEM." Passes device identity + health signals to IdP at auth time. Per-app policy granularity — stricter for AWS, lighter for intranet.',
-    stat: 'Transforms SSO from identity layer to full Zero Trust layer',
-    usecases: [
-      'Okta · Microsoft Entra ID · Google Workspace · JumpCloud · Ping Identity · Any SAML 2.0 / OIDC',
-      'Critical: AWS/GCP/Azure — EDR running + disk encrypted + OS current + firewall active',
-      'High: Salesforce — EDR installed + OS within 2 versions + screen lock',
-      'Low: Company intranet — device enrolled + basic check passed'
-    ],
-    personas: ['IT Administrator', 'Zero Trust Architect', 'CISO', 'Security Operations'],
-    replaces: 'Assumption that SSO is sufficient for Zero Trust; periodic device checks not enforced at login moment'
-  },
-  {
-    id: 'mdm-complement',
-    section: 'security',
-    sectionLabel: '🔒 Security Features',
-    n: 'MDM Complement (Intune / Jamf)',
-    badge: 'complements existing',
-    color: '#F59E0B',
-    prob: 'MDM manages device configuration. It cannot verify the device is actually healthy at the exact moment someone logs into a sensitive app. And MDM can\'t touch BYOD or contractor devices at all.',
-    how: 'MDM does: push config profiles, manage software deployment, enforce settings at enrollment, periodic compliance check-ins. Device Trust adds: real-time check at every login, BYOD + contractor coverage, confirms EDR is running correctly, catches drift between check-ins, posture signal to IdP.',
-    stat: 'MDM investment protected and extended — not replaced. 30-day full compliance.',
-    usecases: [
-      'Microsoft Intune · Jamf Pro · Kandji · Mosyle · VMware WS1 — all complemented not replaced',
-      'MDM reports CrowdStrike installed; Device Trust confirms it\'s actively running on all endpoints',
-      'Managed devices: verified at login. Unmanaged: enrolled and monitored. Compliance drift: caught real-time.',
-      'No false confidence that MDM enrollment = device security compliance'
-    ],
-    personas: ['IT Administrator', 'CISO', 'Zero Trust Architect', 'Security Operations'],
-    replaces: 'False confidence that MDM enrollment = device security compliance; periodic check-ins that miss real-time drift'
-  },
-  {
-    id: 'compliance-checks',
-    section: 'compliance',
-    sectionLabel: '📋 Compliance Automation',
-    n: '125+ Pre-Built Compliance Checks',
-    badge: 'audit ready',
-    color: '#F59E0B',
-    prob: 'Most orgs can\'t prove continuous device compliance. They reconstruct evidence before every audit — and find gaps they didn\'t know existed. Auditors increasingly require real-time device security verification, not just policy existence.',
-    how: '125+ pre-built device health checks mapped directly to major compliance frameworks. Evidence collected continuously and automatically — available for export anytime. Before vs. After: point-in-time snapshots → continuous real-time evidence. Weeks of audit prep → hours.',
-    stat: '50% reduction in audit preparation time',
-    usecases: [
-      'SOC 2 Type II: continuous device security evidence — complete access review history',
-      'ISO 27001: device control documentation, annual evidence ready on demand',
-      'HIPAA: endpoint access controls for PHI — per-device, per-check, timestamped records',
-      '"Our SOC 2 auditor asked for 9 months of device compliance evidence. I exported it in 3 minutes."'
-    ],
-    personas: ['GRC / Compliance Officer', 'CISO', 'IT Administrator', 'Legal / Risk'],
-    replaces: 'Collect-evidence sprint before every SOC 2 cycle; "we think we were compliant" answer to auditors'
-  },
-  {
-    id: 'custom-osquery',
-    section: 'compliance',
-    sectionLabel: '📋 Compliance Automation',
-    n: 'Custom Policy Builder (OSquery)',
-    badge: 'customizable',
-    color: '#F59E0B',
-    prob: 'Every org has industry-specific compliance requirements that no pre-built framework covers exactly. Customer security audits, vendor risk assessments, and internal policies all need custom device checks.',
-    how: 'Write custom device health checks using OSquery — the same open-source tool used by security teams at Facebook, Uber, and Palantir. Query any device state: installed software, processes, registry keys, configs. Custom checks appear alongside standard compliance reports.',
-    stat: 'Unlimited custom policies · Unlimited compliance coverage',
-    usecases: [
-      'Is VPN client v3.2+ installed and connected on external access?',
-      'Is 1Password installed on every device?',
-      'Is the approved corporate cert valid and not expired?',
-      'Is approved file transfer software the ONLY such tool present?'
-    ],
-    personas: ['Security Engineer', 'IT Administrator', 'GRC / Compliance Officer', 'CISO'],
-    replaces: 'Manual spot-check processes, compliance gaps pre-built frameworks don\'t cover, one-off scripts run inconsistently'
-  },
-  {
-    id: 'compliance-reporting',
-    section: 'compliance',
-    sectionLabel: '📋 Compliance Automation',
-    n: 'Compliance Reporting & Audit Evidence',
-    badge: 'continuous proof',
-    color: '#F59E0B',
-    prob: 'Proving device compliance means pulling evidence from MDM, endpoint tools, and spreadsheets for every device, every check, every review cycle. Point-in-time snapshots don\'t satisfy auditors who want continuous evidence.',
-    how: 'Per-device compliance status across all health checks. Historical compliance timeline proving continuous monitoring. Failed check logs with timestamps and remediation actions taken. Exportable CSV and PDF — auditor-ready in minutes. SIEM integration: Splunk, Sentinel, Elastic, Rapid7. Scheduled reports auto-delivered before review cycles.',
-    stat: '50% faster audit prep · SIEM-native integration · Historical timeline always-on',
-    usecases: [
-      'Admin cadence: Daily review new non-compliant devices · Weekly check compliance score trend · Monthly export for leadership · Quarterly QBR inclusion',
-      'SIEM integration: Splunk, Azure Sentinel, Elastic, Rapid7 — every device event streamed',
-      'Scheduled reports auto-delivered before every compliance review cycle',
-      '"Our SOC 2 auditor commented that our device evidence was the cleanest they\'d ever seen."'
-    ],
-    personas: ['GRC / Compliance Officer', 'CISO', 'IT Administrator', 'Security Operations'],
-    replaces: 'Pre-audit evidence sprint, manually pulling logs from MDM and endpoint tools, "we think we were compliant" answer'
-  },
-  {
-    id: 'admin-dashboard',
-    section: 'admin',
-    sectionLabel: '👁️ Admin & Visibility',
-    n: 'Admin Dashboard & Device Posture',
-    badge: 'complete control',
-    color: '#F59E0B',
-    prob: 'IT security dashboards show what\'s enrolled. Device Trust shows what\'s actually secure. Those are two very different things. Reactive firefighting vs. proactive, data-driven security practice.',
-    how: 'Single pane: every device, every compliance check, every risk flag. Admins see: per-device compliance score and individual check results, which devices are failing which checks and since when, remediation status, device risk tier (Compliant / Warning / Blocked), compliance trend over time.',
-    stat: '95%+ device compliance within 30 days of rollout',
-    usecases: [
-      'Track compliance as a KPI — present posture trends to leadership',
-      'Drill into any failed check for root cause analysis',
-      'Device risk tiers: Compliant / Warning / Blocked — actionable from dashboard',
-      'Export compliance reports for audit or leadership review on demand'
-    ],
-    personas: ['IT Administrator', 'CISO', 'Security Operations', 'GRC / Compliance Officer'],
-    replaces: 'Manual device audits, fragmented visibility across MDM/EDR/endpoint tools, quarterly device compliance review'
-  }
-];
-
-// ═══════════════════════════════════════════════════════════════
-// COMPETITOR DATA — TRELICA (SaaS Manager)
-// ═══════════════════════════════════════════════════════════════
-const SAAS_MANAGER_COMPETITORS = {
-  nudge_security: {
-    name: 'Nudge Security',
-    overview: 'Employee-led SaaS discovery focused on nudging users toward approved tools. Lightweight, behavioral approach. Weaker on access governance and workflow automation.',
-    strengths: ['Fast deployment', 'Employee-friendly UX', 'Good shadow IT discovery via OAuth'],
-    weaknesses: ['No access review automation', 'Weaker workflow builder', 'No EPM/vault discovery integration', 'Limited spend visibility', 'No asset management'],
-    win: '1Password wins on depth: automated access reviews, no-code workflow builder, EPM vault discovery, and device offboarding in the same platform. Nudge nudges — SaaS Manager governs.',
-    battle_card: '"Nudge Security is a discovery tool. SaaS Manager is a governance platform. Discovery without the ability to act on it — automated offboarding, access reviews, licence rightsizing — doesn\'t close your compliance gap."'
-  },
-  bettercloud: {
-    name: 'BetterCloud',
-    overview: 'SaaS management platform focused on IT operations and workflow automation. Strong in G Suite/Microsoft 365 shops. Narrower integration breadth and no vault-based discovery.',
-    strengths: ['Strong Google Workspace integration', 'Mature workflow automation', 'Good DLP features'],
-    weaknesses: ['Expensive at scale', 'Weaker multi-source discovery', 'No EPM integration', 'No asset management built in', 'Limited spend intelligence vs. contract management'],
-    win: 'SaaS Manager wins on breadth: 5-source discovery (including EPM vault), AI contract extraction, hardware lifecycle in the same offboarding flow, and the architectural moat of 1Password vault data as a discovery signal.',
-    battle_card: '"BetterCloud is an automation platform with discovery bolted on. SaaS Manager starts with the most complete discovery in the market — then automates. And only 1Password can discover apps from inside a password manager vault."'
-  },
-  torii: {
-    name: 'Torii',
-    overview: 'SaaS management platform with strong discovery and workflow automation. Mid-market focused. Competes closely with SaaS Manager on core use cases.',
-    strengths: ['Good multi-source discovery', 'Clean UX', 'Workflow automation', 'Competitive pricing'],
-    weaknesses: ['No password manager integration', 'Weaker spend analytics', 'No device/asset management', 'No AI contract extraction', 'Smaller integration library vs. 350+'],
-    win: '1Password wins on the vault discovery moat (no other SMP has it), device offboarding integration, AI contract intelligence, and the platform story — EPM + SaaS Manager + Device Trust vs. a standalone point solution.',
-    battle_card: '"Torii is a solid standalone SMP. 1Password SaaS Manager is built on the only platform that sits at both the credential layer and the SaaS layer simultaneously. That\'s an architectural advantage no other vendor can match."'
-  },
-  zylo: {
-    name: 'Zylo',
-    overview: 'SaaS management focused on spend intelligence and contract management. Strong CFO story. Weaker on access governance and automation.',
-    strengths: ['Strong spend analytics', 'Benchmark data', 'Good CFO-facing reporting', 'Contract management'],
-    weaknesses: ['Expensive', 'Weak access governance', 'Limited workflow automation', 'No discovery from EPM or browser extension', 'No access reviews'],
-    win: 'SaaS Manager wins on completeness: access reviews, automated onboarding/offboarding, and discovery — not just spend. The CFO story includes security ROI, not just cost savings.',
-    battle_card: '"Zylo is a spend tool for Finance. SaaS Manager is a governance platform for IT and Security that also produces the CFO savings report. If the primary buyer is IT/Security (not Procurement), SaaS Manager wins on breadth."'
-  },
-  productiv: {
-    name: 'Productiv',
-    overview: 'SaaS analytics focused on engagement data and productivity insights. Differentiated on deep behavioural analytics per app. Less focused on access governance and automation.',
-    strengths: ['Deep engagement analytics', 'ROI measurement per app', 'Good benchmark data'],
-    weaknesses: ['No access review automation', 'No workflow automation for lifecycle', 'No EPM integration', 'Analytics-focused, not governance-focused'],
-    win: 'SaaS Manager wins on governance action: automated offboarding, access reviews, licence reclaim workflows. Productiv measures usage — SaaS Manager governs access and automates action on that data.',
-    battle_card: '"Productiv tells you which apps employees love. SaaS Manager tells you who has access to which apps, when they last used them, and closes that access the moment they leave. Analytics vs. governance."'
-  }
-};
-
-// ═══════════════════════════════════════════════════════════════
-// COMPETITOR DATA — DEVICE TRUST
-// ═══════════════════════════════════════════════════════════════
-const DEVICE_TRUST_COMPETITORS = {
-  jamf: {
-    name: 'Jamf (Jamf Trust / Jamf Protect)',
-    overview: 'Market leader in Apple device management (MDM). Jamf Trust is their zero-trust network access product. Strong for Apple-only orgs. Doesn\'t cover Windows, Linux, or BYOD at the same depth.',
-    strengths: ['Best-in-class Apple MDM', 'Strong Mac compliance', 'Good Jamf Pro integration', 'Mature platform'],
-    weaknesses: ['Apple-centric — Windows and Linux coverage weaker', 'BYOD friction for non-Mac devices', 'No password manager integration', 'Separate product from MDM — adds complexity'],
-    win: 'Device Trust wins on cross-platform coverage (Windows, macOS, Linux, BYOD, contractors equally) and the architectural advantage of seeing both device posture AND the credentials being used. 1Password vault + device health = unique intelligence.',
-    battle_card: '"Jamf is the best choice if you\'re Apple-only. If you have any Windows, Linux, BYOD, or contractor devices — Device Trust covers the full surface. And Device Trust can confirm CrowdStrike is running on a Jamf-managed Mac, closing the gap MDM leaves."'
-  },
-  kandji: {
-    name: 'Kandji',
-    overview: 'Modern Apple MDM with strong compliance automation. Fast-growing in tech companies. MDM-focused — doesn\'t address the BYOD and contractor gap or real-time login verification.',
-    strengths: ['Modern UX', 'Fast deployment', 'Good compliance automation for Apple devices', 'Blueprints for policy management'],
-    weaknesses: ['Apple-only MDM', 'No BYOD coverage without MDM enrollment', 'No real-time login verification', 'No cross-platform posture checks', 'No password manager integration'],
-    win: 'Device Trust + Kandji is a common architecture: Kandji manages Mac corporate devices, Device Trust fills the BYOD, Windows, Linux, and contractor gap and adds real-time login verification Kandji\'s periodic check-ins miss.',
-    battle_card: '"Kandji is great MDM for Apple. Kandji + Device Trust is the complete architecture: Kandji manages your corporate Macs, Device Trust secures everything Kandji can\'t touch — and verifies every device at every login."'
-  },
-  crowdstrike_go: {
-    name: 'CrowdStrike Falcon Go / Identity',
-    overview: 'CrowdStrike is the market leader in EDR/XDR. Falcon Identity is their identity-based threat detection product. EDR blocks active threats — it doesn\'t verify device health at login time or cover BYOD without full agent deployment.',
-    strengths: ['Best-in-class EDR', 'Strong threat detection', 'Brand recognition', 'Comprehensive endpoint data'],
-    weaknesses: ['$100–200/user/year — expensive', '10–15% of endpoints misconfigured even with CrowdStrike', 'EDR ≠ device posture verification at login', 'No BYOD without full agent', 'No password manager integration'],
-    win: 'Device Trust and CrowdStrike are complementary: Device Trust verifies CrowdStrike is actually running correctly on every device (not just installed). "CrowdStrike costs $100–200/user but 10–15% aren\'t configured correctly. MDM says it\'s installed. Device Trust confirms it\'s active." Lead with complement story, not competition.',
-    battle_card: '"If they have CrowdStrike, Device Trust makes it work better. Device Trust confirms the Falcon agent is actively running on every endpoint — because MDM says installed, Device Trust verifies active. Position as complement, not competition."'
-  },
-  kolide: {
-    name: 'Kolide (now 1Password Device Trust)',
-    overview: '1Password Device Trust IS Kolide — acquired and integrated. The Kolide launcher agent is what Device Trust runs on devices. If a prospect is evaluating Kolide, they\'re evaluating Device Trust.',
-    strengths: ['This is Device Trust. Same product, same team, same agent.'],
-    weaknesses: [],
-    win: '"Kolide is now 1Password Device Trust. Same product, same team, same open-source agent (github.com/kolide/launcher). And now it\'s part of the 1Password platform — combined with EPM and SaaS Manager, giving you something no standalone Kolide deployment could."',
-    battle_card: '"If the prospect is evaluating Kolide specifically, they\'re evaluating Device Trust. The conversation is about the platform story — EPM + Device Trust + SaaS Manager = XAM. Kolide alone is a feature. 1Password Device Trust is part of a complete identity security platform."'
-  },
-  tanium: {
-    name: 'Tanium',
-    overview: 'Enterprise endpoint management platform. Very heavy — typically 5,000+ employee enterprise deployments. Overkill for mid-market. Complex deployment, high cost.',
-    strengths: ['Extremely powerful enterprise endpoint management', 'Very deep device data', 'Strong for large federal/enterprise deployments'],
-    weaknesses: ['Enterprise-only price and complexity', 'Multi-month deployments', 'Overkill for 500–5K employee orgs', 'No password manager integration', 'No self-remediation model'],
-    win: 'Device Trust wins on time-to-value (days vs months), employee experience (guided remediation vs lockout), BYOD coverage (no MDM required), and price point for mid-market orgs. Tanium is for the Fortune 500 problem. Device Trust solves the 500–5K employee problem in days.',
-    battle_card: '"Tanium is a 6-month deployment for 10,000+ employee enterprises. Device Trust is live in days for 500–5,000 employee orgs. If the timeline, budget, and org size don\'t fit Tanium, Device Trust is the right tool. And Device Trust adds guided employee self-remediation Tanium\'s model doesn\'t."'
-  }
-};
-
-
-
-// ── Trelica and DT page renderers ─────────────────────────────
 function showTrelicaHub() {
   document.getElementById('sidebar').style.display = '';
   document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
   const te = document.getElementById('tab-trelica');
   if (te) te.classList.add('active');
 
-  // Build sidebar by section
   const sb = document.getElementById('sidebar');
   sb.innerHTML = '';
   const sections = [...new Set(TRELICA_FEATURES.map(f => f.section))];
@@ -4802,7 +4282,6 @@ function showTrelicaHub() {
     });
   });
 
-  // Add competitor section to sidebar
   const compHdr = document.createElement('div');
   compHdr.className = 'sec-hdr'; compHdr.style.color = '#EF4444';
   compHdr.textContent = '⚔️ COMPETITORS';
@@ -4819,14 +4298,13 @@ function showTrelicaHub() {
     sb.appendChild(el);
   });
 
-  // Show overview
   document.getElementById('detail').innerHTML = `
     <div style="padding:20px 28px">
       <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#3A9EFF;margin-bottom:7px">🔷 TRELICA BY 1PASSWORD</div>
       <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">SaaS Manager</div>
-      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:14px;max-width:600px">Everything your IT team needs to discover, govern, and optimise every SaaS application — without spreadsheets, manual workflows, or blind spots.</div>
+      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:14px;max-width:600px">Everything your IT team needs to discover, govern, and optimise every SaaS app — without spreadsheets, manual workflows, or blind spots.</div>
       <div style="background:#3A9EFF0C;border:1px solid #3A9EFF25;border-radius:7px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--t2);line-height:1.65">
-        <strong style="color:#70B8FF">The architectural moat:</strong> 1Password is the only SaaS management platform that surfaces apps from inside a password manager vault — because only 1Password makes both. Every non-SSO app employees store credentials for in 1Password becomes a discovery signal no other SMP can access.
+        <strong style="color:#70B8FF">The architectural moat:</strong> 1Password is the only SaaS management platform that surfaces apps from inside a password manager vault — because only 1Password makes both products. Every non-SSO app employees store credentials for in 1Password becomes a discovery signal no other SMP can access.
       </div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
         ${[{n:'130+',l:'Avg SaaS apps in 500-person org'},{n:'34%',l:'Apps bypass SSO entirely'},{n:'20–30%',l:'Licences unused each cycle'},{n:'96',l:'Avg new apps found on first run'}].map(s=>`
@@ -4835,7 +4313,7 @@ function showTrelicaHub() {
             <div style="font-size:10px;color:var(--t3);line-height:1.4">${s.l}</div>
           </div>`).join('')}
       </div>
-      <div style="font-size:11px;color:var(--t4);text-align:center">← Select a feature from the sidebar to see full detail</div>
+      <div style="font-size:11px;color:var(--t4);text-align:center">← Select a feature from the sidebar</div>
     </div>`;
 }
 
@@ -4847,23 +4325,19 @@ function renderTrelicaFeature(f) {
         <span style="font-size:20px;font-weight:800;color:var(--t1)">${f.n}</span>
         ${f.badge ? `<span style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;background:#3A9EFF18;color:#70B8FF;border:1px solid #3A9EFF33;text-transform:uppercase">${f.badge}</span>` : ''}
       </div>
-
       <div style="background:#EF444408;border:1px solid #EF444430;border-radius:7px;padding:12px 14px;margin-bottom:14px">
         <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:5px">THE PROBLEM</div>
         <div style="font-size:12px;color:var(--t2);line-height:1.7;font-style:italic">${f.prob}</div>
       </div>
-
       <div style="background:#3A9EFF08;border:1px solid #3A9EFF25;border-left:3px solid #3A9EFF;border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:14px">
         <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:5px">HOW IT WORKS</div>
         <div style="font-size:12px;color:var(--t2);line-height:1.7">${f.how}</div>
       </div>
-
       ${f.stat ? `<div style="background:#10B98108;border:1px solid #10B98130;border-radius:7px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
         <span style="font-size:16px">📊</span>
         <div style="font-size:12px;font-weight:700;color:#10B981">${f.stat}</div>
       </div>` : ''}
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div>
           <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:8px">USE CASES</div>
           ${f.usecases.map(u=>`<div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:6px;font-size:11px;color:var(--t2);line-height:1.55"><span style="color:#3A9EFF;font-weight:700;flex-shrink:0">→</span>${u}</div>`).join('')}
@@ -4904,7 +4378,6 @@ function renderSaaSCompetitor(cid) {
       </div>
     </div>`;
 }
-
 
 function showDeviceTrustHub() {
   document.getElementById('sidebar').style.display = '';
@@ -4958,7 +4431,7 @@ function showDeviceTrustHub() {
       <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Device Trust</div>
       <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:14px;max-width:600px">Everything your security team needs to ensure only known, healthy devices access company apps and data — without locking anyone out or slowing anyone down.</div>
       <div style="background:#F59E0B0C;border:1px solid #F59E0B25;border-radius:7px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--t2);line-height:1.65">
-        <strong style="color:#F59E0B">The architectural advantage:</strong> 1Password is the only vendor that sees both the credential in the password manager AND the device trying to use it. Device Trust + EPM = enforcement at the intersection of identity and endpoint that no other vendor can match.
+        <strong style="color:#F59E0B">The architectural advantage:</strong> 1Password is the only vendor that sees both the credential in the password manager AND the device trying to use it — giving you enforcement at the intersection of identity and endpoint.
       </div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
         ${[{n:'40%',l:'IT helpdesk ticket reduction'},{n:'50%',l:'Faster audit prep'},{n:'95%+',l:'Device compliance in 30 days'},{n:'$4.45M',l:'Avg breach cost avoided'}].map(s=>`
@@ -4967,7 +4440,7 @@ function showDeviceTrustHub() {
             <div style="font-size:10px;color:var(--t3);line-height:1.4">${s.l}</div>
           </div>`).join('')}
       </div>
-      <div style="font-size:11px;color:var(--t4);text-align:center">← Select a feature from the sidebar to see full detail</div>
+      <div style="font-size:11px;color:var(--t4);text-align:center">← Select a feature from the sidebar</div>
     </div>`;
 }
 
@@ -4979,23 +4452,19 @@ function renderDTFeature(f) {
         <span style="font-size:20px;font-weight:800;color:var(--t1)">${f.n}</span>
         ${f.badge ? `<span style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;background:#F59E0B18;color:#F59E0B;border:1px solid #F59E0B33;text-transform:uppercase">${f.badge}</span>` : ''}
       </div>
-
       <div style="background:#EF444408;border:1px solid #EF444430;border-radius:7px;padding:12px 14px;margin-bottom:14px">
         <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:5px">THE PROBLEM</div>
         <div style="font-size:12px;color:var(--t2);line-height:1.7;font-style:italic">${f.prob}</div>
       </div>
-
       <div style="background:#F59E0B08;border:1px solid #F59E0B25;border-left:3px solid #F59E0B;border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:14px">
         <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:5px">HOW IT WORKS</div>
         <div style="font-size:12px;color:var(--t2);line-height:1.7">${f.how}</div>
       </div>
-
       ${f.stat ? `<div style="background:#10B98108;border:1px solid #10B98130;border-radius:7px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
         <span style="font-size:16px">📊</span>
         <div style="font-size:12px;font-weight:700;color:#10B981">${f.stat}</div>
       </div>` : ''}
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div>
           <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:8px">USE CASES</div>
           ${f.usecases.map(u=>`<div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:6px;font-size:11px;color:var(--t2);line-height:1.55"><span style="color:#F59E0B;font-weight:700;flex-shrink:0">→</span>${u}</div>`).join('')}
@@ -5038,46 +4507,6 @@ function renderDTCompetitor(cid) {
 }
 
 
-function showDeviceTrustHub() {
-  document.getElementById('sidebar').style.display = 'none';
-  document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
-  const te = document.getElementById('tab-dt');
-  if (te) te.classList.add('active');
-
-  const featureCards = DEVICE_TRUST_FEATURES.map(f => `
-    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #F59E0B;border-radius:8px;padding:16px 18px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <span style="font-size:14px;font-weight:700;color:var(--t1)">${f.n}</span>
-        ${f.badge ? `<span style="font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;background:#F59E0B18;color:#F59E0B;border:1px solid #F59E0B33">${f.badge.toUpperCase()}</span>` : ''}
-      </div>
-      <div style="font-size:11px;color:#FF9999;font-style:italic;margin-bottom:8px;line-height:1.6">${f.prob}</div>
-      <div style="font-size:12px;color:var(--t2);margin-bottom:10px;line-height:1.65"><strong style="color:#F59E0B">How it works:</strong> ${f.how}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div>
-          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:5px">USE CASES</div>
-          ${f.usecases.map(u=>`<div style="font-size:11px;color:var(--t2);margin-bottom:3px;display:flex;gap:5px"><span style="color:#F59E0B">→</span>${u}</div>`).join('')}
-        </div>
-        <div>
-          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:5px">WHO CARES</div>
-          ${f.personas.map(p=>`<div style="font-size:11px;color:var(--t2);margin-bottom:3px;display:flex;gap:5px"><span style="color:#F59E0B">·</span>${p}</div>`).join('')}
-        </div>
-      </div>
-    </div>`).join('');
-
-  document.getElementById('detail').innerHTML = `
-    <div style="padding:20px 28px">
-      <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#F59E0B;margin-bottom:7px">🛡️ 1PASSWORD DEVICE TRUST</div>
-      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Device Trust</div>
-      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:6px;max-width:600px">Ensure every device accessing your apps meets security requirements — managed or unmanaged. Zero Trust enforcement without a full MDM overhaul.</div>
-      <div style="background:#F59E0B0C;border:1px solid #F59E0B25;border-radius:7px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:var(--t2);line-height:1.65">
-        <strong style="color:#F59E0B">The pitch in one sentence:</strong> 1Password is the only vendor that can see both the credential stored in the password manager and the device trying to use it — giving you enforcement at the intersection of identity and endpoint.
-      </div>
-      ${featureCards}
-    </div>`;
-}
-
-
-
 function renderIndustryProductSections(iid) {
   // Shows relevant Trelica + Device Trust angles for this industry
   const I = INDUSTRIES[iid]; if(!I) return '';
@@ -5109,6 +4538,183 @@ function renderIndustryProductSections(iid) {
 
   return html;
 }
+
+
+// ═══════════════════════════════════════════════════════════════
+// GOVERNANCE INSIGHT SLIDE-IN MODAL
+// ═══════════════════════════════════════════════════════════════
+
+let _activeGovInsight = null;
+
+function openGovInsight(iid) {
+  const intel = GOVERNANCE_INTEL[iid];
+  const I = INDUSTRIES[iid];
+  if (!intel || !I) return;
+  _activeGovInsight = iid;
+
+  // Remove any existing modal
+  closeGovInsight(true);
+
+  // Overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'gov-modal-overlay';
+  overlay.id = 'gov-modal-overlay';
+  overlay.addEventListener('click', () => closeGovInsight());
+
+  // Panel
+  const panel = document.createElement('div');
+  panel.className = 'gov-modal-panel';
+  panel.id = 'gov-modal-panel';
+  panel.addEventListener('click', e => e.stopPropagation());
+
+  panel.innerHTML = `
+    <div class="gov-modal-hdr">
+      <div class="gov-modal-title">
+        <span class="gov-modal-ico">${I.emoji}</span>
+        <div>
+          <div class="gov-modal-name">${intel.title}</div>
+          <div class="gov-modal-sub">Click anywhere outside or press Escape to close</div>
+        </div>
+      </div>
+      <button class="gov-modal-close" onclick="closeGovInsight()">✕</button>
+    </div>
+    <div class="gov-modal-body">
+      <div class="gov-modal-intro">
+        Why credential governance is non-negotiable in ${I.name} — and exactly what to say to surface the gap your prospect hasn't quantified yet.
+      </div>
+
+      <div class="gov-modal-section-title" style="color:${I.color}">CRITICAL RISK VECTORS</div>
+      <div class="gov-risk-cards">
+        ${intel.rules.map(r => `
+          <div class="gov-risk-card">
+            <div class="gov-risk-card-hdr">
+              <span class="gov-risk-card-ico">${r.ico}</span>
+            </div>
+            <div class="gov-risk-card-text">${r.text}</div>
+          </div>`).join('')}
+      </div>
+
+      <div class="gov-modal-section-title" style="color:#70B8FF">COMPLIANCE FRAMEWORKS AT STAKE</div>
+      <div class="gov-fw-row">
+        ${intel.frameworks.map(f => `<span class="gov-fw-badge">${f}</span>`).join('')}
+      </div>
+
+      <div class="gov-edu-block">
+        <div class="gov-edu-block-title">💡 CSM EDUCATION — WHAT TO KNOW &amp; SAY ON THE CALL</div>
+        ${intel.edu.map(e => `<div class="gov-edu-row">${e}</div>`).join('')}
+      </div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(panel);
+}
+
+function closeGovInsight(silent) {
+  const overlay = document.getElementById('gov-modal-overlay');
+  const panel = document.getElementById('gov-modal-panel');
+  if (overlay) overlay.remove();
+  if (panel) panel.remove();
+  if (!silent) _activeGovInsight = null;
+}
+
+// Escape key handler
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && _activeGovInsight) closeGovInsight();
+});
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// PRODUCT SYSTEM — EPM / Trelica / Device Trust
+// ═══════════════════════════════════════════════════════════════
+
+const PRODUCT_KEY = '1p_epm_hub_products_v1';
+let activeProducts = { epm: true, trelica: false, dt: false };
+
+function productInit() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PRODUCT_KEY) || '{}');
+    activeProducts = { epm: true, trelica: false, dt: false, ...saved };
+    activeProducts.epm = true; // EPM always on
+  } catch(e) {}
+  productSyncUI();
+}
+
+function toggleProduct(pid) {
+  if (pid === 'epm') return;
+  activeProducts[pid] = !activeProducts[pid];
+  try { localStorage.setItem(PRODUCT_KEY, JSON.stringify(activeProducts)); } catch(e) {}
+  productSyncUI();
+  // Refresh current tab so product-gated content shows/hides
+  const tab = curTab;
+  if (tab === 'industry' && curIid) renderIndustry(curIid);
+  else if (tab === 'departments' && window.curDid) renderDept(window.curDid);
+  else if (tab === 'trelica') showTrelicaHub();
+  else if (tab === 'dt') showDeviceTrustHub();
+  // Give visual feedback
+  const name = pid === 'trelica' ? 'Trelica' : 'Device Trust';
+  showCustomSuccessToast(activeProducts[pid] ? `✓ ${name} activated` : `${name} deactivated`);
+}
+
+function productSyncUI() {
+  ['epm','trelica','dt'].forEach(pid => {
+    const btn = document.getElementById('ptog-' + pid);
+    if (!btn) return;
+    btn.className = 'product-toggle';
+    if (activeProducts[pid]) btn.classList.add('active-' + pid);
+  });
+}
+
+function hasProduct(pid) { return !!activeProducts[pid]; }
+
+function activateProduct(pid) {
+  toggleProduct(pid);
+  showPlatformView(); // re-render so the card updates immediately
+  showCustomSuccessToast(pid === 'trelica' ? '🔷 Trelica · SaaS Manager activated' : '🛡️ Device Trust activated');
+}
+
+function showPlatformView() {
+  document.getElementById('sidebar').style.display = 'none';
+  document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
+  curTab = 'platform'; // Track state
+
+  const steps = [
+    { key:'epm', label:'FOUNDATION · ACTIVE', name:'Enterprise Password Manager', color:'#10B981',
+      desc:'Credentials, secrets, vaults, lifecycle. The base layer every customer starts with.',
+      features:['Vault management + SCIM provisioning','Secrets Automation + CLI','Events API + SIEM integration','Travel Mode + Guest Accounts','Watchtower + Passkeys'] },
+    { key:'trelica', label: activeProducts.trelica ? 'ACTIVE' : 'NEXT STEP', name:'Trelica · SaaS Manager', color:'#3A9EFF',
+      desc:'Discover and govern every app, including shadow IT and AI tools.',
+      features:['Multi-source SaaS discovery (5 signals incl. EPM vault)','Shadow IT + Shadow AI detection','Automated onboarding/offboarding workflows','Access reviews for SOC 2, ISO 27001, HIPAA','Savings tracker + CFO reporting'] },
+    { key:'dt', label: activeProducts.dt ? 'ACTIVE' : 'NEXT STEP', name:'1Password Device Trust', color:'#F59E0B',
+      desc:'Ensure every device accessing apps meets security requirements.',
+      features:['125+ real-time device health checks at every login','Managed + BYOD + contractor coverage','SSF integrations: Zscaler, Duo, Netskope, SailPoint','Guided self-remediation (no lockout model)','Compliance reporting for SOC 2, ISO 27001, HIPAA'] },
+    { key:'xam', label:'DESTINATION', name:'Extended Access Management (XAM)', color:'#A78BFA',
+      desc:'Every identity, every app, every device — governed from one platform.',
+      features:['Unified identity security console','Credential + device + SaaS access in one view','MCP Gateway (beta) for AI agent governance','Behavioral analytics + risk-based access','Complete audit evidence for any compliance framework'] },
+  ];
+
+  const stepsHTML = steps.map(s => {
+    const isActive = s.key === 'xam' ? (activeProducts.trelica && activeProducts.dt) : activeProducts[s.key] || s.key === 'epm';
+    const feats = s.features.map(f => `<div style="font-size:10px;color:${isActive?'var(--t2)':'var(--t4)'};margin-bottom:3px;display:flex;gap:5px"><span style="color:${s.color};flex-shrink:0">${isActive?'✓':'○'}</span>${f}</div>`).join('');
+    const clickable = s.key !== 'xam' && s.key !== 'epm' && !isActive;
+    return `<div style="flex:1;padding:14px;border-radius:8px;border:1px ${isActive?'solid':'dashed'};border-color:${s.color}${isActive?'44':'22'};background:${s.color}${isActive?'10':'06'};cursor:${clickable?'pointer':'default'}" onclick="${clickable?`activateProduct('${s.key}')`:''}" >
+      <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:${s.color};margin-bottom:5px">${s.label}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:6px">${s.name}</div>
+      <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-bottom:10px">${s.desc}</div>
+      ${feats}
+      ${clickable?`<div style="margin-top:8px;font-size:10px;color:${s.color};font-weight:700">Click to activate →</div>`:''}
+    </div>`;
+  }).join('<div style="display:flex;align-items:center;padding:0 8px;color:var(--t4);font-size:16px">→</div>');
+
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#A78BFA;margin-bottom:8px">◆ THE 1PASSWORD PLATFORM</div>
+      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Extended Access Management</div>
+      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:24px;max-width:600px">Every layer of access security — credentials, apps, devices — unified in one platform. Start with EPM. Layer in Trelica and Device Trust. Arrive at XAM.</div>
+      <div style="display:flex;gap:12px;align-items:stretch;margin-bottom:28px">${stepsHTML}</div>
+    </div>`;
+}
+
 
 // ── INIT ──
 productInit();
