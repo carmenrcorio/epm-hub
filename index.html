@@ -177,7 +177,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .cb-sub{font-size:11px;color:#2A4060;line-height:1.5}
 .cb-section{display:flex;flex-direction:column;gap:6px}
 .cb-label{font-size:9px;font-weight:800;letter-spacing:.13em;color:#2A4878}
-.cb-input{background:#0D1E33;border:1px solid #1A3050;border-radius:5px;color:#F0F6FF;font-size:12px;padding:7px 10px;outline:none;width:100%;transition:border-color .12s;font-family:inherit}
+.cb-input{background:#0D1E33;border:1px solid #1A3050;border-radius:5px;color:#EAF3FF!important;font-size:13px;padding:7px 10px;outline:none;width:100%;transition:border-color .12s;font-family:inherit}
+.cb-input::placeholder{color:#3A6080;font-weight:400}
+.cb-input:not(select):not(:placeholder-shown){color:#EAF3FF!important;font-weight:500}
 .cb-input:focus{border-color:#1769FF55}
 .cb-input::placeholder{color:#2A4060}
 select.cb-input option{background:#0D1E33}
@@ -455,21 +457,86 @@ body{background:var(--bg)!important;color:var(--t2)!important}
 .cb-preset-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
 .cb-preset{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid #A78BFA33;background:#A78BFA08;color:#A78BFA;transition:all .12s}
 .cb-preset:hover{background:#A78BFA18;border-color:#A78BFA66}
-.gov-panel{background:linear-gradient(135deg,#1769FF08,#A78BFA08);border:1px solid #A78BFA25;border-radius:8px;padding:14px 16px;margin-bottom:10px}
-.gov-panel-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.gov-panel-ico{font-size:14px}
-.gov-panel-title{font-size:10px;font-weight:800;letter-spacing:.12em;color:#A78BFA}
-.gov-panel-sub{font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.6}
+.gov-panel{background:var(--bg2);border:1px solid var(--border);border-radius:7px;margin-bottom:6px;overflow:hidden}
+.cb-section-out{background:var(--surface);border:1px solid var(--border);border-left:4px solid #3A9EFF;border-radius:0 8px 8px 0;padding:16px 18px;margin-bottom:12px}
+.cb-section-title{display:flex;align-items:center;gap:8px;font-size:9px;font-weight:800;letter-spacing:.14em;color:var(--t4);margin-bottom:12px}
+.cb-snapshot-card{background:linear-gradient(135deg,var(--surface),var(--bg2));border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+.cb-out-wrap{padding:16px 18px}
+.cb-error{padding:14px;background:#EF444408;border:1px solid #EF444430;border-radius:7px;color:#FF9999;font-size:12px}
+
+.gov-panel-trigger{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;user-select:none;transition:background .12s}
+.gov-panel-trigger:hover{background:#1769FF08}
+.gov-panel-ico{font-size:13px;flex-shrink:0}
+.gov-panel-title{font-size:10px;font-weight:700;color:var(--t2);flex:1}
+.gov-panel-chevron{font-size:9px;color:var(--t4);transition:transform .15s;flex-shrink:0}
+.gov-panel-chevron.open{transform:rotate(90deg)}
+.gov-panel-body{display:none;padding:0 12px 12px}
+.gov-panel-body.open{display:block}
+.gov-panel-sub{font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.6;padding-top:6px;border-top:1px solid var(--border)}
 .gov-rule{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px;font-size:11px}
-.gov-rule-ico{flex-shrink:0;font-size:12px}
+.gov-rule-ico{flex-shrink:0;font-size:11px}
 .gov-rule-text{color:var(--t2);line-height:1.55}
 .gov-rule-text strong{color:var(--t1)}
 .gov-frameworks{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .gov-fw{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;background:#1769FF14;color:#70B8FF;border:1px solid #1769FF25}
-.cb-edu-section{background:var(--bg2);border:1px solid var(--border);border-left:3px solid #F59E0B;border-radius:7px;padding:12px 14px;margin-top:6px}
-.cb-edu-title{font-size:9px;font-weight:800;letter-spacing:.12em;color:#F59E0B;margin-bottom:7px}
-.cb-edu-row{display:flex;gap:8px;align-items:flex-start;font-size:11px;color:var(--t2);margin-bottom:5px;line-height:1.6}
+.cb-edu-section{background:var(--surface);border:1px solid var(--border);border-left:3px solid #F59E0B;border-radius:5px;padding:10px 12px;margin-top:8px}
+.cb-edu-title{font-size:9px;font-weight:800;letter-spacing:.12em;color:#F59E0B;margin-bottom:6px}
+.cb-edu-row{display:flex;gap:7px;align-items:flex-start;font-size:11px;color:var(--t2);margin-bottom:4px;line-height:1.55}
 .cb-edu-row::before{content:"→";color:#F59E0B;flex-shrink:0;font-weight:700}
+
+
+/* ══ PRODUCT SELECTOR ════════════════════════════════════════ */
+.product-bar{display:flex;align-items:center;gap:8px;padding:7px 16px;background:#091826;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
+.product-bar-label{font-size:9px;font-weight:800;letter-spacing:.14em;color:var(--t4);white-space:nowrap;margin-right:2px}
+.product-toggle{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--t4);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
+.product-toggle:hover{border-color:var(--border2);color:var(--t2)}
+.product-toggle.active-epm{background:#10B98114;border-color:#10B98155;color:#10B981}
+.product-toggle.active-trelica{background:#3A9EFF14;border-color:#3A9EFF55;color:#70B8FF}
+.product-toggle.active-dt{background:#F59E0B14;border-color:#F59E0B55;color:#F59E0B}
+.product-toggle .pt-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.product-separator{width:1px;height:16px;background:var(--border);margin:0 4px;flex-shrink:0}
+.product-platform-badge{padding:3px 10px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:.1em;border:1px solid #A78BFA44;background:#A78BFA08;color:#A78BFA;cursor:pointer;white-space:nowrap;transition:all .12s;margin-left:auto}
+.product-platform-badge:hover{background:#A78BFA14;border-color:#A78BFA66}
+/* Product badges on feature tiles */
+.feat-product-badge{font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px;border:1px solid;white-space:nowrap}
+.feat-product-badge.epm{background:#10B98112;color:#10B981;border-color:#10B98133}
+.feat-product-badge.trelica{background:#3A9EFF12;color:#70B8FF;border-color:#3A9EFF33}
+.feat-product-badge.dt{background:#F59E0B12;color:#F59E0B;border-color:#F59E0B33}
+/* Product-specific content sections */
+.product-section{border-radius:8px;padding:14px 16px;margin-bottom:12px;border:1px solid}
+.product-section.trelica{background:#3A9EFF08;border-color:#3A9EFF25}
+.product-section.dt{background:#F59E0B08;border-color:#F59E0B25}
+.product-section-hdr{font-size:9px;font-weight:800;letter-spacing:.13em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.product-section.trelica .product-section-hdr{color:#70B8FF}
+.product-section.dt .product-section-hdr{color:#F59E0B}
+.product-section-body{font-size:12px;color:var(--t2);line-height:1.7}
+.product-section-row{display:flex;gap:7px;align-items:flex-start;margin-bottom:5px;font-size:11px;color:var(--t2)}
+.product-section-row::before{content:"→";font-weight:700;flex-shrink:0}
+.product-section.trelica .product-section-row::before{color:#3A9EFF}
+.product-section.dt .product-section-row::before{color:#F59E0B}
+/* Locked product content */
+.product-locked{background:var(--surface);border:1px dashed var(--border);border-radius:8px;padding:16px;text-align:center;margin-bottom:10px}
+.product-locked-ico{font-size:20px;margin-bottom:6px}
+.product-locked-t{font-size:12px;font-weight:700;color:var(--t3);margin-bottom:4px}
+.product-locked-s{font-size:11px;color:var(--t4);line-height:1.6}
+.product-locked-btn{margin-top:10px;padding:5px 14px;border-radius:5px;border:1px solid #A78BFA44;background:#A78BFA08;color:#A78BFA;font-size:11px;font-weight:700;cursor:pointer;transition:all .12s}
+.product-locked-btn:hover{background:#A78BFA18}
+/* Platform progression card */
+.platform-card{background:linear-gradient(135deg,var(--surface),var(--bg2));border:1px solid #A78BFA30;border-radius:10px;padding:18px 20px;margin:16px 28px}
+.platform-card-title{font-size:10px;font-weight:800;letter-spacing:.14em;color:#A78BFA;margin-bottom:12px}
+.platform-steps{display:flex;gap:0;align-items:stretch}
+.platform-step{flex:1;padding:12px 14px;border-radius:7px;border:1px solid;position:relative}
+.platform-step.active{opacity:1}
+.platform-step.locked{opacity:.5;border-style:dashed;cursor:pointer}
+.platform-step.locked:hover{opacity:.7}
+.platform-step-label{font-size:9px;font-weight:800;letter-spacing:.1em;margin-bottom:4px}
+.platform-step-name{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.platform-step-desc{font-size:10px;color:var(--t3);line-height:1.55}
+.platform-step.epm{background:#10B98108;border-color:#10B98130}.platform-step.epm .platform-step-label{color:#10B981}
+.platform-step.trelica{background:#3A9EFF08;border-color:#3A9EFF30}.platform-step.trelica .platform-step-label{color:#3A9EFF}
+.platform-step.dt{background:#F59E0B08;border-color:#F59E0B30}.platform-step.dt .platform-step-label{color:#F59E0B}
+.platform-step.xam{background:#A78BFA08;border-color:#A78BFA30}.platform-step.xam .platform-step-label{color:#A78BFA}
+.platform-arrow{display:flex;align-items:center;padding:0 8px;color:var(--t4);font-size:14px;flex-shrink:0}
 
 /* ── BRIGHTER BODY TEXT ─────────────────────────────────────── */
 .pt, .fp-intro, .sf-desc, .ind-hook, .breach-body, .prev-body,
@@ -583,9 +650,25 @@ body{background:var(--bg)!important;color:var(--t2)!important}
   <div class="tab" id="tab-customer-builder" onclick="switchTab('customer-builder')">✨ Customer Builder</div>
   <div class="tab" id="tab-bad" onclick="switchTab('bad')">📄 Build a Doc</div>
   <div class="tab" id="tab-compete" onclick="switchTab('compete')">⚔️ Compete</div>
+  <div class="tab" id="tab-trelica" onclick="switchTab('trelica')">🔷 Trelica</div>
+  <div class="tab" id="tab-dt" onclick="switchTab('dt')">🛡️ Device Trust</div>
   <div class="topbar-right">
     <div class="sw"><span class="si">🔍</span><input type="text" id="searchInput" placeholder="Search features, industries..." oninput="doSearch(this.value)"/></div>
   </div>
+</div>
+<div class="product-bar" id="product-bar">
+  <span class="product-bar-label">ACTIVE PRODUCTS</span>
+  <button class="product-toggle active-epm" id="ptog-epm" onclick="toggleProduct('epm')">
+    <span class="pt-dot"></span>EPM
+  </button>
+  <button class="product-toggle" id="ptog-trelica" onclick="toggleProduct('trelica')">
+    <span class="pt-dot"></span>Trelica · SaaS Manager
+  </button>
+  <button class="product-toggle" id="ptog-dt" onclick="toggleProduct('dt')">
+    <span class="pt-dot"></span>Device Trust
+  </button>
+  <div class="product-separator"></div>
+  <button class="product-platform-badge" onclick="showPlatformView()">◆ Full XAM Platform →</button>
 </div>
 <div class="layout">
   <div class="sidebar" id="sidebar"></div>
@@ -942,6 +1025,12 @@ function renderIndustry(iid){
     </div>`;
   // Append tech stack section
   const _ts=renderTechStack(iid);if(_ts){const _d=document.getElementById('detail');if(_d)_d.insertAdjacentHTML('beforeend',_ts);}
+  // Append Trelica + DT product sections
+  const _pd=document.getElementById('detail');
+  if(_pd){
+    const _trelicaContent = renderIndustryProductSections(iid);
+    if(_trelicaContent) _pd.insertAdjacentHTML('beforeend', _trelicaContent);
+  }
   document.getElementById('detail').scrollTop=0;
 }
 
@@ -972,13 +1061,15 @@ function buildIndustrySidebar(){
 
 // ─── TAB SWITCHING ─────────────────────────────────────────────
 function switchTab(tab){
-  if(!['features','industry','departments','customer-builder','bad','compete'].includes(tab))return;
+  if(!['features','industry','departments','customer-builder','bad','compete','trelica','dt'].includes(tab))return;
   curTab=tab;
   document.querySelectorAll('.tab:not(.soon)').forEach(t=>t.classList.remove('active'));
   const tabEl=document.getElementById('tab-'+tab);if(tabEl)tabEl.classList.add('active');
   const sb=document.getElementById('sidebar');
   if(tab==='customer-builder'){sb.style.display='none';showCustomerBuilder();return;}
   if(tab==='bad'){sb.style.display='none';showBAD();return;}
+  if(tab==='trelica'){sb.style.display='none';showTrelicaHub();return;}
+  if(tab==='dt'){sb.style.display='none';showDeviceTrustHub();return;}
   if(tab==='compete'){showCompete();return;}
   sb.style.display='';
   if(tab==='features'){buildFeatureSidebar();if(curFid)renderFeature(curFid);else showTiles(curFilter);}
@@ -1440,7 +1531,6 @@ function showCustomerBuilder() {
   <div class="cb-layout">
     <div class="cb-form">
 
-      <!-- Saved profiles bar -->
       <div class="cb-profile-bar">
         <select class="cb-profile-select" id="cb-saved-select" onchange="if(this.value)cbLoadProfile(this.value)">
           <option value="">— Load saved profile —</option>
@@ -1448,18 +1538,20 @@ function showCustomerBuilder() {
         <button class="cb-profile-btn save" onclick="cbSaveProfile()">💾 Save</button>
       </div>
 
-      <div style="padding:16px 18px 0">
+      <div style="padding:14px 18px 0">
         <div class="cb-head">✨ Customer Strategy Builder</div>
-        <div class="cb-sub">Build a complete account profile. Profiles are saved to your browser. Claude uses all of 1Password's product knowledge to produce a tailored strategy.</div>
+        <div class="cb-sub">Build a complete account profile. Profiles auto-save. Claude uses all of 1Password's product knowledge to produce a tailored strategy — the more context you give, the sharper the output.</div>
       </div>
 
       <div style="padding:12px 18px 0;display:flex;flex-direction:column;gap:12px">
 
+        <!-- 1. Company Name — auto-focus -->
         <div class="cb-section">
           <div class="cb-label">COMPANY NAME</div>
-          <input class="cb-input" id="cb-company" type="text" placeholder="e.g. Acme Financial Group"/>
+          <input class="cb-input" id="cb-company" type="text" placeholder="e.g. Acme Financial Group" autofocus/>
         </div>
 
+        <!-- 2. Industries — multi-tag with presets -->
         <div class="cb-section">
           <div class="cb-label" style="display:flex;align-items:center;justify-content:space-between">
             INDUSTRIES <span style="font-size:9px;color:var(--t4);font-weight:400">select one or more</span>
@@ -1483,9 +1575,10 @@ function showCustomerBuilder() {
           </div>
         </div>
 
-        <!-- Governance panels render here when industries selected -->
+        <!-- Governance panels — collapsed by default -->
         <div id="cb-gov-panels"></div>
 
+        <!-- 3. Company Size -->
         <div class="cb-section">
           <div class="cb-label">COMPANY SIZE</div>
           <div class="cb-chip-row" id="chips-size">
@@ -1493,77 +1586,34 @@ function showCustomerBuilder() {
           </div>
         </div>
 
+        <!-- 4. Current Solution -->
         <div class="cb-section">
           <div class="cb-label">CURRENT SOLUTION</div>
           <div class="cb-chip-row" id="chips-current">
-            ${['LastPass','Bitwarden','Keeper','Dashlane','CyberArk','Spreadsheets','Nothing','Other'].map(s=>`<button class="cb-chip" onclick="cbChipSingle(this,'chips-current')">${s}</button>`).join('')}
+            ${['LastPass','Bitwarden','Keeper','Dashlane','CyberArk','Spreadsheets','Nothing','Other'].map(s=>`<button class="cb-chip" onclick="cbChipSingle(this,'chips-current');if(this.textContent==='Other')document.getElementById('cb-current-custom').style.display='block'">${s}</button>`).join('')}
           </div>
-          <input class="cb-input" id="cb-current-custom" type="text" placeholder="Or type custom…" style="margin-top:6px"/>
+          <input class="cb-input" id="cb-current-custom" type="text" placeholder="Specify current solution…" style="margin-top:6px;display:none"/>
         </div>
 
+        <!-- 5a. Primary Contact Name -->
         <div class="cb-section">
-          <div class="cb-label">PRIMARY CONTACT & ROLE</div>
-          <input class="cb-input" id="cb-contact" type="text" placeholder="e.g. Sarah Chen, IT Director"/>
-          <div class="cb-chip-row" id="chips-persona" style="margin-top:6px">
-            ${['CISO','IT Director','CTO','CFO','IT Admin','VP Eng','Head of IT','Security Lead','CIO','COO','General Counsel','CHRO'].map(s=>`<button class="cb-chip" onclick="cbChipAppend('cb-contact','${s}')">${s}</button>`).join('')}
-          </div>
+          <div class="cb-label">PRIMARY CONTACT NAME</div>
+          <input class="cb-input" id="cb-contact" type="text" placeholder="e.g. Sarah Chen"/>
         </div>
 
+        <!-- 5b. Primary Stakeholder Role — single select -->
         <div class="cb-section">
-          <div class="cb-label" style="display:flex;align-items:center;justify-content:space-between">
-            DEPARTMENTS IN SCOPE
-            <button class="cb-add-custom-btn" onclick="openAddDeptModal(null)">✦ Add custom</button>
-          </div>
-          <div class="cb-checks" id="cb-dept-checks">${deptChecks}${Object.entries(DEPARTMENTS).filter(([,D])=>D._custom).map(([did,D])=>`<label class="cb-check${cbDepts.has(did)?' checked':''}" id="cbck-${did}" onclick="toggleDept('${did}')"><span class="cb-check-ico">${D.emoji}</span><span class="cb-check-lbl">${D.name} ✦</span></label>`).join('')}</div>
-        </div>
-
-        <div class="cb-section">
-          <div class="cb-label">KNOWN PAIN POINTS</div>
-          <div class="cb-tag-input-wrap" id="pain-tag-wrap">
-            <div class="cb-tags" id="pain-tags"></div>
-            <input class="cb-tag-input" id="pain-input" type="text" placeholder="Type a pain point and press Enter…" onkeydown="cbTagKey(event,'pain-tags','pain-input')"/>
-          </div>
-          <div class="cb-suggestions" id="pain-suggestions">
-            ${['No audit trail for credential access','Offboarding gaps — ex-employees retain access','Shared credentials with no attribution','Secrets hardcoded in repos','No MFA enforcement','Contractor access never revoked','PCI-DSS / SOC 2 audit pressure','HIPAA compliance gaps','Shared workstation credentials','Shadow IT / unsanctioned tools','Agency access to social media credentials','CI/CD pipeline secrets in env variables','Departures without credential rotation','No SIEM integration','Weak password policies','Seasonal workforce access chaos','International travel security risk','Recent security incident','Merger/acquisition credential sprawl','AI API keys ungoverned'].map(p=>`<span class="cb-sug" onclick="cbAddTag('pain-tags',this.textContent)">${p}</span>`).join('')}
+          <div class="cb-label">PRIMARY STAKEHOLDER ROLE</div>
+          <div class="cb-chip-row" id="chips-persona">
+            ${['CISO','IT Director','CTO','CFO','IT Admin','VP Eng','Head of IT','Security Lead','CIO','COO','General Counsel','CHRO'].map(s=>`<button class="cb-chip" onclick="cbChipSingle(this,'chips-persona')">${s}</button>`).join('')}
           </div>
         </div>
 
-        <div class="cb-section">
-          <div class="cb-label">TECH STACK IN USE</div>
-          <div class="cb-tag-input-wrap" id="stack-tag-wrap">
-            <div class="cb-tags" id="stack-tags"></div>
-            <input class="cb-tag-input" id="stack-input" type="text" placeholder="Type a tool and press Enter…" onkeydown="cbTagKey(event,'stack-tags','stack-input')"/>
-          </div>
-          <div class="cb-suggestions" id="stack-suggestions">
-            ${['Okta','Azure AD / Entra ID','Google Workspace','JumpCloud','Salesforce','Workday','ServiceNow','Slack','Microsoft 365','AWS','GCP','Azure','GitHub','GitLab','Splunk','Datadog','Jira','Epic EHR','SAP','Shopify','Stripe','HubSpot','CircleCI','Terraform','Kubernetes','Bloomberg Terminal','Veeva Vault','iManage'].map(t=>`<span class="cb-sug" onclick="cbAddTag('stack-tags',this.textContent)">${t}</span>`).join('')}
-          </div>
-        </div>
-
-        <div class="cb-section">
-          <div class="cb-label">COMPLIANCE REQUIREMENTS</div>
-          <div class="cb-chip-row" id="chips-compliance" style="flex-wrap:wrap;gap:5px">
-            ${['PCI-DSS','SOC 2','HIPAA','GDPR','ISO 27001','SOX','FISMA','CMMC','NIST CSF','ITAR','FedRAMP','CCPA','NERC CIP','21 CFR Part 11','ABA Ethics','FERPA'].map(s=>`<button class="cb-chip" onclick="cbChipToggle(this,'chips-compliance')">${s}</button>`).join('')}
-          </div>
-        </div>
-
-        <div class="cb-section">
-          <div class="cb-label">KNOWN OBJECTIONS</div>
-          <div class="cb-chip-row" id="chips-objections" style="flex-wrap:wrap;gap:5px">
-            ${['"Too expensive"','"Happy with current tool"','"Too much change management"','"IT doesn\'t have bandwidth"','"Security team needs to approve"','"Need board sign-off"','"Bitwarden is free"','"CyberArk covers this"','"Not a priority right now"'].map(s=>`<button class="cb-chip" onclick="cbChipToggle(this,'chips-objections')">${s}</button>`).join('')}
-          </div>
-        </div>
-
-        <div class="cb-section">
-          <div class="cb-label">DEAL STAGE</div>
-          <div class="cb-chip-row" id="chips-stage">
-            ${['Cold outreach','Discovery done','Demo scheduled','Evaluating','Proposal sent','Negotiating','Renewal at risk','Expansion opp'].map((s,i)=>`<button class="cb-chip${i===1?' active':''}" onclick="cbChipSingle(this,'chips-stage')">${s}</button>`).join('')}
-          </div>
-        </div>
-
-        <div class="cb-section">
-          <div class="cb-label">ADDITIONAL NOTES</div>
-          <textarea class="cb-input" id="cb-notes" placeholder="Quotes from the call, recent incidents, competitive intel, internal champion details, specific concerns raised…"></textarea>
-        </div>
+        <!-- 6. Additional Notes — moved up per audit -->
+        <div class="cb-section" style="border:1px solid #A78BFA33;border-radius:8px;padding:12px 14px;background:#A78BFA06">
+          <div class="cb-label" style="color:#A78BFA;margin-bottom:3px">WHAT DID YOU LEARN IN DISCOVERY?</div>
+          <div style="font-size:10px;color:var(--t4);margin-bottom:7px;line-height:1.5">Highest-signal field. Paste call notes, key quotes, trigger events (recent incident, audit pressure, leadership change), competitive intel, what the champion said privately — anything that doesn't fit the structured fields.</div>
+          <textarea class="cb-input" id="cb-notes" placeholder="e.g. 'CTO mentioned their last engineer walked out with prod GCP keys — nobody noticed for 3 weeks. Audit in 60 days. CFO just approved security budget after the Okta breach news...'" style="min-height:100px;color:var(--t1)!important;font-size:13px;font-weight:500;border-color:#A78BFA44"></textarea></div>
 
         <button class="cb-generate" id="cb-gen-btn" onclick="runAnalysis()">⚡ Build Customer Strategy</button>
       </div>
@@ -1572,7 +1622,7 @@ function showCustomerBuilder() {
       <div class="cb-empty">
         <div class="cb-empty-ico">⚡</div>
         <div class="cb-empty-t">Strategy will appear here</div>
-        <div class="cb-empty-s">Select one or more industries — governance panels will appear explaining why credential security is critical for each vertical. Then fill in the account details and build your strategy.</div>
+        <div class="cb-empty-s">Select one or more industries to see governance briefs. Fill in what you know and hit Build — the more context you add, the sharper the output.</div>
       </div>
     </div>
   </div>`;
@@ -1580,6 +1630,8 @@ function showCustomerBuilder() {
   cbRenderIndustryTags();
   cbRefreshProfileBar();
   cbRestoreState();
+  // Auto-focus company name
+  setTimeout(() => { const el = document.getElementById('cb-company'); if(el) el.focus(); }, 100);
 }
 
 function toggleDept(did) {
@@ -1596,8 +1648,13 @@ async function runAnalysis() {
   // Support multi-industry — use first as primary, include all in context
   const industryId = cbSelectedIndustries[0] || '';
   const allIndustryIds = cbSelectedIndustries.slice();
-  const contact    = document.getElementById('cb-contact')?.value.trim() || 'unknown';
-  const notes      = document.getElementById('cb-notes')?.value.trim() || '';
+  const contact      = document.getElementById('cb-contact')?.value.trim() || 'unknown';
+  const role         = cbGetActiveChips('chips-persona')[0] || '';
+  const notes        = document.getElementById('cb-notes')?.value.trim() || '';
+  const renewalDate  = document.getElementById('cb-renewal-date')?.value || '';
+  const seats        = document.getElementById('cb-seats')?.value || '';
+  const arr          = document.getElementById('cb-arr')?.value || '';
+  const champion     = cbGetActiveChips('chips-champion')[0] || 'No champion identified';
 
   // Read chip selections
   const sizeChips    = cbGetActiveChips('chips-size');
@@ -1651,27 +1708,38 @@ Tech stack gaps: ${(TECH_STACKS[iid]||[]).slice(0,6).map(t=>t.tool+': '+t.gap.su
 
   const allFeatures = FEATURES.map(f => `${f.id} (${f.n}): ${f.prob.substring(0,80)}`).join(' | ');
 
-  const systemPrompt = `You are the best enterprise SaaS CSM in the world, specialising in 1Password EPM. You have deep knowledge of every 1Password feature, every industry vertical, every department use case, and every competitor. Your job is to produce the sharpest possible customer strategy document — one that feels like it was written by someone who has been preparing for this specific account for weeks.
+  const systemPrompt = `You are the world's best enterprise SaaS CSM and sales strategist, specialising in 1Password EPM. You think like a trusted advisor, not a vendor. Your output must feel like it was written by someone who has been embedded in this account for months — not someone who just read a brief.
 
-Be specific. Be opinionated. Name features by their real names. Reference the actual tech stack tools they use. Tie every recommendation back to their stated pain points. This is NOT a generic overview — it is a precision strategy document for THIS account.
+Rules:
+1. Be surgically specific. Use the company name. Reference their exact tools, industry, compliance requirements, pain points.
+2. Think in FULL CUSTOMER LIFECYCLE — not just sales prep. CSMs, AEs, and SEs all use this.
+3. Write discovery questions that would make a prospect say "how did you know to ask that?"
+4. Write Voice of Customer language that mirrors how THEY talk, not how 1Password talks.
+5. Quantify the Risk of Inaction with real math tied to their situation.
+6. Surface proactive insights — things they don't know they should be asking about.
+7. Every section should tell a story that moves from THEIR world to OUR solution.
 
-Respond ONLY with valid JSON. No preamble, no markdown fences.`;
+Respond ONLY with valid JSON. No preamble, no markdown fences, no code blocks.`;
 
-  const userPrompt = `Build a complete customer strategy for this account.
+  const userPrompt = `Build a complete customer strategy for this account. Think like a trusted advisor who has been embedded in this account for months — not a vendor.
 
 ACCOUNT:
 Company: ${company}
 Industry: ${allInds.length ? allInds.map(I=>I.name).join(' + ') : 'not specified'}
 Size: ${size}
 Current solution: ${current}
-Primary contact: ${contact}
+Primary contact: ${contact}${role ? ', ' + role : ''}
 Deal stage: ${stage}
+Champion status: ${champion}
+Renewal / decision date: ${renewalDate || 'unknown'}
+Seats in scope: ${seats || 'unknown'}
+Target ARR / deal size: ${arr || 'unknown'}
 Departments: ${deptIds.map(d=>DEPARTMENTS[d]?.name).filter(Boolean).join(', ') || 'not specified'}
 Stated pain points: ${pains.length ? pains.join(' | ') : 'not stated'}
 Tech stack: ${stack.length ? stack.join(', ') : 'not specified'}
 Compliance requirements: ${compliance}
-Known objections: ${objections}
-Notes: ${notes || 'none'}
+Expected objections: ${objections}
+What was learned in discovery: ${notes || 'not provided'}
 
 INDUSTRY KNOWLEDGE:
 ${indContext}
@@ -1685,81 +1753,133 @@ ${compContext}
 ALL 1PASSWORD FEATURES AVAILABLE:
 ${allFeatures}
 
-Return this exact JSON schema. Be brutally specific throughout — use the company name, reference their actual tools, tie recommendations to their stated pain points:
+Return ONLY valid JSON matching this exact schema. Be surgically specific — use the company name everywhere, reference their exact tools, make every section feel written for this account specifically:
 
 {
+  "what_1password_knows": [
+    {
+      "insight": "A proactive insight they don't know they should be asking about — based on their industry + tech stack + pain points. Something that would make them say 'how did you know that?'",
+      "question_to_ask": "The exact discovery question this insight suggests asking",
+      "why_relevant": "Why this matters for ${company} specifically"
+    }
+  ],
   "snapshot": {
-    "headline": "One sentence capturing this account's core credential problem — specific to them",
+    "headline": "One sentence capturing ${company}'s core credential risk — specific, vivid, named",
     "urgency": "high|medium|low",
-    "urgency_reason": "Why this is or isn't urgent for THIS company right now",
+    "urgency_reason": "Why this is or isn't urgent for ${company} right now — reference renewal date, incidents, compliance deadlines",
     "primary_risk": "The single biggest credential risk at ${company} — name the specific system or scenario",
-    "deal_confidence": "Your honest read on this deal — what makes it succeed, what kills it",
-    "executive_hook": "The one sentence you'd say to open a meeting with the primary contact — make it land"
+    "deal_confidence": "Honest read on this deal — what makes it succeed, what kills it, what's unknown",
+    "executive_hook": "The exact sentence to open the meeting — specific enough to make them lean forward"
+  },
+  "risk_of_inaction_quantified": {
+    "headline": "The headline version of what inaction costs ${company}",
+    "scenarios": [
+      {
+        "label": "Short name for this risk scenario",
+        "math": "The actual math: e.g. '50 engineers/year × avg 2.5 days ghost access = 125 days of exposure annually'",
+        "impact": "Dollar, compliance, or reputational consequence — be specific to their size and industry"
+      }
+    ],
+    "bottom_line": "One sentence a CFO would quote in a board meeting about the cost of doing nothing"
+  },
+  "discovery_questions": [
+    {
+      "question": "The exact question to ask — specific to ${company}'s tech stack, industry, and pain. Not generic. Make it land.",
+      "why_it_works": "Why this question opens up the conversation — what it signals to the prospect",
+      "what_it_reveals": "What the answer tells you about deal shape, urgency, and which features to lead with"
+    }
+  ],
+  "voice_of_customer": {
+    "how_they_describe_problem": "2-3 sentences in the voice of ${company}'s primary contact — how THEY would describe this problem to their CEO, not how 1Password describes it",
+    "phrases": ["Verbatim-style phrase they'd use", "Another phrase from their world", "A third phrase — industry-specific language"],
+    "what_they_actually_fear": "The real underlying fear this persona has — the thing that keeps them up at night that they won't say in a first call"
   },
   "feature_analysis": [
     {
       "feature_id": "exact feature id from the list above",
       "feature_name": "Feature name",
       "priority": "critical|high|nice-to-have",
-      "why_this_account": "Why THIS feature matters to ${company} specifically — reference their tools, size, industry, pain points",
-      "specific_scenario": "A concrete scenario of how this feature works for ${company} day-to-day — make it real",
+      "why_this_account": "Why THIS feature matters to ${company} specifically — reference their tools, size, industry, pain",
+      "specific_scenario": "A concrete day-in-the-life scenario at ${company} — name their actual systems",
       "proof_metric": "What measurable outcome proves this is working at ${company}",
-      "ties_to_pain": "Which of their stated pain points this directly eliminates"
+      "ties_to_pain": "Which stated pain point this eliminates",
+      "when_not_to_lead": "When to HOLD this feature — what situation makes this backfire or land wrong with this account"
     }
   ],
   "adoption_strategy": {
     "week_1": {
-      "action": "What to deploy in week 1 — be specific about which features, which departments, why this order",
-      "owner": "Who internally should own this deployment",
-      "quick_win": "The specific thing that will happen in week 1 that makes the champion look good"
+      "action": "Exactly what to deploy — specific features, specific departments, specific order",
+      "owner": "Who internally should own this at ${company}",
+      "quick_win": "The specific thing that makes the champion look good in week 1",
+      "failure_signal": "The specific sign that week 1 is going wrong — and the intervention"
     },
     "month_1": {
-      "action": "What should be live and working by end of month 1",
-      "success_metric": "How you know month 1 succeeded — a specific number or event",
-      "expansion_hook": "What discovery happens in month 1 that opens the next conversation"
+      "action": "What's live and working by end of month 1",
+      "success_metric": "A specific number or event that confirms month 1 success",
+      "failure_signal": "Early churn indicator — what to watch for and how to respond",
+      "expansion_hook": "What discovery in month 1 opens the upsell conversation"
     },
     "quarter_1": {
-      "action": "What the program looks like at 90 days",
-      "business_outcome": "The business outcome the executive sponsor can report upward",
-      "renewal_signal": "What behaviour tells you renewal is locked"
+      "action": "What the full program looks like at 90 days",
+      "business_outcome": "The outcome the executive sponsor can report upward",
+      "expansion_signal": "The specific signal that tells you ${company} is ready for the next product conversation",
+      "renewal_signal": "What behaviour at 90 days tells you renewal is locked"
     }
+  },
+  "csm_playbook": {
+    "onboarding_milestones": [
+      { "day": "Day N", "milestone": "What must be true by this day", "if_missed": "The intervention if it's not" }
+    ],
+    "health_triggers": [
+      { "signal": "The observable signal", "what_it_means": "What it indicates about account health", "action": "CSM action to take" }
+    ],
+    "qbr_questions": ["Question to ask at 30-day QBR specific to this account", "60-day question", "90-day question"],
+    "expansion_signals": ["The first signal to watch for that this account is ready for an upsell conversation", "A second signal"]
   },
   "stakeholder_strategy": [
     {
       "role": "Role title",
       "stance": "champion|buyer|influencer|blocker|unknown",
-      "motivation": "What this person personally needs to succeed — not just their job requirements",
-      "approach": "Exactly how to engage this person — what to say, what to show, what to avoid",
-      "risk": "What could make this person block or stall the deal"
+      "motivation": "What this person personally needs to succeed — not their job requirements, their actual ambition",
+      "how_to_approach": "Exactly how to engage — what to say, what to show, what to never say",
+      "risk": "What could make this person block or stall — the hidden veto"
     }
   ],
+  "champion_toolkit": {
+    "elevator_pitch": "The one sentence the champion can say when their CEO asks 'what are we doing about credential security this quarter?' — in their voice, not ours",
+    "cfo_email_subject": "Subject line for the internal email the champion sends to get budget approved",
+    "cfo_email_body": "The 150-word email the champion sends to their CFO/COO to get this approved — business language, not technical language, specific to ${company}'s situation",
+    "key_data_point": "The single number or stat the champion needs to get budget approved — calibrated to ${company}'s size and industry"
+  },
   "competitive_displacement": {
     "current_tool": "${current}",
     "migration_complexity": "low|medium|high",
-    "migration_path": "Specific steps to migrate from their current tool — be practical",
-    "win_argument": "The sharpest argument for why ${company} should switch — specific to their situation",
-    "landmines": "What arguments to avoid with this specific account — things that backfire"
+    "migration_path": "Specific steps to migrate from their current tool — practical, not generic",
+    "win_argument": "The sharpest win argument specific to ${company}'s situation",
+    "landmines": "What arguments to avoid with this specific account — things that backfire",
+    "trigger_objections": ["The specific objections to expect when competitive comes up at ${company}"]
   },
   "objection_playbook": [
     {
-      "objection": "The specific objection — verbatim how it might come up",
-      "real_concern": "The underlying fear or constraint behind the objection",
-      "response": "Your exact response — specific to ${company}'s context, not generic",
-      "proof": "What evidence or demo moment closes this objection"
+      "objection": "The specific objection — verbatim how it comes up at ${company}",
+      "real_concern": "The underlying fear or constraint behind this objection",
+      "response": "Your exact response — specific to ${company}'s context, not a template",
+      "proof": "What evidence or demo moment closes this"
     }
   ],
   "executive_narrative": {
-    "one_pager_headline": "The headline for a one-pager you'd leave with the executive sponsor",
-    "problem_statement": "3 sentences on the credential problem at ${company} — specific, urgent, tied to their world",
-    "solution_statement": "3 sentences on what 1Password does for ${company} — not generic features, real outcomes",
-    "business_case": ["ROI point 1 — quantified where possible", "ROI point 2", "ROI point 3"],
-    "risk_of_inaction": "What happens if ${company} does nothing — make it specific and vivid"
+    "one_pager_headline": "Headline for the one-pager left with the exec sponsor",
+    "problem_statement": "3 sentences on the credential problem at ${company} — specific, urgent, vivid",
+    "solution_statement": "3 sentences on what 1Password delivers for ${company} — outcomes, not features",
+    "business_case": ["ROI point 1 — quantified", "ROI point 2 — quantified", "ROI point 3"],
+    "ciso_framing": "The same narrative framed for a CISO — control gaps, incident response, compliance evidence",
+    "cfo_framing": "The same narrative framed for a CFO — cost, risk exposure, ROI, what a breach actually costs ${company}"
   },
   "next_actions": [
     {
       "action": "Specific next action for the CSM",
       "timeline": "When",
-      "purpose": "Why this moves the deal"
+      "purpose": "Why this moves the deal or secures the account"
     }
   ]
 }`;
@@ -1770,7 +1890,7 @@ Return this exact JSON schema. Be brutally specific throughout — use the compa
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 4500,
+        max_tokens: 7000,
         system: systemPrompt,
         messages: [{ role: 'user', content: userPrompt }]
       })
@@ -1782,15 +1902,14 @@ Return this exact JSON schema. Be brutally specific throughout — use the compa
     const result = JSON.parse(clean);
     cbLastResult = { result, company, industryId, deptIds };
     renderStrategy(result, company, ind);
-    // Auto-save profile after successful generation
     setTimeout(cbSaveProfile, 500);
   } catch (err) {
     document.getElementById('cb-output').innerHTML =
-      `<div class="cb-out-wrap"><div class="cb-err"><strong style="color:#EF4444">Analysis failed</strong><br/>${err.message}</div></div>`;
+      `<div class="cb-out-wrap"><div class="cb-error">⚠️ ${err.message.includes('JSON') ? 'Claude returned malformed JSON — try re-running.' : err.message}</div></div>`;
+    document.getElementById('cb-gen-btn').disabled = false;
+    document.getElementById('cb-gen-btn').textContent = '⚡ Build Customer Strategy';
   }
-  btn.disabled = false; btn.textContent = '⚡ Build Customer Strategy';
 }
-
 
 function urgencyColor(u) {
   return { high: '#EF4444', medium: '#F59E0B', low: '#10B981' }[u] || '#5A7A9A';
@@ -1879,16 +1998,17 @@ function cbIndustryChange(iid) {
       sug.insertBefore(span, sug.firstChild);
     }
   });
-  // Also pre-populate compliance chips based on industry
+  // Auto-highlight (not auto-select) compliance chips based on industry
   const ind = INDUSTRIES[iid];
   if (ind && ind.compliance) {
-    ind.compliance.forEach(c => {
-      const chips = document.querySelectorAll('#chips-compliance .cb-chip');
-      chips.forEach(chip => {
-        if (c.includes(chip.textContent) || chip.textContent.includes(c.split(' ')[0])) {
-          chip.classList.add('active');
-        }
-      });
+    const chips = document.querySelectorAll('#chips-compliance .cb-chip');
+    chips.forEach(chip => {
+      const matchesAny = ind.compliance.some(c =>
+        chip.textContent.trim() === c ||
+        c.includes(chip.textContent.trim().split(' ')[0]) ||
+        chip.textContent.trim().includes(c.split(' ')[0])
+      );
+      if (matchesAny) chip.style.outline = '1px solid ' + (ind.color || '#3A9EFF') + '88';
     });
   }
 }
@@ -1927,160 +2047,611 @@ function section(icon, title, body, accentColor) {
 
 function renderStrategy(r, company, ind) {
   const out = document.getElementById('cb-output');
+  if (!out) return;
+
+  const uC = u => ({ high:'#EF4444', medium:'#F59E0B', low:'#10B981' }[u] || '#6B7280');
+  const pC = p => ({ critical:'#EF4444', high:'#F59E0B', 'nice-to-have':'#10B981', 'must-have':'#EF4444' }[p] || '#6B7280');
+  const sC = s => ({ champion:'#10B981', buyer:'#3A9EFF', influencer:'#A78BFA', blocker:'#EF4444', unknown:'#6B7280' }[s] || '#6B7280');
+
+  const section = (ico, title, body, accent) =>
+    `<div class="cb-section-out" style="border-left-color:${accent||'#3A9EFF'}">
+      <div class="cb-section-title"><span>${ico}</span><span>${title}</span></div>
+      ${body}
+    </div>`;
+
+  const pill = (text, color) =>
+    `<span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;background:${color}18;color:${color};border:1px solid ${color}33">${text}</span>`;
+
   const s = r.snapshot || {};
-  const ap = r.adoption_strategy || {};
-  const ec = r.executive_narrative || {};
-  const cd = r.competitive_displacement || {};
+  const urgColor = uC(s.urgency);
 
-  // ── Snapshot ──────────────────────────────────────────────
+  // ── WHAT 1PASSWORD KNOWS ──────────────────────────────────────
+  let w1pHTML = '';
+  if (r.what_1password_knows?.length) {
+    w1pHTML = section('🔮', 'WHAT 1PASSWORD KNOWS THAT THEY DON\'T', `
+      <div style="font-size:11px;color:var(--t4);margin-bottom:10px;font-style:italic">Proactive insights based on their industry, tech stack, and pain patterns — surface these before they ask.</div>
+      ${r.what_1password_knows.map(w=>`
+        <div style="background:linear-gradient(135deg,#A78BFA08,#3A9EFF08);border:1px solid #A78BFA30;border-radius:7px;padding:12px 14px;margin-bottom:8px">
+          <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:5px;line-height:1.6">${w.insight}</div>
+          <div style="font-size:11px;color:#A78BFA;margin-bottom:4px;font-weight:600">→ Ask: "${w.question_to_ask}"</div>
+          <div style="font-size:11px;color:var(--t3)">${w.why_relevant}</div>
+        </div>`).join('')}`, '#A78BFA');
+  }
+
+  // ── SNAPSHOT ──────────────────────────────────────────────────
   const snapshotHTML = `
-    <div class="cb-headline">
-      <div class="cb-hl-co" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
-        <span>${company.toUpperCase()}${ind?' · '+ind.name.toUpperCase():''}</span>
-        <span style="font-size:10px;font-weight:800;padding:3px 10px;border-radius:10px;background:${uColor(s.urgency)}18;color:${uColor(s.urgency)};border:1px solid ${uColor(s.urgency)}33">${(s.urgency||'').toUpperCase()} URGENCY</span>
-      </div>
-      <div class="cb-hl-txt">${s.headline||''}</div>
-      <div class="cb-hl-sum" style="margin-bottom:12px">${s.urgency_reason||''}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:#07111F55;border:1px solid var(--border);border-radius:6px;padding:10px 12px">
-          <div style="font-size:9px;font-weight:800;color:#EF4444;margin-bottom:4px">PRIMARY RISK</div>
-          <div style="font-size:12px;color:#FCA5A5;line-height:1.55">${s.primary_risk||''}</div>
+    <div class="cb-snapshot-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
+        <div style="flex:1">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.14em;color:var(--t4);margin-bottom:5px">${company.toUpperCase()} · ${(ind?.name||'').toUpperCase()}</div>
+          <div style="font-size:17px;font-weight:800;color:var(--t1);line-height:1.4">${s.headline||''}</div>
         </div>
-        <div style="background:#07111F55;border:1px solid var(--border);border-radius:6px;padding:10px 12px">
-          <div style="font-size:9px;font-weight:800;color:#3A9EFF;margin-bottom:4px">DEAL READ</div>
-          <div style="font-size:12px;color:var(--t2);line-height:1.55">${s.deal_confidence||''}</div>
+        <span style="font-size:11px;font-weight:800;padding:5px 12px;border-radius:5px;background:${urgColor}18;color:${urgColor};border:1px solid ${urgColor}33;white-space:nowrap;flex-shrink:0">${(s.urgency||'').toUpperCase()} URGENCY</span>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:10px;line-height:1.6">${s.urgency_reason||''}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="background:var(--surface);border-radius:6px;padding:9px 12px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:4px">PRIMARY RISK</div>
+          <div style="font-size:11px;color:#FF9999;line-height:1.55">${s.primary_risk||''}</div>
+        </div>
+        <div style="background:var(--surface);border-radius:6px;padding:9px 12px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:4px">DEAL READ</div>
+          <div style="font-size:11px;color:var(--t2);line-height:1.55">${s.deal_confidence||''}</div>
         </div>
       </div>
-      ${s.executive_hook ? `<div style="margin-top:10px;padding:10px 13px;background:#F59E0B0C;border:1px solid #F59E0B30;border-radius:6px">
-        <div style="font-size:9px;font-weight:800;color:#F59E0B;margin-bottom:4px">🎯 OPENING LINE FOR THE MEETING</div>
-        <div style="font-size:13px;color:var(--t1);font-style:italic;line-height:1.65">"${s.executive_hook}"</div>
+      ${s.executive_hook ? `<div style="background:#F59E0B10;border:1px solid #F59E0B30;border-left:3px solid #F59E0B;border-radius:0 6px 6px 0;padding:10px 14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:4px">OPENING LINE FOR THE MEETING</div>
+        <div style="font-size:13px;color:var(--t1);font-style:italic;line-height:1.6">"${s.executive_hook}"</div>
       </div>` : ''}
     </div>`;
 
-  // ── Feature Analysis ──────────────────────────────────────
-  const features = (r.feature_analysis||[]).map(f => `
-    <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid ${pColor(f.priority)};border-radius:7px;padding:12px 14px;margin-bottom:9px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
-        <span style="font-size:13px;font-weight:700;color:var(--t1)">${f.feature_name||f.feature_id}</span>
-        <span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;background:${pColor(f.priority)}18;color:${pColor(f.priority)};border:1px solid ${pColor(f.priority)}33">${(f.priority||'').toUpperCase()}</span>
-        <span style="font-size:10px;color:var(--t4);margin-left:auto;font-style:italic">↳ ${f.ties_to_pain||''}</span>
-      </div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:6px">${f.why_this_account||''}</div>
-      <div style="font-size:11px;color:#70B8FF;font-style:italic;line-height:1.6;margin-bottom:4px">Scenario: ${f.specific_scenario||''}</div>
-      <div style="font-size:10px;color:var(--t4)">Proof metric: ${f.proof_metric||''}</div>
-    </div>`).join('');
-
-  // ── Adoption Strategy ─────────────────────────────────────
-  const w1 = ap.week_1||{}, m1 = ap.month_1||{}, q1 = ap.quarter_1||{};
-  const adoptionHTML = `
-    <div style="display:flex;flex-direction:column;gap:10px">
-      ${[
-        {label:'WEEK 1', color:'#3A9EFF', data:w1, keys:['action','owner','quick_win']},
-        {label:'MONTH 1', color:'#A78BFA', data:m1, keys:['action','success_metric','expansion_hook']},
-        {label:'90 DAYS', color:'#10B981', data:q1, keys:['action','business_outcome','renewal_signal']},
-      ].map(({label,color,data,keys}) => `
-        <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid ${color};border-radius:7px;padding:12px 14px">
-          <div style="font-size:9px;font-weight:800;letter-spacing:.12em;color:${color};margin-bottom:8px">${label}</div>
-          ${keys.map(k => data[k] ? `
-            <div style="display:flex;gap:7px;margin-bottom:5px">
-              <span style="font-size:9px;font-weight:800;color:${color};min-width:90px;flex-shrink:0;padding-top:2px">${k.replace(/_/g,' ').toUpperCase()}</span>
-              <span style="font-size:12px;color:var(--t2);line-height:1.6">${data[k]}</span>
-            </div>` : '').join('')}
+  // ── RISK OF INACTION (quantified, near top) ───────────────────
+  let roiHTML = '';
+  const roi = r.risk_of_inaction_quantified || {};
+  if (roi.headline) {
+    roiHTML = section('🔥', 'RISK OF INACTION — QUANTIFIED', `
+      <div style="font-size:14px;font-weight:700;color:#EF4444;margin-bottom:12px;line-height:1.5">${roi.headline}</div>
+      ${(roi.scenarios||[]).map(sc=>`
+        <div style="background:var(--surface);border:1px solid #EF444425;border-radius:6px;padding:10px 13px;margin-bottom:7px">
+          <div style="font-size:10px;font-weight:800;color:#EF4444;margin-bottom:4px">${sc.label}</div>
+          <div style="font-size:12px;color:#FF9999;font-style:italic;margin-bottom:5px;font-weight:600">${sc.math}</div>
+          <div style="font-size:11px;color:var(--t2);line-height:1.55">${sc.impact}</div>
         </div>`).join('')}
-    </div>`;
+      ${roi.bottom_line ? `<div style="margin-top:10px;padding:10px 13px;background:#EF444408;border-radius:6px;font-size:12px;font-weight:700;color:#EF4444;line-height:1.6">"${roi.bottom_line}"</div>` : ''}`, '#EF4444');
+  }
 
-  // ── Stakeholders ──────────────────────────────────────────
-  const stakeholders = (r.stakeholder_strategy||[]).map(s => `
-    <div class="cb-persona-row" style="margin-bottom:8px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;flex-wrap:wrap;gap:5px">
-        <span style="font-size:12px;font-weight:700;color:var(--t1)">${s.role}</span>
-        <span style="font-size:9px;font-weight:800;padding:1px 8px;border-radius:10px;background:${sColor(s.stance)}18;color:${sColor(s.stance)};border:1px solid ${sColor(s.stance)}33">${(s.stance||'').toUpperCase()}</span>
+  // ── DISCOVERY QUESTIONS ───────────────────────────────────────
+  let dqHTML = '';
+  if (r.discovery_questions?.length) {
+    dqHTML = section('🎯', 'DISCOVERY QUESTION BANK', `
+      <div style="font-size:11px;color:var(--t4);margin-bottom:10px">Questions tailored to ${company}'s profile — each one designed to surface pain they haven't quantified yet.</div>
+      ${r.discovery_questions.map((q,i)=>`
+        <div style="border:1px solid var(--border);border-radius:7px;padding:12px 14px;margin-bottom:8px;background:var(--surface)">
+          <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px">
+            <span style="font-size:11px;font-weight:800;color:#3A9EFF;flex-shrink:0;padding-top:1px">Q${i+1}</span>
+            <div style="font-size:13px;color:var(--t1);font-weight:700;line-height:1.55;font-style:italic">"${q.question}"</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-left:20px">
+            <div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:3px">WHY IT WORKS</div><div style="font-size:11px;color:var(--t2);line-height:1.5">${q.why_it_works}</div></div>
+            <div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#A78BFA;margin-bottom:3px">WHAT IT REVEALS</div><div style="font-size:11px;color:var(--t2);line-height:1.5">${q.what_it_reveals}</div></div>
+          </div>
+        </div>`).join('')}`, '#3A9EFF');
+  }
+
+  // ── VOICE OF CUSTOMER ─────────────────────────────────────────
+  let vocHTML = '';
+  const voc = r.voice_of_customer || {};
+  if (voc.how_they_describe_problem) {
+    vocHTML = section('🗣️', 'VOICE OF CUSTOMER — HOW THEY ACTUALLY TALK', `
+      <div style="font-size:11px;color:var(--t4);margin-bottom:10px">Mirror their language, not ours. Use these phrases in your outreach, demos, and exec narratives.</div>
+      <div style="background:#10B98108;border:1px solid #10B98125;border-left:3px solid #10B981;border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:6px">HOW THEY DESCRIBE IT TO THEIR CEO</div>
+        <div style="font-size:13px;color:var(--t1);font-style:italic;line-height:1.7">"${voc.how_they_describe_problem}"</div>
       </div>
-      <div style="font-size:11px;color:var(--t2);margin-bottom:4px;line-height:1.55">${s.motivation||''}</div>
-      <div style="font-size:11px;color:#3A9EFF;margin-bottom:4px;line-height:1.55">→ ${s.approach||''}</div>
-      ${s.risk ? `<div style="font-size:10px;color:#F59E0B;font-style:italic">⚠ ${s.risk}</div>` : ''}
-    </div>`).join('');
-
-  // ── Competitive Displacement ──────────────────────────────
-  const compHTML = `
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <span style="font-size:12px;color:var(--t3)">Current tool:</span>
-        <span style="font-size:13px;font-weight:700;color:var(--t1)">${cd.current_tool||'unknown'}</span>
-        <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;background:${mColor(cd.migration_complexity)}18;color:${mColor(cd.migration_complexity)};border:1px solid ${mColor(cd.migration_complexity)}33">${(cd.migration_complexity||'').toUpperCase()} MIGRATION COMPLEXITY</span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+        ${(voc.phrases||[]).map(p=>`<span style="font-size:11px;font-style:italic;padding:5px 11px;background:var(--surface);border:1px solid var(--border);border-radius:20px;color:var(--t1)">"${p}"</span>`).join('')}
       </div>
-      ${cd.win_argument ? `<div style="background:var(--bg2);border:1px solid #10B98130;border-radius:6px;padding:10px 13px">
-        <div style="font-size:9px;font-weight:800;color:#10B981;margin-bottom:5px">WIN ARGUMENT</div>
-        <div style="font-size:12px;color:var(--t2);line-height:1.65">${cd.win_argument}</div>
-      </div>` : ''}
-      ${cd.migration_path ? `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 13px">
-        <div style="font-size:9px;font-weight:800;color:#3A9EFF;margin-bottom:5px">MIGRATION PATH</div>
-        <div style="font-size:12px;color:var(--t2);line-height:1.65">${cd.migration_path}</div>
-      </div>` : ''}
-      ${cd.landmines ? `<div style="background:#EF444408;border:1px solid #EF444430;border-radius:6px;padding:10px 13px">
-        <div style="font-size:9px;font-weight:800;color:#EF4444;margin-bottom:5px">⚠ LANDMINES — AVOID THESE ARGUMENTS</div>
-        <div style="font-size:12px;color:var(--t2);line-height:1.65">${cd.landmines}</div>
-      </div>` : ''}
-    </div>`;
+      ${voc.what_they_actually_fear ? `<div style="background:#EF444408;border:1px solid #EF444425;border-radius:6px;padding:10px 13px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:4px">WHAT THEY ACTUALLY FEAR (WON'T SAY ON A FIRST CALL)</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">${voc.what_they_actually_fear}</div>
+      </div>` : ''}`, '#10B981');
+  }
 
-  // ── Objections ────────────────────────────────────────────
-  const objections = (r.objection_playbook||[]).map(o => `
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:12px 14px;margin-bottom:8px">
-      <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:4px;font-style:italic">"${o.objection||''}"</div>
-      <div style="font-size:11px;color:var(--t3);margin-bottom:7px">Underlying concern: ${o.real_concern||''}</div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.65;border-top:1px solid var(--border);padding-top:7px;margin-bottom:5px">→ ${o.response||''}</div>
-      ${o.proof ? `<div style="font-size:10px;color:#3A9EFF;font-style:italic">Proof: ${o.proof}</div>` : ''}
-    </div>`).join('');
+  // ── FEATURE ANALYSIS ─────────────────────────────────────────
+  const fa = r.feature_analysis || [];
+  let featHTML = '';
+  if (fa.length) {
+    const groupByPriority = (p) => fa.filter(f => f.priority === p);
+    const featCard = (f) => `
+      <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid ${pC(f.priority)};border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;gap:8px;flex-wrap:wrap">
+          <span style="font-size:13px;font-weight:700;color:var(--t1)">${f.feature_name||f.feature_id}</span>
+          ${pill((f.priority||'').toUpperCase(), pC(f.priority))}
+        </div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:7px;line-height:1.65">${f.why_this_account||''}</div>
+        ${f.specific_scenario ? `<div style="font-size:11px;color:#70B8FF;margin-bottom:7px;padding:7px 10px;background:#3A9EFF08;border-radius:5px;line-height:1.55;font-style:italic">${f.specific_scenario}</div>` : ''}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:3px">PROOF METRIC</div><div style="font-size:11px;color:var(--t2);line-height:1.5">${f.proof_metric||''}</div></div>
+          ${f.when_not_to_lead ? `<div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:3px">⚠ WHEN TO HOLD THIS</div><div style="font-size:11px;color:var(--t3);line-height:1.5">${f.when_not_to_lead}</div></div>` : ''}
+        </div>
+      </div>`;
+    const critFeat = groupByPriority('critical').concat(groupByPriority('must-have'));
+    const highFeat = groupByPriority('high');
+    const niceFeat = groupByPriority('nice-to-have');
+    featHTML = section('🔑', `FEATURE PRIORITY STACK — ${company.toUpperCase()}`, `
+      ${critFeat.length ? `<div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:6px">CRITICAL — LEAD WITH THESE</div>${critFeat.map(featCard).join('')}` : ''}
+      ${highFeat.length ? `<div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin:10px 0 6px">HIGH PRIORITY</div>${highFeat.map(featCard).join('')}` : ''}
+      ${niceFeat.length ? `<div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin:10px 0 6px">NICE TO HAVE — DON'T LEAD</div>${niceFeat.map(featCard).join('')}` : ''}`, '#3A9EFF');
+  }
 
-  // ── Executive Narrative ──────────────────────────────────
-  const execHTML = `
-    <div style="display:flex;flex-direction:column;gap:10px">
-      ${ec.one_pager_headline ? `<div style="font-size:18px;font-weight:800;color:var(--t1);line-height:1.35;padding:14px 16px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">${ec.one_pager_headline}</div>` : ''}
-      ${ec.problem_statement ? `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:12px 14px">
-        <div style="font-size:9px;font-weight:800;color:#EF4444;margin-bottom:6px">THE PROBLEM</div>
-        <div style="font-size:13px;color:var(--t2);line-height:1.75">${ec.problem_statement}</div>
-      </div>` : ''}
-      ${ec.solution_statement ? `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:12px 14px">
-        <div style="font-size:9px;font-weight:800;color:#10B981;margin-bottom:6px">THE SOLUTION</div>
-        <div style="font-size:13px;color:var(--t2);line-height:1.75">${ec.solution_statement}</div>
-      </div>` : ''}
-      ${(ec.business_case||[]).length ? `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:12px 14px">
-        <div style="font-size:9px;font-weight:800;color:#3A9EFF;margin-bottom:6px">BUSINESS CASE</div>
-        ${ec.business_case.map(b=>`<div style="display:flex;gap:7px;align-items:flex-start;font-size:12px;color:var(--t2);margin-bottom:5px;line-height:1.6"><span style="color:#3A9EFF;font-weight:800">→</span>${b}</div>`).join('')}
-      </div>` : ''}
-      ${ec.risk_of_inaction ? `<div style="background:#EF444408;border:1px solid #EF444430;border-radius:7px;padding:12px 14px">
-        <div style="font-size:9px;font-weight:800;color:#EF4444;margin-bottom:6px">RISK OF INACTION</div>
-        <div style="font-size:13px;color:#FCA5A5;line-height:1.75;font-style:italic">${ec.risk_of_inaction}</div>
-      </div>` : ''}
-    </div>`;
+  // ── ADOPTION STRATEGY ─────────────────────────────────────────
+  const ap = r.adoption_strategy || {};
+  let adoptHTML = '';
+  if (ap.week_1 || ap.month_1 || ap.quarter_1) {
+    const milestone = (label, color, data) => data ? `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:12px 14px;margin-bottom:8px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:${color};margin-bottom:7px">${label}</div>
+        <div style="font-size:12px;color:var(--t1);margin-bottom:8px;line-height:1.65;font-weight:600">${data.action||''}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          ${data.quick_win||data.success_metric ? `<div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:3px">QUICK WIN / SUCCESS METRIC</div><div style="font-size:11px;color:var(--t2);line-height:1.5">${data.quick_win||data.success_metric||''}</div></div>` : ''}
+          ${data.failure_signal ? `<div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:3px">⚠ FAILURE SIGNAL</div><div style="font-size:11px;color:#FF9999;line-height:1.5">${data.failure_signal}</div></div>` : ''}
+          ${data.expansion_hook||data.expansion_signal ? `<div style="grid-column:1/-1"><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#A78BFA;margin-bottom:3px">EXPANSION HOOK</div><div style="font-size:11px;color:var(--t2);line-height:1.5">${data.expansion_hook||data.expansion_signal||''}</div></div>` : ''}
+          ${data.business_outcome ? `<div style="grid-column:1/-1"><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:3px">EXEC OUTCOME</div><div style="font-size:11px;color:var(--t2);line-height:1.5">${data.business_outcome}</div></div>` : ''}
+        </div>
+      </div>` : '';
+    adoptHTML = section('📅', 'ADOPTION ROADMAP', `
+      ${milestone('WEEK 1', '#3A9EFF', ap.week_1)}
+      ${milestone('MONTH 1', '#A78BFA', ap.month_1)}
+      ${milestone('90 DAYS', '#10B981', ap.quarter_1)}`, '#A78BFA');
+  }
 
-  // ── Next Actions ──────────────────────────────────────────
-  const nexts = (r.next_actions||[]).map(a => `
-    <div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border)">
-      <span style="font-size:9px;font-weight:800;color:var(--blue);white-space:nowrap;padding-top:2px;min-width:70px">${a.timeline||''}</span>
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px">${a.action||''}</div>
-        <div style="font-size:11px;color:var(--t3)">${a.purpose||''}</div>
+  // ── CSM PLAYBOOK ──────────────────────────────────────────────
+  const csm = r.csm_playbook || {};
+  let csmHTML = '';
+  if (csm.onboarding_milestones?.length || csm.health_triggers?.length) {
+    csmHTML = section('📋', 'CSM PLAYBOOK', `
+      ${csm.onboarding_milestones?.length ? `
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:7px">ONBOARDING MILESTONES</div>
+        ${csm.onboarding_milestones.map(m=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:10px;font-weight:800;color:#3A9EFF;min-width:60px;flex-shrink:0">${m.day}</span>
+          <div><div style="font-size:11px;color:var(--t1);margin-bottom:2px">${m.milestone}</div>
+          ${m.if_missed ? `<div style="font-size:11px;color:#EF4444">If missed: ${m.if_missed}</div>` : ''}</div>
+        </div>`).join('')}` : ''}
+      ${csm.health_triggers?.length ? `
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin:12px 0 7px">HEALTH TRIGGERS</div>
+        ${csm.health_triggers.map(t=>`<div style="background:var(--surface);border-radius:5px;padding:9px 12px;margin-bottom:6px">
+          <div style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:3px">${t.signal}</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:3px">${t.what_it_means}</div>
+          <div style="font-size:11px;color:#10B981">Action: ${t.action}</div>
+        </div>`).join('')}` : ''}
+      ${csm.qbr_questions?.length ? `
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#A78BFA;margin:12px 0 7px">QBR QUESTIONS</div>
+        ${csm.qbr_questions.map((q,i)=>`<div style="display:flex;gap:7px;font-size:11px;color:var(--t2);margin-bottom:5px;line-height:1.5"><span style="color:#A78BFA;font-weight:700;flex-shrink:0">Q${i+1}</span>${q}</div>`).join('')}` : ''}
+      ${csm.expansion_signals?.length ? `
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin:12px 0 7px">EXPANSION SIGNALS — WATCH FOR THESE</div>
+        ${csm.expansion_signals.map(s=>`<div style="display:flex;gap:7px;font-size:11px;color:var(--t2);margin-bottom:5px;line-height:1.5"><span style="color:#10B981;font-weight:700">→</span>${s}</div>`).join('')}` : ''}
+      `, '#10B981');
+  }
+
+  // ── STAKEHOLDER MAP ───────────────────────────────────────────
+  let stakeHTML = '';
+  if (r.stakeholder_strategy?.length) {
+    stakeHTML = section('👥', 'STAKEHOLDER MAP', `
+      ${r.stakeholder_strategy.map(st=>`
+        <div style="border:1px solid var(--border);border-left:3px solid ${sC(st.stance)};border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:8px;background:var(--surface)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;flex-wrap:wrap;gap:6px">
+            <span style="font-size:13px;font-weight:700;color:var(--t1)">${st.role}</span>
+            ${pill((st.stance||'').toUpperCase(), sC(st.stance))}
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--t4);margin-bottom:3px">MOTIVATION</div><div style="font-size:11px;color:var(--t2);line-height:1.5">${st.motivation||''}</div></div>
+            <div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--t4);margin-bottom:3px">HOW TO APPROACH</div><div style="font-size:11px;color:var(--t2);line-height:1.5">${st.how_to_approach||st.approach||''}</div></div>
+            ${st.risk ? `<div style="grid-column:1/-1"><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:3px">⚠ HIDDEN VETO / RISK</div><div style="font-size:11px;color:#FF9999;line-height:1.5">${st.risk}</div></div>` : ''}
+          </div>
+        </div>`).join('')}`, '#A78BFA');
+  }
+
+  // ── CHAMPION TOOLKIT ─────────────────────────────────────────
+  const ct = r.champion_toolkit || {};
+  let champHTML = '';
+  if (ct.elevator_pitch || ct.cfo_email_body) {
+    champHTML = section('🏆', 'CHAMPION TOOLKIT — WHAT TO GIVE THEM', `
+      ${ct.elevator_pitch ? `<div style="background:#10B98108;border:1px solid #10B98130;border-radius:7px;padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:5px">ELEVATOR PITCH (FOR WHEN THEIR CEO ASKS)</div>
+        <div style="font-size:14px;color:var(--t1);font-style:italic;line-height:1.65;font-weight:600">"${ct.elevator_pitch}"</div>
+      </div>` : ''}
+      ${ct.cfo_email_subject ? `<div style="margin-bottom:10px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:5px">INTERNAL EMAIL TO CFO — SEND THIS TO YOUR CHAMPION</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--t4);margin-bottom:3px;font-weight:700">Subject: ${ct.cfo_email_subject}</div>
+          <div style="border-top:1px solid var(--border);padding-top:8px;margin-top:5px;font-size:12px;color:var(--t2);line-height:1.75;white-space:pre-line">${ct.cfo_email_body||''}</div>
+        </div>
+      </div>` : ''}
+      ${ct.key_data_point ? `<div style="background:#F59E0B08;border:1px solid #F59E0B30;border-radius:7px;padding:10px 14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:5px">THE ONE NUMBER THAT GETS BUDGET APPROVED</div>
+        <div style="font-size:13px;color:var(--t1);font-weight:700;line-height:1.65">${ct.key_data_point}</div>
+      </div>` : ''}`, '#10B981');
+  }
+
+  // ── COMPETITIVE ───────────────────────────────────────────────
+  const cd = r.competitive_displacement || {};
+  let compHTML = '';
+  if (cd.win_argument || cd.migration_path) {
+    compHTML = section('⚔️', `COMPETITIVE DISPLACEMENT — ${(cd.current_tool||'').toUpperCase()}`, `
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="background:var(--surface);border-radius:6px;padding:9px 12px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:4px">WIN ARGUMENT</div>
+          <div style="font-size:11px;color:var(--t2);line-height:1.55">${cd.win_argument||''}</div>
+        </div>
+        <div style="background:var(--surface);border-radius:6px;padding:9px 12px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:4px">MIGRATION PATH</div>
+          <div style="font-size:11px;color:var(--t2);line-height:1.55">${cd.migration_path||''}</div>
+        </div>
+        <div style="background:var(--surface);border-radius:6px;padding:9px 12px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:4px">⚠ LANDMINES</div>
+          <div style="font-size:11px;color:#FF9999;line-height:1.55">${cd.landmines||''}</div>
+        </div>
       </div>
-    </div>`).join('');
+      ${cd.trigger_objections?.length ? `<div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:6px">OBJECTIONS TO EXPECT</div>
+        ${cd.trigger_objections.map(o=>`<div style="font-size:11px;color:var(--t2);margin-bottom:4px;display:flex;gap:6px"><span style="color:#F59E0B;font-weight:700">·</span>${o}</div>`).join('')}` : ''}
+      `, '#EF4444');
+  }
+
+  // ── OBJECTION PLAYBOOK ────────────────────────────────────────
+  let objHTML = '';
+  if (r.objection_playbook?.length) {
+    objHTML = section('🛡️', 'OBJECTION PLAYBOOK', `
+      ${r.objection_playbook.map(o=>`
+        <div style="border:1px solid var(--border);border-radius:7px;padding:12px 14px;margin-bottom:8px;background:var(--surface)">
+          <div style="font-size:13px;font-weight:700;color:#EF4444;margin-bottom:6px;line-height:1.5">"${o.objection||''}"</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.5;font-style:italic">Real concern: ${o.real_concern||''}</div>
+          <div style="background:#10B98108;border:1px solid #10B98125;border-left:2px solid #10B981;border-radius:0 5px 5px 0;padding:9px 12px">
+            <div style="font-size:11px;font-weight:800;color:#10B981;margin-bottom:4px">RESPONSE</div>
+            <div style="font-size:12px;color:var(--t1);line-height:1.7">${o.response||''}</div>
+          </div>
+          ${o.proof ? `<div style="font-size:11px;color:var(--t4);margin-top:6px">Proof/demo: ${o.proof}</div>` : ''}
+        </div>`).join('')}`, '#F59E0B');
+  }
+
+  // ── EXEC NARRATIVE + FRAMING TOGGLE ──────────────────────────
+  const en = r.executive_narrative || {};
+  let execHTML = '';
+  if (en.one_pager_headline) {
+    execHTML = section('📄', 'EXECUTIVE NARRATIVE', `
+      <div style="font-size:18px;font-weight:800;color:var(--t1);margin-bottom:14px;line-height:1.4">${en.one_pager_headline}</div>
+      <div style="display:flex;gap:6px;margin-bottom:12px" id="exec-toggle-bar">
+        <button onclick="document.getElementById('exec-full').style.display='block';document.getElementById('exec-ciso').style.display='none';document.getElementById('exec-cfo').style.display='none';" style="padding:5px 12px;border-radius:4px;border:1px solid #3A9EFF44;background:#3A9EFF14;color:#70B8FF;font-size:11px;font-weight:700;cursor:pointer">Full</button>
+        <button onclick="document.getElementById('exec-full').style.display='none';document.getElementById('exec-ciso').style.display='block';document.getElementById('exec-cfo').style.display='none';" style="padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--t3);font-size:11px;font-weight:700;cursor:pointer">CISO Frame</button>
+        <button onclick="document.getElementById('exec-full').style.display='none';document.getElementById('exec-ciso').style.display='none';document.getElementById('exec-cfo').style.display='block';" style="padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--t3);font-size:11px;font-weight:700;cursor:pointer">CFO Frame</button>
+      </div>
+      <div id="exec-full">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+          <div style="background:var(--surface);border-radius:6px;padding:10px 13px">
+            <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:5px">THE PROBLEM</div>
+            <div style="font-size:12px;color:var(--t2);line-height:1.7">${en.problem_statement||''}</div>
+          </div>
+          <div style="background:var(--surface);border-radius:6px;padding:10px 13px">
+            <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:5px">THE SOLUTION</div>
+            <div style="font-size:12px;color:var(--t2);line-height:1.7">${en.solution_statement||''}</div>
+          </div>
+        </div>
+        ${(en.business_case||[]).length ? `<div style="background:var(--surface);border-radius:6px;padding:10px 13px;margin-bottom:10px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:8px">BUSINESS CASE</div>
+          ${en.business_case.map(b=>`<div style="display:flex;gap:7px;font-size:12px;color:var(--t2);margin-bottom:5px;line-height:1.55"><span style="color:#3A9EFF;font-weight:700;flex-shrink:0">→</span>${b}</div>`).join('')}
+        </div>` : ''}
+      </div>
+      <div id="exec-ciso" style="display:none">
+        <div style="background:#EF444408;border:1px solid #EF444425;border-left:3px solid #EF4444;border-radius:0 7px 7px 0;padding:13px 15px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:6px">CISO FRAMING — CONTROL GAPS & COMPLIANCE</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.75">${en.ciso_framing||en.problem_statement||''}</div>
+        </div>
+      </div>
+      <div id="exec-cfo" style="display:none">
+        <div style="background:#F59E0B08;border:1px solid #F59E0B25;border-left:3px solid #F59E0B;border-radius:0 7px 7px 0;padding:13px 15px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:6px">CFO FRAMING — COST, RISK & ROI</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.75">${en.cfo_framing||en.solution_statement||''}</div>
+        </div>
+      </div>
+    `, '#3A9EFF');
+  }
+
+  // ── NEXT ACTIONS ──────────────────────────────────────────────
+  let naHTML = '';
+  if (r.next_actions?.length) {
+    naHTML = section('✅', 'NEXT ACTIONS', `
+      ${r.next_actions.map(a=>`
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:10px;font-weight:800;color:#3A9EFF;min-width:70px;flex-shrink:0;padding-top:2px">${a.timeline||''}</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:2px">${a.action||''}</div>
+            <div style="font-size:11px;color:var(--t3)">${a.purpose||''}</div>
+          </div>
+        </div>`).join('')}`, '#10B981');
+  }
 
   out.innerHTML = `<div class="cb-out-wrap">
     <div class="cb-actions">
       <button class="cb-action-btn" onclick="copyProfile()">📋 Copy Notes</button>
-      <button class="cb-action-btn" onclick="copyExecNarrative()">📝 Copy Exec Narrative</button>
-      <button class="cb-action-btn primary" onclick="runAnalysis()">⚡ Re-run Analysis</button>
+      <button class="cb-action-btn" onclick="copyExecNarrative()">📝 Exec Narrative</button>
+      <button class="cb-action-btn" onclick="exportStrategyPDF()">⬇️ Export PDF</button>
+      <button class="cb-action-btn primary" onclick="runAnalysis()">⚡ Re-run</button>
     </div>
     ${snapshotHTML}
-    ${section('🔑','FEATURE ANALYSIS — PRIORITISED FOR '+company.toUpperCase(),features,'#3A9EFF')}
-    ${section('📅','ADOPTION STRATEGY',adoptionHTML,'#10B981')}
-    ${section('👥','STAKEHOLDER STRATEGY','<div class="cb-pgrid">'+stakeholders+'</div>','#A78BFA')}
-    ${section('⚔️','COMPETITIVE DISPLACEMENT',compHTML,'#F59E0B')}
-    ${objections ? section('🛡️','OBJECTION PLAYBOOK',objections,'#EF4444') : ''}
-    ${section('📄','EXECUTIVE NARRATIVE',execHTML,'#60A5FA')}
-    ${nexts ? section('➡️','NEXT ACTIONS','<div>'+nexts+'</div>','#10B981') : ''}
+    ${w1pHTML}
+    ${roiHTML}
+    ${dqHTML}
+    ${vocHTML}
+    ${featHTML}
+    ${adoptHTML}
+    ${csmHTML}
+    ${stakeHTML}
+    ${champHTML}
+    ${compHTML}
+    ${objHTML}
+    ${execHTML}
+    ${naHTML}
   </div>`;
-  out.scrollTop = 0;
 }
+
+
+function copyProfile() {
+  if (!cbLastResult) return;
+  const { result: r, company } = cbLastResult;
+  const s = r.snapshot || {};
+  const lines = [
+    `CUSTOMER STRATEGY — ${company.toUpperCase()}`,
+    `Urgency: ${(s.urgency||'').toUpperCase()} | ${s.headline||''}`,
+    `Primary Risk: ${s.primary_risk||''}`,
+    `Deal Read: ${s.deal_confidence||''}`, '',
+  ];
+  if (r.feature_analysis?.length) {
+    lines.push('FEATURE PRIORITIES:');
+    r.feature_analysis.forEach(f => lines.push(`[${f.priority}] ${f.feature_name}: ${f.why_this_account}`));
+    lines.push('');
+  }
+  if (r.adoption_strategy) {
+    const ap = r.adoption_strategy;
+    lines.push('ADOPTION PATH:');
+    if (ap.week_1) lines.push(`Week 1: ${ap.week_1.action}`);
+    if (ap.month_1) lines.push(`Month 1: ${ap.month_1.action}`);
+    if (ap.quarter_1) lines.push(`90 days: ${ap.quarter_1.action}`);
+    lines.push('');
+  }
+  if (r.stakeholder_strategy?.length) {
+    lines.push('STAKEHOLDERS:');
+    r.stakeholder_strategy.forEach(s => lines.push(`• ${s.role} [${s.stance}]: ${s.motivation}`));
+    lines.push('');
+  }
+  if (r.objection_playbook?.length) {
+    lines.push('OBJECTIONS:');
+    r.objection_playbook.forEach(o => lines.push(`• "${o.objection}" → ${o.response}`));
+    lines.push('');
+  }
+  if (r.next_actions?.length) {
+    lines.push('NEXT ACTIONS:');
+    r.next_actions.forEach(a => lines.push(`• ${a.timeline}: ${a.action}`));
+  }
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.querySelector('.cb-action-btn');
+    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = '📋 Copy Notes', 2000); }
+  });
+}
+
+function exportStrategyPDF() {
+  if (!cbLastResult) return;
+  const { result: r, company } = cbLastResult;
+  const s = r.snapshot || {};
+  const ec = r.executive_narrative || {};
+  const dateStr = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  const uColor = u => ({ high:'#DC2626', medium:'#D97706', low:'#059669' }[u] || '#6B7280');
+  const pColor = p => ({ critical:'#DC2626', high:'#D97706', 'nice-to-have':'#059669' }[p] || '#6B7280');
+  const sColor = s => ({ champion:'#059669', buyer:'#2563EB', influencer:'#7C3AED', blocker:'#DC2626', unknown:'#6B7280' }[s] || '#6B7280');
+
+  const urgencyHex = uColor(s.urgency);
+
+  // Feature analysis table
+  const featRows = (r.feature_analysis||[]).map(f => `
+    <tr style="border-bottom:1px solid #E5E7EB">
+      <td style="padding:10px 12px;font-weight:600;color:#111827;font-size:12px">${f.feature_name||f.feature_id||''}</td>
+      <td style="padding:10px 12px"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:${pColor(f.priority)}18;color:${pColor(f.priority)};border:1px solid ${pColor(f.priority)}30">${(f.priority||'').toUpperCase()}</span></td>
+      <td style="padding:10px 12px;font-size:11px;color:#374151;line-height:1.5">${f.why_this_account||''}</td>
+      <td style="padding:10px 12px;font-size:11px;color:#6B7280;line-height:1.5">${f.proof_metric||''}</td>
+    </tr>`).join('');
+
+  // Stakeholders
+  const stakeholderCards = (r.stakeholder_strategy||[]).map(st => `
+    <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:7px;padding:12px 14px;break-inside:avoid">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:12px;font-weight:700;color:#111827">${st.role}</span>
+        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:${sColor(st.stance)}18;color:${sColor(st.stance)};border:1px solid ${sColor(st.stance)}30">${(st.stance||'').toUpperCase()}</span>
+      </div>
+      <div style="font-size:11px;color:#374151;margin-bottom:4px">${st.motivation||''}</div>
+      <div style="font-size:11px;color:#2563EB;font-style:italic">→ ${st.how_to_approach||''}</div>
+    </div>`).join('');
+
+  // Objections
+  const objCards = (r.objection_playbook||[]).map(o => `
+    <div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:7px;padding:12px 14px;margin-bottom:10px;break-inside:avoid">
+      <div style="font-size:12px;font-weight:700;color:#991B1B;margin-bottom:6px">"${o.objection||''}"</div>
+      <div style="font-size:11px;color:#6B7280;margin-bottom:7px">Real concern: ${o.real_concern||''}</div>
+      <div style="font-size:12px;color:#111827;line-height:1.6;border-top:1px solid #FCA5A5;padding-top:7px">→ ${o.response||''}</div>
+    </div>`).join('');
+
+  // Adoption path
+  const ap = r.adoption_strategy || {};
+  const adoptionRows = [
+    { label: 'WEEK 1', color: '#2563EB', data: ap.week_1 },
+    { label: 'MONTH 1', color: '#7C3AED', data: ap.month_1 },
+    { label: '90 DAYS', color: '#059669', data: ap.quarter_1 },
+  ].filter(x => x.data).map(x => `
+    <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #E5E7EB">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.1em;color:${x.color};min-width:70px;flex-shrink:0;padding-top:2px">${x.label}</span>
+      <div>
+        <div style="font-size:12px;color:#111827;margin-bottom:3px;line-height:1.6">${x.data.action||''}</div>
+        ${x.data.quick_win ? `<div style="font-size:11px;color:#059669">Quick win: ${x.data.quick_win}</div>` : ''}
+        ${x.data.success_metric ? `<div style="font-size:11px;color:#6B7280">Success: ${x.data.success_metric}</div>` : ''}
+        ${x.data.business_outcome ? `<div style="font-size:11px;color:#2563EB">Outcome: ${x.data.business_outcome}</div>` : ''}
+      </div>
+    </div>`).join('');
+
+  // Competitive
+  const cd = r.competitive_displacement || {};
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+  <title>1Password Strategy — ${company}</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#fff;color:#111827}
+    @page{margin:16mm}
+    @media print{body{padding:0}}
+    .page-break{break-before:page}
+    h2{font-size:14px;font-weight:800;color:#1E3A5F;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #E5E7EB;letter-spacing:.05em}
+    .section{margin-bottom:28px;break-inside:avoid}
+    table{width:100%;border-collapse:collapse}
+    th{background:#F3F4F6;padding:9px 12px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.1em;color:#6B7280;border-bottom:1px solid #E5E7EB}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .card{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;padding:13px 15px}
+    .label{font-size:9px;font-weight:800;letter-spacing:.12em;margin-bottom:5px}
+    .value{font-size:12px;line-height:1.65}
+    .biz-case-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;font-size:12px;color:#374151;line-height:1.6}
+    .biz-case-item::before{content:"→";color:#2563EB;font-weight:700;flex-shrink:0}
+  </style>
+  </head><body>
+  <div style="max-width:820px;margin:0 auto;padding:28px">
+
+    <!-- COVER HEADER -->
+    <div style="background:linear-gradient(135deg,#0F2537 0%,#1A3D5C 100%);color:#fff;border-radius:12px;padding:28px 32px;margin-bottom:28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.18em;color:#60A5FA;margin-bottom:10px">1PASSWORD · CUSTOMER STRATEGY DOCUMENT · CONFIDENTIAL</div>
+      <div style="font-size:28px;font-weight:800;margin-bottom:6px">${company}</div>
+      <div style="font-size:14px;color:#93C5FD;margin-bottom:16px;line-height:1.6">${s.headline||''}</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:8px 14px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#60A5FA;margin-bottom:3px">URGENCY</div>
+          <div style="font-size:14px;font-weight:800;color:${urgencyHex === '#DC2626' ? '#FCA5A5' : urgencyHex === '#D97706' ? '#FDE68A' : '#A7F3D0'}">${(s.urgency||'').toUpperCase()}</div>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:8px 14px;flex:1">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#60A5FA;margin-bottom:3px">PRIMARY RISK</div>
+          <div style="font-size:12px;color:#FCA5A5;line-height:1.5">${s.primary_risk||''}</div>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:8px 14px;flex:1">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#60A5FA;margin-bottom:3px">DEAL CONFIDENCE</div>
+          <div style="font-size:12px;color:#BAE6FD;line-height:1.5">${s.deal_confidence||''}</div>
+        </div>
+      </div>
+      ${s.executive_hook ? `<div style="margin-top:16px;padding:12px 16px;background:rgba(251,191,36,.12);border-left:3px solid #FCD34D;border-radius:0 6px 6px 0">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#FCD34D;margin-bottom:4px">OPENING LINE FOR THE MEETING</div>
+        <div style="font-size:13px;color:#FEF3C7;font-style:italic">"${s.executive_hook}"</div>
+      </div>` : ''}
+      <div style="margin-top:14px;font-size:10px;color:#60A5FA;opacity:.7">Generated ${dateStr} · For internal CSM use</div>
+    </div>
+
+    <!-- EXECUTIVE NARRATIVE -->
+    ${ec.one_pager_headline ? `
+    <div class="section">
+      <h2>EXECUTIVE NARRATIVE</h2>
+      <div style="font-size:20px;font-weight:800;color:#111827;margin-bottom:16px;line-height:1.3">${ec.one_pager_headline}</div>
+      <div class="grid-2" style="margin-bottom:12px">
+        <div class="card">
+          <div class="label" style="color:#DC2626">THE PROBLEM</div>
+          <div class="value" style="color:#374151">${ec.problem_statement||''}</div>
+        </div>
+        <div class="card">
+          <div class="label" style="color:#059669">THE SOLUTION</div>
+          <div class="value" style="color:#374151">${ec.solution_statement||''}</div>
+        </div>
+      </div>
+      ${(ec.business_case||[]).length ? `
+      <div class="card" style="margin-bottom:12px">
+        <div class="label" style="color:#2563EB;margin-bottom:8px">BUSINESS CASE</div>
+        ${ec.business_case.map(b=>`<div class="biz-case-item">${b}</div>`).join('')}
+      </div>` : ''}
+      ${ec.risk_of_inaction ? `
+      <div style="background:#FEF2F2;border-left:4px solid #DC2626;border-radius:0 7px 7px 0;padding:12px 16px">
+        <div class="label" style="color:#DC2626;margin-bottom:5px">RISK OF INACTION</div>
+        <div style="font-size:12px;color:#991B1B;font-style:italic;line-height:1.65">${ec.risk_of_inaction}</div>
+      </div>` : ''}
+    </div>` : ''}
+
+    <!-- FEATURE ANALYSIS -->
+    ${featRows ? `
+    <div class="section page-break">
+      <h2>FEATURE PRIORITY STACK FOR ${company.toUpperCase()}</h2>
+      <table>
+        <thead><tr><th>Feature</th><th>Priority</th><th>Why for ${company}</th><th>Proof Metric</th></tr></thead>
+        <tbody>${featRows}</tbody>
+      </table>
+    </div>` : ''}
+
+    <!-- ADOPTION PATH -->
+    ${adoptionRows ? `
+    <div class="section">
+      <h2>ADOPTION ROADMAP</h2>
+      ${adoptionRows}
+      ${ap.quarter_1?.expansion_signal ? `<div style="margin-top:10px;padding:10px 14px;background:#ECFDF5;border-left:3px solid #059669;border-radius:0 6px 6px 0;font-size:11px;color:#065F46"><strong>Expansion signal:</strong> ${ap.quarter_1.expansion_signal}</div>` : ''}
+    </div>` : ''}
+
+    <!-- STAKEHOLDER MAP -->
+    ${stakeholderCards ? `
+    <div class="section">
+      <h2>STAKEHOLDER MAP</h2>
+      <div class="grid-2">${stakeholderCards}</div>
+    </div>` : ''}
+
+    <!-- COMPETITIVE -->
+    ${cd.win_argument ? `
+    <div class="section">
+      <h2>COMPETITIVE DISPLACEMENT</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="card">
+          <div class="label" style="color:#059669;margin-bottom:6px">WIN ARGUMENT</div>
+          <div class="value" style="color:#374151">${cd.win_argument||''}</div>
+        </div>
+        <div class="card">
+          <div class="label" style="color:#2563EB;margin-bottom:6px">MIGRATION PATH</div>
+          <div class="value" style="color:#374151">${cd.migration_path||''}</div>
+        </div>
+        <div class="card">
+          <div class="label" style="color:#DC2626;margin-bottom:6px">LANDMINES TO AVOID</div>
+          <div class="value" style="color:#374151">${cd.landmines||''}</div>
+        </div>
+      </div>
+    </div>` : ''}
+
+    <!-- OBJECTION PLAYBOOK -->
+    ${objCards ? `
+    <div class="section page-break">
+      <h2>OBJECTION PLAYBOOK</h2>
+      ${objCards}
+    </div>` : ''}
+
+    <!-- NEXT ACTIONS -->
+    ${(r.next_actions||[]).length ? `
+    <div class="section">
+      <h2>NEXT ACTIONS</h2>
+      ${r.next_actions.map(a=>`
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #E5E7EB">
+          <span style="font-size:10px;font-weight:800;color:#2563EB;min-width:70px;flex-shrink:0;padding-top:2px">${a.timeline||''}</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#111827;margin-bottom:2px">${a.action||''}</div>
+            <div style="font-size:11px;color:#6B7280">${a.purpose||''}</div>
+          </div>
+        </div>`).join('')}
+    </div>` : ''}
+
+    <!-- FOOTER -->
+    <div style="margin-top:32px;padding-top:14px;border-top:2px solid #E5E7EB;display:flex;justify-content:space-between;font-size:10px;color:#9CA3AF">
+      <span>1Password Enterprise Password Management · 1password.com/business</span>
+      <span>Confidential · For CSM use only</span>
+    </div>
+  </div>
+  <scr`+'ipt>window.onload=()=>setTimeout(()=>window.print(),500);</scr'+'ipt></body></html>';
+
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+}
+
 
 function copyExecNarrative() {
   if (!cbLastResult) return;
@@ -3564,24 +4135,983 @@ function cbUpdateGovernancePanels() {
     const panel = document.createElement('div');
     panel.className = 'gov-panel';
     panel.style.borderColor = (I?.color || '#A78BFA') + '40';
+    const panelId = 'gov-' + iid;
     panel.innerHTML = `
-      <div class="gov-panel-hdr">
+      <div class="gov-panel-trigger" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.gov-panel-chevron').classList.toggle('open')">
         <span class="gov-panel-ico">${I?.emoji||'🏢'}</span>
-        <span class="gov-panel-title">${intel.title}</span>
+        <span class="gov-panel-title">💡 ${I?.name||''} Governance Brief — compliance rules & CSM talking points</span>
+        <span class="gov-panel-chevron">▶</span>
       </div>
-      <div class="gov-panel-sub">Why 1Password credential governance is non-negotiable in this vertical — and how to explain it to your champion.</div>
-      ${intel.rules.map(r => `<div class="gov-rule"><span class="gov-rule-ico">${r.ico}</span><span class="gov-rule-text">${r.text}</span></div>`).join('')}
-      <div class="gov-frameworks">${intel.frameworks.map(f=>`<span class="gov-fw">${f}</span>`).join('')}</div>
-      <div class="cb-edu-section">
-        <div class="cb-edu-title">💡 CSM EDUCATION — WHAT TO KNOW & SAY</div>
-        ${intel.edu.map(e=>`<div class="cb-edu-row">${e}</div>`).join('')}
+      <div class="gov-panel-body">
+        <div class="gov-panel-sub">Why credential governance is non-negotiable in this vertical.</div>
+        ${intel.rules.map(r => `<div class="gov-rule"><span class="gov-rule-ico">${r.ico}</span><span class="gov-rule-text">${r.text}</span></div>`).join('')}
+        <div class="gov-frameworks">${intel.frameworks.map(f=>`<span class="gov-fw">${f}</span>`).join('')}</div>
+        <div class="cb-edu-section">
+          <div class="cb-edu-title">💡 WHAT TO KNOW & SAY ON THE CALL</div>
+          ${intel.edu.map(e=>`<div class="cb-edu-row">${e}</div>`).join('')}
+        </div>
       </div>`;
     container.appendChild(panel);
   });
 }
 
 
+
+// ═══════════════════════════════════════════════════════════════
+// PRODUCT SYSTEM — EPM / Trelica / Device Trust
+// ═══════════════════════════════════════════════════════════════
+
+const PRODUCT_KEY = '1p_epm_hub_products_v1';
+
+// Default: EPM always on, others off
+let activeProducts = { epm: true, trelica: false, dt: false };
+
+function productInit() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PRODUCT_KEY) || '{}');
+    activeProducts = { epm: true, trelica: false, dt: false, ...saved };
+    activeProducts.epm = true; // EPM always active
+  } catch(e) {}
+  productSyncUI();
+}
+
+function toggleProduct(pid) {
+  if (pid === 'epm') return; // EPM always on
+  activeProducts[pid] = !activeProducts[pid];
+  try { localStorage.setItem(PRODUCT_KEY, JSON.stringify(activeProducts)); } catch(e) {}
+  productSyncUI();
+  // Refresh current view to show/hide product content
+  const detail = document.getElementById('detail');
+  if (detail && detail.innerHTML.length > 100) {
+    // Rerender current tab
+    const curTabEl = document.querySelector('.tab.active');
+    if (curTabEl) {
+      const tab = curTabEl.id.replace('tab-', '');
+      if (tab === 'industry' && window.curIid) renderIndustry(window.curIid);
+      if (tab === 'departments' && window.curDid) renderDept(window.curDid);
+    }
+  }
+}
+
+function productSyncUI() {
+  ['epm','trelica','dt'].forEach(pid => {
+    const btn = document.getElementById('ptog-' + pid);
+    if (!btn) return;
+    btn.className = 'product-toggle';
+    if (activeProducts[pid]) btn.classList.add('active-' + pid);
+  });
+}
+
+function hasProduct(pid) { return !!activeProducts[pid]; }
+
+// ── Product section renderer ──────────────────────────────────
+function renderProductSection(type, title, rows, lockedMsg) {
+  if (activeProducts[type]) {
+    return `<div class="product-section ${type}">
+      <div class="product-section-hdr">
+        <span>${type === 'trelica' ? '🔷' : '🛡️'}</span>
+        <span>${title}</span>
+      </div>
+      <div class="product-section-body">
+        ${rows.map(r => `<div class="product-section-row">${r}</div>`).join('')}
+      </div>
+    </div>`;
+  }
+  return `<div class="product-locked">
+    <div class="product-locked-ico">${type === 'trelica' ? '🔷' : '🛡️'}</div>
+    <div class="product-locked-t">${lockedMsg || (type === 'trelica' ? 'Trelica · SaaS Manager' : 'Device Trust')} not active</div>
+    <div class="product-locked-s">Turn on this product in the bar above to see how it adds to this use case.</div>
+    <button class="product-locked-btn" onclick="toggleProduct('${type}')">+ Add ${type === 'trelica' ? 'Trelica' : 'Device Trust'}</button>
+  </div>`;
+}
+
+// ── Platform progression view ─────────────────────────────────
+function showPlatformView() {
+  document.getElementById('sidebar').style.display = 'none';
+  document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
+
+  const steps = [
+    { key: 'epm', label: 'FOUNDATION · ACTIVE', name: 'Enterprise Password Manager', color: '#10B981',
+      desc: 'Credentials, secrets, vaults, lifecycle. The base layer every customer starts with.',
+      features: ['Vault management + SCIM provisioning','Secrets Automation + CLI','Events API + SIEM integration','Travel Mode + Guest Accounts','Watchtower + Passkeys'] },
+    { key: 'trelica', label: hasProduct('trelica') ? 'ACTIVE' : 'NEXT STEP', name: 'Trelica · SaaS Manager', color: '#3A9EFF',
+      desc: 'Discover and govern every app, including shadow IT and AI tools.',
+      features: ['SaaS discovery (vault + browser)','Shadow AI detection (Claude, Cursor, ChatGPT)','Access lifecycle automation','Granular access requests','Account governance + spend visibility'] },
+    { key: 'dt', label: hasProduct('dt') ? 'ACTIVE' : 'NEXT STEP', name: '1Password Device Trust', color: '#F59E0B',
+      desc: 'Ensure every device accessing apps meets security requirements.',
+      features: ['Managed + unmanaged device checks','SSF integrations: Zscaler, Duo, Netskope, SailPoint','External checks: training, MFA enrollment, employment status','AI discovery on endpoints (.env files, SSH keys, API keys)','Zero Trust enforcement without full MDM'] },
+    { key: 'xam', label: 'DESTINATION', name: 'Extended Access Management (XAM)', color: '#A78BFA',
+      desc: 'Every identity, every app, every device — governed from one platform.',
+      features: ['Unified Access console','Credential discovery (machine + human)','MCP Gateway (beta)','Behavioral analytics + risk-based access','AI agent governance'] },
+  ];
+
+  const stepsHTML = steps.map(s => {
+    const isActive = s.key === 'xam' ? (hasProduct('trelica') && hasProduct('dt')) : hasProduct(s.key);
+    const feats = s.features.map(f => `<div style="font-size:10px;color:${isActive ? 'var(--t2)' : 'var(--t4)'};margin-bottom:2px;display:flex;gap:4px"><span style="color:${s.color};flex-shrink:0">${isActive ? '✓' : '○'}</span>${f}</div>`).join('');
+    return `<div style="flex:1;padding:14px;border-radius:8px;border:1px ${isActive ? 'solid' : 'dashed'};border-color:${s.color}${isActive ? '44' : '22'};background:${s.color}${isActive ? '10' : '06'};cursor:${s.key !== 'xam' && s.key !== 'epm' && !isActive ? 'pointer' : 'default'}" onclick="${s.key !== 'xam' && s.key !== 'epm' && !isActive ? `toggleProduct('${s.key}')` : ''}">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:${s.color};margin-bottom:5px">${s.label}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:6px">${s.name}</div>
+      <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-bottom:10px">${s.desc}</div>
+      ${feats}
+      ${!isActive && s.key !== 'xam' ? `<div style="margin-top:8px;font-size:10px;color:${s.color};font-weight:700">Click to activate →</div>` : ''}
+    </div>`;
+  }).join('<div style="display:flex;align-items:center;padding:0 8px;color:var(--t4);font-size:16px">→</div>');
+
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#A78BFA;margin-bottom:8px">◆ THE 1PASSWORD PLATFORM</div>
+      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Extended Access Management</div>
+      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:24px;max-width:600px">Every layer of access security — from your password manager to your device trust layer — unified in one platform. Start with EPM. Layer in Trelica and Device Trust. Arrive at XAM.</div>
+
+      <div style="display:flex;gap:12px;align-items:stretch;margin-bottom:28px">
+        ${stepsHTML}
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.13em;color:var(--t4);margin-bottom:10px">Q2 2026 — WHAT'S SHIPPING NOW</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div>
+            <div style="font-size:9px;font-weight:800;color:#10B981;margin-bottom:6px">EPM</div>
+            <div style="font-size:11px;color:var(--t2);line-height:1.6">Google Workspace provisioning · Migrator tools from LastPass/Dashlane · Entra ID secret expiration · Smart login creation · Environments MCP for OpenAI Codex</div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:800;color:#3A9EFF;margin-bottom:6px">TRELICA</div>
+            <div style="font-size:11px;color:var(--t2);line-height:1.6">Enhanced AI integrations (Claude, Cursor, ChatGPT, OpenAI) · Onboarding wizard · Granular access requests · Account governance</div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:800;color:#F59E0B;margin-bottom:6px">DEVICE TRUST</div>
+            <div style="font-size:11px;color:var(--t2);line-height:1.6">SSF expansion: Zscaler, Duo, Netskope, SailPoint · External checks: training completion, MFA enrollment, employment status</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TRELICA FEATURE DATA
+// ═══════════════════════════════════════════════════════════════
+const TRELICA_FEATURES = [
+  {
+    id: 'multi-source-discovery',
+    section: 'discovery',
+    sectionLabel: '🔍 Discovery & Visibility',
+    n: 'Multi-Source App Discovery',
+    badge: 'core',
+    color: '#3A9EFF',
+    prob: 'Your IdP shows you the apps IT approved. It has no idea about the other 60–80% employees are actually using — OAuth grants, expense-card subscriptions, browser logins, and credentials stored in password managers.',
+    how: '1Password SaaS Manager pulls from 5 distinct discovery sources: Identity Provider, OAuth/Active Consent, Finance & Expense Systems, Browser Extension, and 1Password EPM vault data. Only SaaS manager that uses password vault data as a discovery signal.',
+    stat: 'Avg 2–4× more apps than IdP alone shows',
+    usecases: [
+      'Surface shadow IT before auditors do — 96 avg newly discovered apps on first run',
+      'Detect OAuth grants employees clicked "Sign in with Google" on — invisible to IT',
+      'Find expense-card SaaS subscriptions that never touched the IdP',
+      'Identify apps employees store credentials for in 1Password vaults'
+    ],
+    personas: ['IT Admin', 'CISO / Security Lead', 'VP IT', 'Finance / Procurement'],
+    replaces: 'IdP-only inventory (40–60% of real usage), expense report spot-checks, manual "reply with what apps you use" email'
+  },
+  {
+    id: 'shadow-it-detection',
+    section: 'discovery',
+    sectionLabel: '🔍 Discovery & Visibility',
+    n: 'Shadow IT Detection & Risk Scoring',
+    badge: 'security',
+    color: '#3A9EFF',
+    prob: 'IT learns about shadow apps only when a security event occurs. 34% of apps in the average org bypass SSO entirely — each one is an offboarding gap and an unmanaged access risk.',
+    how: 'Apps get risk categories assigned automatically. Single-user flags catch forgotten trials. Competitor password manager detection. Shadow AI detection flags ChatGPT, Cursor, and similar tools bypassing SSO. The average customer finds 96 newly discovered apps on first inventory run.',
+    stat: '34% of apps bypass SSO — SaaS Manager finds them',
+    usecases: [
+      'Detect AI tools (ChatGPT, Cursor, Copilot) bypassing SSO and accessing company data',
+      'Flag competitor password managers employees are using alongside 1Password',
+      'Surface single-user apps — forgotten trials expensed to the company',
+      'Auto-triage shadow IT: email user, create IT task, notify manager'
+    ],
+    personas: ['CISO / Security Lead', 'IT Admin', 'GRC / Compliance Officer', 'Security Operations'],
+    replaces: 'Discovery-by-incident model; the well-meaning employee who mentions shadow apps in passing'
+  },
+  {
+    id: 'app-catalog',
+    section: 'discovery',
+    sectionLabel: '🔍 Discovery & Visibility',
+    n: 'App Profile & Security Catalog',
+    badge: 'core',
+    color: '#3A9EFF',
+    prob: 'When an app comes up for renewal, IT can\'t find the SOC 2 report, doesn\'t know who owns it internally, and has no idea what users are actually doing with it.',
+    how: '40,000+ app library auto-enriches every discovered app with category, compliance links, and similar-app signals. Every app gets a rich profile with ownership roles, utilisation data, access levels, and custom fields your team defines.',
+    stat: '40,000+ app library with compliance docs',
+    usecases: [
+      'Run access reviews 3× faster when app profiles are populated with owners and context',
+      'Direct links to SOC 2 Type II and ISO 27001 reports from the 40K app library',
+      'Custom fields: add Risk tier, Data classification, Procurement contact per app',
+      'Venn diagram overlap analysis — prove consolidation to budget owners with data'
+    ],
+    personas: ['IT Admin', 'App Owner (any dept)', 'GRC / Compliance Officer', 'Procurement'],
+    replaces: 'Scattered app notes in wikis, compliance report bookmarks, ownership tracked in spreadsheets'
+  },
+  {
+    id: 'access-reviews',
+    section: 'governance',
+    sectionLabel: '🔐 Access Governance',
+    n: 'Automated Access Reviews',
+    badge: 'compliance',
+    color: '#3A9EFF',
+    prob: 'SOC 2 requires demonstrating access review on a schedule. Most orgs do it manually in spreadsheets. It takes 2 weeks of IT time per cycle and produces point-in-time snapshots that don\'t satisfy continuous monitoring requirements.',
+    how: 'Configure review frequency per app (monthly, quarterly, or custom). 350+ direct app integrations provide actual access levels — not just "user exists." One-click revocation from within the review. Full audit trail exportable with supplemental material for auditors.',
+    stat: '150–250 IT hours saved per audit cycle',
+    usecases: [
+      'SOC 2 Type II: complete access review history with timestamped evidence',
+      'ISO 27001: annual access control documentation ready on demand',
+      'HIPAA: PHI system access documentation with per-user revocation trail',
+      'PCI-DSS: privileged access review logs exportable for QSA'
+    ],
+    personas: ['GRC / Compliance Officer', 'CISO / Security Lead', 'IT Admin', 'Legal / Risk'],
+    replaces: 'Quarterly spreadsheet exports from each app, 2-week IT sprint before every audit cycle'
+  },
+  {
+    id: 'onboarding-workflows',
+    section: 'governance',
+    sectionLabel: '🔐 Access Governance',
+    n: 'Automated Onboarding Workflows',
+    badge: 'automation',
+    color: '#3A9EFF',
+    prob: 'New hires wait days for app access. IT chases department heads for lists. Productivity is lost on day one — every time. Manual onboarding creates 3–5 day wait times and IT ticket queues.',
+    how: 'No-code workflow builder triggers on HRIS events (Workday, BambooHR, Rippling). Role-based provisioning maps each job role to a defined app stack. Provisions to IdP groups, direct app accounts, and notifies IT and manager — all in sequence.',
+    stat: '50–70% faster time-to-productivity for new hires',
+    usecases: [
+      'New Software Engineer: auto-provision GitHub, Jira, Confluence, Slack, 1Password before start date',
+      'HRIS departure triggers complete multi-app revocation — minutes not days',
+      'Birthright access: define apps every role gets on day one automatically',
+      'Contractor workflows: scoped access with automatic expiry at engagement end'
+    ],
+    personas: ['IT Admin', 'HR / People Ops', 'Hiring Managers', 'IT Helpdesk'],
+    replaces: 'Manual onboarding checklists, "request form" email chains with IT, 3–5 day wait for app access'
+  },
+  {
+    id: 'offboarding-workflows',
+    section: 'governance',
+    sectionLabel: '🔐 Access Governance',
+    n: 'Automated Offboarding Workflows',
+    badge: 'security critical',
+    color: '#EF4444',
+    prob: 'When someone leaves, IT manually revokes access from every app individually. The average org takes 7+ days. Former employees retain live SaaS access the entire time — including non-SSO apps that IdP group removal doesn\'t touch.',
+    how: 'One workflow closes every door. Triggers on HRIS departure or manual initiation. Covers non-SSO apps via direct API — not just IdP group removal. Device offboarding (lock/wipe via MDM/EDR) runs in the same workflow. Every revocation timestamped and exportable.',
+    stat: 'Avg 7 days → minutes. The single highest-ROI workflow.',
+    usecases: [
+      'Revoke Salesforce, GitHub, Notion access the moment HRIS marks departure',
+      'Lock or wipe device via Jamf, Intune, or CrowdStrike in the same workflow',
+      'Complete audit trail: every revocation timestamped, exportable for auditors',
+      'Non-SSO apps covered: OAuth grants, expense-card subscriptions, browser-discovered apps'
+    ],
+    personas: ['CISO / Security Lead', 'IT Admin', 'HR / People Ops', 'Compliance Officer'],
+    replaces: 'Manual offboarding checklist, HR-to-IT email chain, 7-day access gap, audit finding on offboarding lag'
+  },
+  {
+    id: 'license-rightsizing',
+    section: 'spend',
+    sectionLabel: '💸 Spend Optimisation',
+    n: 'License Utilisation & Rightsizing',
+    badge: 'spend',
+    color: '#10B981',
+    prob: 'Paying for 200 Zoom Pro licences with no idea how many are active. Somewhere between 70 and 200 — nobody knows. 20–30% of licences go unused every cycle across the average org.',
+    how: 'Three data layers: live account lists from app API, contracted seats from uploaded contracts, and workflow-triggered reclaim. Utilisation bar shows purchased vs. active vs. actually-logged-in. Inactivity rules flag users by 30/60/90 days. Automated reclaim workflow notifies, confirms with manager, revokes on no response.',
+    stat: '20–35% SaaS spend recovered in first cycle',
+    usecases: [
+      '"The utilisation bar on Salesforce showed 85 seats, 52 active users. Reclaim paid for SaaS Manager 18 months."',
+      'Downgrade workflows: identify users on Pro tier using only Free-tier features',
+      'Role-change detection: users who changed department but carry old-role licences',
+      'AI contract extraction: upload PDF → renewal date, seat count, cost per seat auto-extracted'
+    ],
+    personas: ['IT Admin', 'Finance / Procurement', 'CFO', 'App Owners'],
+    replaces: 'Manual licence reconciliation, "guess and hope" renewal approach, spreadsheet always out of date'
+  },
+  {
+    id: 'savings-tracker',
+    section: 'spend',
+    sectionLabel: '💸 Spend Optimisation',
+    n: 'Savings Tracker & CFO Reporting',
+    badge: 'spend',
+    color: '#10B981',
+    prob: 'After 6 months of SaaS Manager, IT can\'t prove to the CFO what was actually saved. Every licence reclaimed, downgraded, or cancelled exists somewhere but there\'s no single number Finance can trust.',
+    how: 'Every licence reclaimed or downgraded through a SaaS Manager workflow is automatically recorded and rolled up into an annualised savings figure. CFO-ready export. Benchmark comparison vs. similar-size orgs. Savings by app and by action type.',
+    stat: '35% SaaS spend reduction (Flipdish) · 10× ROI in 6 months (Zuora)',
+    usecases: [
+      'CFO-ready savings export: present to Finance and leadership as a board artefact',
+      'Spend dashboard reconciles contracted costs, expense data, and integration sources',
+      'Duplicate tool detection: surfaces apps in same category where consolidation saves money',
+      'Finance integrations: Coupa, Brex, Zip, Workday Finance, NetSuite, QuickBooks, Xero, SAP'
+    ],
+    personas: ['CFO / Finance', 'IT Director', 'CTO / VP IT', 'Procurement'],
+    replaces: 'Manual cost-saving tallies, "trust us we saved money" conversation, inability to quantify IT\'s P&L contribution'
+  },
+  {
+    id: 'workflow-builder',
+    section: 'automation',
+    sectionLabel: '⚡ Automation & Workflows',
+    n: 'No-Code Workflow Builder',
+    badge: 'automation',
+    color: '#A78BFA',
+    prob: 'IT spends most of their time on repeatable tasks — onboarding, offboarding, licence checks, shadow IT notifications. No time left for strategic work. The same tasks run every hire and departure.',
+    how: 'Visual drag-and-drop workflow canvas. Triggers: HRIS event, app discovery, inactivity threshold, schedule, or manual. Actions: provision access, revoke access, change licence tier, send email/Slack, create IT task, lock/wipe device. Test mode: dry-run without side effects.',
+    stat: '0.5–1 FTE saved annually with 3+ active workflows',
+    usecases: [
+      'New app discovered (1 user) → auto-email user → create IT review task',
+      'Licence inactive 60 days → Slack user → wait 7 days → reclaim if no response',
+      '"Built onboarding, offboarding, and shadow-IT triage in one afternoon. Replaced a 6-tab spreadsheet."',
+      '350+ direct app integrations: provision users, change licence tiers, revoke access in the app — not just the IdP'
+    ],
+    personas: ['IT Admin', 'IT Operations', 'Security Engineer', 'Any technical admin'],
+    replaces: 'Manual IT checklists, recurring calendar reminders, same repeatable tasks every hire and departure'
+  },
+  {
+    id: 'mcp-server',
+    section: 'ai',
+    sectionLabel: '🤖 AI & Integrations',
+    n: 'MCP Server for Agentic AI',
+    badge: 'new',
+    color: '#A78BFA',
+    prob: 'Security teams want to build AI agents that can query SaaS inventory — apps, access, spend, renewals. There\'s no safe, programmatic way to expose that data to an LLM without custom API development.',
+    how: 'Secure, read-only MCP Server for SaaS Manager — available on AWS AI Marketplace. Agentic AI systems query SaaS inventory data safely and programmatically. Maintains security boundaries — read-only, governed access, no write actions exposed.',
+    stat: 'Available on AWS AI Marketplace',
+    usecases: [
+      '"Which apps renew in 60 days with utilisation below 50%?" — LLM queries SaaS Manager directly',
+      'Build AI-powered IT workflows without custom API development or security risk',
+      'AI contract extraction: PDF → renewal date, seat count, cost per seat in minutes',
+      'Shadow AI discovery: detect AI tools bypassing SSO at higher rates than any other app category'
+    ],
+    personas: ['IT Operations', 'Security Engineering', 'CTO / VP Engineering', 'Any LLM workflow builder'],
+    replaces: 'Custom API scripts, manual exports for AI analysis, security risk of exposing SaaS data to AI tools uncontrolled'
+  }
+];
+
+const DEVICE_TRUST_FEATURES = [
+  {
+    id: 'device-discovery',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'Device Discovery & Inventory',
+    badge: 'zero trust foundation',
+    color: '#F59E0B',
+    prob: 'Over 50% of devices accessing company apps are completely unknown to IT. MDM shows what\'s enrolled — not what\'s actually accessing company resources. Orgs typically find 30%+ more devices than their MDM inventory shows.',
+    how: 'Device Trust covers every device type: corporate-managed (Windows, macOS, Linux), BYOD, contractor, unmanaged endpoints, Linux machines MDM has never touched, and mobile devices via Device Trust for 1Password Mobile. Full discovery typically achieved in the first week.',
+    stat: '30%+ more devices found vs MDM inventory · 100% device visibility day one',
+    usecases: [
+      '"We discovered 34 unmanaged devices accessing Salesforce on day one. None were in Intune."',
+      'Linux/DevOps teams: the highest-privilege engineers are historically "out of scope" for compliance — not anymore',
+      'Contractor devices: enrolled and compliant without forcing full MDM installation',
+      'Mobile: Device Trust for 1Password Mobile — health checks before vault unlock on iOS/Android'
+    ],
+    personas: ['IT Administrator', 'CISO', 'Security Operations', 'Compliance Officer'],
+    replaces: 'Spreadsheet asset inventories, MDM enrollment gaps, "how many devices actually access our apps?" answer'
+  },
+  {
+    id: 'health-checks',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: '125+ Real-Time Device Health Checks',
+    badge: 'core capability',
+    color: '#F59E0B',
+    prob: 'SSO verifies the user. Nobody\'s verifying the device. A stolen credential from any unverified device gets in. MDM does periodic check-ins — Device Trust runs 125+ live checks at every single login attempt.',
+    how: 'LOGIN FLOW: Employee logs in → IdP redirect → Device Trust intercepts as 2nd factor → 125+ checks fire → Compliant: access granted. Non-compliant: blocked + guided remediation with exact fix instructions.',
+    stat: '92% reduction in breach risk from unmanaged/non-compliant endpoints',
+    usecases: [
+      'OS version & patches · Browser security & updates · Disk encryption (FileVault/BitLocker)',
+      'EDR installed & running (confirms CrowdStrike is actually running, not just installed) · Firewall active',
+      'Screen lock & auto-lock · Unauthorized software · VPN status · Certificate validity',
+      '"CrowdStrike costs $100–200/user/year but 10–15% of endpoints aren\'t configured correctly. MDM says it\'s installed; Device Trust confirms it\'s running."'
+    ],
+    personas: ['CISO', 'Zero Trust Architect', 'IT Administrator', 'Security Operations'],
+    replaces: 'Reactive breach discovery, periodic MDM check-ins that miss real-time configuration drift'
+  },
+  {
+    id: 'guided-remediation',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'Guided Self-Remediation',
+    badge: 'employee-first',
+    color: '#F59E0B',
+    prob: 'Blocking employees creates IT tickets, productivity loss, and resentment. The old approach: lock them out and let IT sort it out. This generates 40%+ of device-security helpdesk tickets.',
+    how: 'Instead of a generic error message, employees get exactly which check failed, step-by-step fix instructions in plain language, and an instant "check again" button. No IT ticket. No waiting. Privacy-respecting — never reads files, messages, or browsing history.',
+    stat: '40% reduction in IT helpdesk tickets · Remediation time under 5 min, no IT involvement',
+    usecases: [
+      '"Instead of forcing a restart during a sales demo, Device Trust alerted the rep that Chrome needed updating before the next login."',
+      'Eliminates: "why am I locked out?" helpdesk tickets, chasing employees to update OS/EDR/browser',
+      'Employee becomes active owner of their own device security — no training campaign needed',
+      'BYOD: employees accept a health check far more readily than a management profile'
+    ],
+    personas: ['End User / Employee', 'IT Helpdesk', 'CISO', 'HR / People Operations'],
+    replaces: '"Locked out, call IT" model; forced OS restarts mid-workday; manual patch enforcement campaigns'
+  },
+  {
+    id: 'byod-contractors',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'BYOD & Contractor Device Security',
+    badge: 'privacy-first',
+    color: '#F59E0B',
+    prob: 'MDM is too intrusive for personal devices. Contractors won\'t enroll. BYOD creates the biggest unmanaged access gap. The impossible choice: install full MDM on personal devices, or hope for the best.',
+    how: 'Device Trust is the privacy-first third option. Enforces OS version, screen lock, disk encryption, EDR, firewall — without reading personal files, photos, browsing history, or requiring MDM enrollment. Contractor one-time device registration with no ongoing surveillance.',
+    stat: 'Closes largest unmanaged gap · Contractors actually comply — lightweight, privacy-respecting',
+    usecases: [
+      'Healthcare: clinical staff personal devices accessing patient portals without MDM profiles',
+      'Legal: attorney personal devices accessing matter management systems',
+      'Financial services: BYOD traders accessing market data platforms',
+      'One-time device registration for contractors — NEVER: personal files, MDM profiles, location tracking'
+    ],
+    personas: ['CISO', 'IT Administrator', 'HR / People Ops', 'Legal / Compliance'],
+    replaces: 'Impossible MDM-vs-nothing choice; Device Trust is the third option employees and contractors actually accept'
+  },
+  {
+    id: 'idp-integration',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'IdP / SSO Integration (Zero Trust Completion)',
+    badge: 'zero trust',
+    color: '#F59E0B',
+    prob: 'SSO verifies identity. MDM manages config. Neither verifies whether the device is actually healthy at the exact moment of login. Every access event missing the device compliance signal is a Zero Trust gap.',
+    how: '"Connecting Device Trust to Okta took 2 hours. Within a week, we had device posture signals on every login event in our SIEM." Passes device identity + health signals to IdP at auth time. Per-app policy granularity — stricter for AWS, lighter for intranet.',
+    stat: 'Transforms SSO from identity layer to full Zero Trust layer',
+    usecases: [
+      'Okta · Microsoft Entra ID · Google Workspace · JumpCloud · Ping Identity · Any SAML 2.0 / OIDC',
+      'Critical: AWS/GCP/Azure — EDR running + disk encrypted + OS current + firewall active',
+      'High: Salesforce — EDR installed + OS within 2 versions + screen lock',
+      'Low: Company intranet — device enrolled + basic check passed'
+    ],
+    personas: ['IT Administrator', 'Zero Trust Architect', 'CISO', 'Security Operations'],
+    replaces: 'Assumption that SSO is sufficient for Zero Trust; periodic device checks not enforced at login moment'
+  },
+  {
+    id: 'mdm-complement',
+    section: 'security',
+    sectionLabel: '🔒 Security Features',
+    n: 'MDM Complement (Intune / Jamf)',
+    badge: 'complements existing',
+    color: '#F59E0B',
+    prob: 'MDM manages device configuration. It cannot verify the device is actually healthy at the exact moment someone logs into a sensitive app. And MDM can\'t touch BYOD or contractor devices at all.',
+    how: 'MDM does: push config profiles, manage software deployment, enforce settings at enrollment, periodic compliance check-ins. Device Trust adds: real-time check at every login, BYOD + contractor coverage, confirms EDR is running correctly, catches drift between check-ins, posture signal to IdP.',
+    stat: 'MDM investment protected and extended — not replaced. 30-day full compliance.',
+    usecases: [
+      'Microsoft Intune · Jamf Pro · Kandji · Mosyle · VMware WS1 — all complemented not replaced',
+      'MDM reports CrowdStrike installed; Device Trust confirms it\'s actively running on all endpoints',
+      'Managed devices: verified at login. Unmanaged: enrolled and monitored. Compliance drift: caught real-time.',
+      'No false confidence that MDM enrollment = device security compliance'
+    ],
+    personas: ['IT Administrator', 'CISO', 'Zero Trust Architect', 'Security Operations'],
+    replaces: 'False confidence that MDM enrollment = device security compliance; periodic check-ins that miss real-time drift'
+  },
+  {
+    id: 'compliance-checks',
+    section: 'compliance',
+    sectionLabel: '📋 Compliance Automation',
+    n: '125+ Pre-Built Compliance Checks',
+    badge: 'audit ready',
+    color: '#F59E0B',
+    prob: 'Most orgs can\'t prove continuous device compliance. They reconstruct evidence before every audit — and find gaps they didn\'t know existed. Auditors increasingly require real-time device security verification, not just policy existence.',
+    how: '125+ pre-built device health checks mapped directly to major compliance frameworks. Evidence collected continuously and automatically — available for export anytime. Before vs. After: point-in-time snapshots → continuous real-time evidence. Weeks of audit prep → hours.',
+    stat: '50% reduction in audit preparation time',
+    usecases: [
+      'SOC 2 Type II: continuous device security evidence — complete access review history',
+      'ISO 27001: device control documentation, annual evidence ready on demand',
+      'HIPAA: endpoint access controls for PHI — per-device, per-check, timestamped records',
+      '"Our SOC 2 auditor asked for 9 months of device compliance evidence. I exported it in 3 minutes."'
+    ],
+    personas: ['GRC / Compliance Officer', 'CISO', 'IT Administrator', 'Legal / Risk'],
+    replaces: 'Collect-evidence sprint before every SOC 2 cycle; "we think we were compliant" answer to auditors'
+  },
+  {
+    id: 'custom-osquery',
+    section: 'compliance',
+    sectionLabel: '📋 Compliance Automation',
+    n: 'Custom Policy Builder (OSquery)',
+    badge: 'customizable',
+    color: '#F59E0B',
+    prob: 'Every org has industry-specific compliance requirements that no pre-built framework covers exactly. Customer security audits, vendor risk assessments, and internal policies all need custom device checks.',
+    how: 'Write custom device health checks using OSquery — the same open-source tool used by security teams at Facebook, Uber, and Palantir. Query any device state: installed software, processes, registry keys, configs. Custom checks appear alongside standard compliance reports.',
+    stat: 'Unlimited custom policies · Unlimited compliance coverage',
+    usecases: [
+      'Is VPN client v3.2+ installed and connected on external access?',
+      'Is 1Password installed on every device?',
+      'Is the approved corporate cert valid and not expired?',
+      'Is approved file transfer software the ONLY such tool present?'
+    ],
+    personas: ['Security Engineer', 'IT Administrator', 'GRC / Compliance Officer', 'CISO'],
+    replaces: 'Manual spot-check processes, compliance gaps pre-built frameworks don\'t cover, one-off scripts run inconsistently'
+  },
+  {
+    id: 'compliance-reporting',
+    section: 'compliance',
+    sectionLabel: '📋 Compliance Automation',
+    n: 'Compliance Reporting & Audit Evidence',
+    badge: 'continuous proof',
+    color: '#F59E0B',
+    prob: 'Proving device compliance means pulling evidence from MDM, endpoint tools, and spreadsheets for every device, every check, every review cycle. Point-in-time snapshots don\'t satisfy auditors who want continuous evidence.',
+    how: 'Per-device compliance status across all health checks. Historical compliance timeline proving continuous monitoring. Failed check logs with timestamps and remediation actions taken. Exportable CSV and PDF — auditor-ready in minutes. SIEM integration: Splunk, Sentinel, Elastic, Rapid7. Scheduled reports auto-delivered before review cycles.',
+    stat: '50% faster audit prep · SIEM-native integration · Historical timeline always-on',
+    usecases: [
+      'Admin cadence: Daily review new non-compliant devices · Weekly check compliance score trend · Monthly export for leadership · Quarterly QBR inclusion',
+      'SIEM integration: Splunk, Azure Sentinel, Elastic, Rapid7 — every device event streamed',
+      'Scheduled reports auto-delivered before every compliance review cycle',
+      '"Our SOC 2 auditor commented that our device evidence was the cleanest they\'d ever seen."'
+    ],
+    personas: ['GRC / Compliance Officer', 'CISO', 'IT Administrator', 'Security Operations'],
+    replaces: 'Pre-audit evidence sprint, manually pulling logs from MDM and endpoint tools, "we think we were compliant" answer'
+  },
+  {
+    id: 'admin-dashboard',
+    section: 'admin',
+    sectionLabel: '👁️ Admin & Visibility',
+    n: 'Admin Dashboard & Device Posture',
+    badge: 'complete control',
+    color: '#F59E0B',
+    prob: 'IT security dashboards show what\'s enrolled. Device Trust shows what\'s actually secure. Those are two very different things. Reactive firefighting vs. proactive, data-driven security practice.',
+    how: 'Single pane: every device, every compliance check, every risk flag. Admins see: per-device compliance score and individual check results, which devices are failing which checks and since when, remediation status, device risk tier (Compliant / Warning / Blocked), compliance trend over time.',
+    stat: '95%+ device compliance within 30 days of rollout',
+    usecases: [
+      'Track compliance as a KPI — present posture trends to leadership',
+      'Drill into any failed check for root cause analysis',
+      'Device risk tiers: Compliant / Warning / Blocked — actionable from dashboard',
+      'Export compliance reports for audit or leadership review on demand'
+    ],
+    personas: ['IT Administrator', 'CISO', 'Security Operations', 'GRC / Compliance Officer'],
+    replaces: 'Manual device audits, fragmented visibility across MDM/EDR/endpoint tools, quarterly device compliance review'
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// COMPETITOR DATA — TRELICA (SaaS Manager)
+// ═══════════════════════════════════════════════════════════════
+const SAAS_MANAGER_COMPETITORS = {
+  nudge_security: {
+    name: 'Nudge Security',
+    overview: 'Employee-led SaaS discovery focused on nudging users toward approved tools. Lightweight, behavioral approach. Weaker on access governance and workflow automation.',
+    strengths: ['Fast deployment', 'Employee-friendly UX', 'Good shadow IT discovery via OAuth'],
+    weaknesses: ['No access review automation', 'Weaker workflow builder', 'No EPM/vault discovery integration', 'Limited spend visibility', 'No asset management'],
+    win: '1Password wins on depth: automated access reviews, no-code workflow builder, EPM vault discovery, and device offboarding in the same platform. Nudge nudges — SaaS Manager governs.',
+    battle_card: '"Nudge Security is a discovery tool. SaaS Manager is a governance platform. Discovery without the ability to act on it — automated offboarding, access reviews, licence rightsizing — doesn\'t close your compliance gap."'
+  },
+  bettercloud: {
+    name: 'BetterCloud',
+    overview: 'SaaS management platform focused on IT operations and workflow automation. Strong in G Suite/Microsoft 365 shops. Narrower integration breadth and no vault-based discovery.',
+    strengths: ['Strong Google Workspace integration', 'Mature workflow automation', 'Good DLP features'],
+    weaknesses: ['Expensive at scale', 'Weaker multi-source discovery', 'No EPM integration', 'No asset management built in', 'Limited spend intelligence vs. contract management'],
+    win: 'SaaS Manager wins on breadth: 5-source discovery (including EPM vault), AI contract extraction, hardware lifecycle in the same offboarding flow, and the architectural moat of 1Password vault data as a discovery signal.',
+    battle_card: '"BetterCloud is an automation platform with discovery bolted on. SaaS Manager starts with the most complete discovery in the market — then automates. And only 1Password can discover apps from inside a password manager vault."'
+  },
+  torii: {
+    name: 'Torii',
+    overview: 'SaaS management platform with strong discovery and workflow automation. Mid-market focused. Competes closely with SaaS Manager on core use cases.',
+    strengths: ['Good multi-source discovery', 'Clean UX', 'Workflow automation', 'Competitive pricing'],
+    weaknesses: ['No password manager integration', 'Weaker spend analytics', 'No device/asset management', 'No AI contract extraction', 'Smaller integration library vs. 350+'],
+    win: '1Password wins on the vault discovery moat (no other SMP has it), device offboarding integration, AI contract intelligence, and the platform story — EPM + SaaS Manager + Device Trust vs. a standalone point solution.',
+    battle_card: '"Torii is a solid standalone SMP. 1Password SaaS Manager is built on the only platform that sits at both the credential layer and the SaaS layer simultaneously. That\'s an architectural advantage no other vendor can match."'
+  },
+  zylo: {
+    name: 'Zylo',
+    overview: 'SaaS management focused on spend intelligence and contract management. Strong CFO story. Weaker on access governance and automation.',
+    strengths: ['Strong spend analytics', 'Benchmark data', 'Good CFO-facing reporting', 'Contract management'],
+    weaknesses: ['Expensive', 'Weak access governance', 'Limited workflow automation', 'No discovery from EPM or browser extension', 'No access reviews'],
+    win: 'SaaS Manager wins on completeness: access reviews, automated onboarding/offboarding, and discovery — not just spend. The CFO story includes security ROI, not just cost savings.',
+    battle_card: '"Zylo is a spend tool for Finance. SaaS Manager is a governance platform for IT and Security that also produces the CFO savings report. If the primary buyer is IT/Security (not Procurement), SaaS Manager wins on breadth."'
+  },
+  productiv: {
+    name: 'Productiv',
+    overview: 'SaaS analytics focused on engagement data and productivity insights. Differentiated on deep behavioural analytics per app. Less focused on access governance and automation.',
+    strengths: ['Deep engagement analytics', 'ROI measurement per app', 'Good benchmark data'],
+    weaknesses: ['No access review automation', 'No workflow automation for lifecycle', 'No EPM integration', 'Analytics-focused, not governance-focused'],
+    win: 'SaaS Manager wins on governance action: automated offboarding, access reviews, licence reclaim workflows. Productiv measures usage — SaaS Manager governs access and automates action on that data.',
+    battle_card: '"Productiv tells you which apps employees love. SaaS Manager tells you who has access to which apps, when they last used them, and closes that access the moment they leave. Analytics vs. governance."'
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// COMPETITOR DATA — DEVICE TRUST
+// ═══════════════════════════════════════════════════════════════
+const DEVICE_TRUST_COMPETITORS = {
+  jamf: {
+    name: 'Jamf (Jamf Trust / Jamf Protect)',
+    overview: 'Market leader in Apple device management (MDM). Jamf Trust is their zero-trust network access product. Strong for Apple-only orgs. Doesn\'t cover Windows, Linux, or BYOD at the same depth.',
+    strengths: ['Best-in-class Apple MDM', 'Strong Mac compliance', 'Good Jamf Pro integration', 'Mature platform'],
+    weaknesses: ['Apple-centric — Windows and Linux coverage weaker', 'BYOD friction for non-Mac devices', 'No password manager integration', 'Separate product from MDM — adds complexity'],
+    win: 'Device Trust wins on cross-platform coverage (Windows, macOS, Linux, BYOD, contractors equally) and the architectural advantage of seeing both device posture AND the credentials being used. 1Password vault + device health = unique intelligence.',
+    battle_card: '"Jamf is the best choice if you\'re Apple-only. If you have any Windows, Linux, BYOD, or contractor devices — Device Trust covers the full surface. And Device Trust can confirm CrowdStrike is running on a Jamf-managed Mac, closing the gap MDM leaves."'
+  },
+  kandji: {
+    name: 'Kandji',
+    overview: 'Modern Apple MDM with strong compliance automation. Fast-growing in tech companies. MDM-focused — doesn\'t address the BYOD and contractor gap or real-time login verification.',
+    strengths: ['Modern UX', 'Fast deployment', 'Good compliance automation for Apple devices', 'Blueprints for policy management'],
+    weaknesses: ['Apple-only MDM', 'No BYOD coverage without MDM enrollment', 'No real-time login verification', 'No cross-platform posture checks', 'No password manager integration'],
+    win: 'Device Trust + Kandji is a common architecture: Kandji manages Mac corporate devices, Device Trust fills the BYOD, Windows, Linux, and contractor gap and adds real-time login verification Kandji\'s periodic check-ins miss.',
+    battle_card: '"Kandji is great MDM for Apple. Kandji + Device Trust is the complete architecture: Kandji manages your corporate Macs, Device Trust secures everything Kandji can\'t touch — and verifies every device at every login."'
+  },
+  crowdstrike_go: {
+    name: 'CrowdStrike Falcon Go / Identity',
+    overview: 'CrowdStrike is the market leader in EDR/XDR. Falcon Identity is their identity-based threat detection product. EDR blocks active threats — it doesn\'t verify device health at login time or cover BYOD without full agent deployment.',
+    strengths: ['Best-in-class EDR', 'Strong threat detection', 'Brand recognition', 'Comprehensive endpoint data'],
+    weaknesses: ['$100–200/user/year — expensive', '10–15% of endpoints misconfigured even with CrowdStrike', 'EDR ≠ device posture verification at login', 'No BYOD without full agent', 'No password manager integration'],
+    win: 'Device Trust and CrowdStrike are complementary: Device Trust verifies CrowdStrike is actually running correctly on every device (not just installed). "CrowdStrike costs $100–200/user but 10–15% aren\'t configured correctly. MDM says it\'s installed. Device Trust confirms it\'s active." Lead with complement story, not competition.',
+    battle_card: '"If they have CrowdStrike, Device Trust makes it work better. Device Trust confirms the Falcon agent is actively running on every endpoint — because MDM says installed, Device Trust verifies active. Position as complement, not competition."'
+  },
+  kolide: {
+    name: 'Kolide (now 1Password Device Trust)',
+    overview: '1Password Device Trust IS Kolide — acquired and integrated. The Kolide launcher agent is what Device Trust runs on devices. If a prospect is evaluating Kolide, they\'re evaluating Device Trust.',
+    strengths: ['This is Device Trust. Same product, same team, same agent.'],
+    weaknesses: [],
+    win: '"Kolide is now 1Password Device Trust. Same product, same team, same open-source agent (github.com/kolide/launcher). And now it\'s part of the 1Password platform — combined with EPM and SaaS Manager, giving you something no standalone Kolide deployment could."',
+    battle_card: '"If the prospect is evaluating Kolide specifically, they\'re evaluating Device Trust. The conversation is about the platform story — EPM + Device Trust + SaaS Manager = XAM. Kolide alone is a feature. 1Password Device Trust is part of a complete identity security platform."'
+  },
+  tanium: {
+    name: 'Tanium',
+    overview: 'Enterprise endpoint management platform. Very heavy — typically 5,000+ employee enterprise deployments. Overkill for mid-market. Complex deployment, high cost.',
+    strengths: ['Extremely powerful enterprise endpoint management', 'Very deep device data', 'Strong for large federal/enterprise deployments'],
+    weaknesses: ['Enterprise-only price and complexity', 'Multi-month deployments', 'Overkill for 500–5K employee orgs', 'No password manager integration', 'No self-remediation model'],
+    win: 'Device Trust wins on time-to-value (days vs months), employee experience (guided remediation vs lockout), BYOD coverage (no MDM required), and price point for mid-market orgs. Tanium is for the Fortune 500 problem. Device Trust solves the 500–5K employee problem in days.',
+    battle_card: '"Tanium is a 6-month deployment for 10,000+ employee enterprises. Device Trust is live in days for 500–5,000 employee orgs. If the timeline, budget, and org size don\'t fit Tanium, Device Trust is the right tool. And Device Trust adds guided employee self-remediation Tanium\'s model doesn\'t."'
+  }
+};
+
+
+
+// ── Trelica and DT page renderers ─────────────────────────────
+function showTrelicaHub() {
+  document.getElementById('sidebar').style.display = '';
+  document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
+  const te = document.getElementById('tab-trelica');
+  if (te) te.classList.add('active');
+
+  // Build sidebar by section
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = '';
+  const sections = [...new Set(TRELICA_FEATURES.map(f => f.section))];
+  const sectionLabels = {};
+  TRELICA_FEATURES.forEach(f => { sectionLabels[f.section] = f.sectionLabel; });
+
+  sections.forEach(sec => {
+    const hdr = document.createElement('div');
+    hdr.className = 'sec-hdr'; hdr.style.color = '#3A9EFF';
+    hdr.textContent = sectionLabels[sec] || sec.toUpperCase();
+    sb.appendChild(hdr);
+    TRELICA_FEATURES.filter(f => f.section === sec).forEach(f => {
+      const el = document.createElement('div');
+      el.className = 'ni';
+      el.innerHTML = `<span class="nn">${f.n}${f.badge ? ` <span style="font-size:8px;padding:1px 5px;border-radius:3px;background:#3A9EFF18;color:#70B8FF;border:1px solid #3A9EFF33;margin-left:4px">${f.badge}</span>` : ''}</span>`;
+      el.onclick = () => {
+        document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
+        el.classList.add('active');
+        renderTrelicaFeature(f);
+      };
+      sb.appendChild(el);
+    });
+  });
+
+  // Add competitor section to sidebar
+  const compHdr = document.createElement('div');
+  compHdr.className = 'sec-hdr'; compHdr.style.color = '#EF4444';
+  compHdr.textContent = '⚔️ COMPETITORS';
+  sb.appendChild(compHdr);
+  Object.entries(SAAS_MANAGER_COMPETITORS || {}).forEach(([cid, C]) => {
+    const el = document.createElement('div');
+    el.className = 'ni';
+    el.innerHTML = `<span class="nn">${C.name}</span>`;
+    el.onclick = () => {
+      document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+      renderSaaSCompetitor(cid);
+    };
+    sb.appendChild(el);
+  });
+
+  // Show overview
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#3A9EFF;margin-bottom:7px">🔷 TRELICA BY 1PASSWORD</div>
+      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">SaaS Manager</div>
+      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:14px;max-width:600px">Everything your IT team needs to discover, govern, and optimise every SaaS application — without spreadsheets, manual workflows, or blind spots.</div>
+      <div style="background:#3A9EFF0C;border:1px solid #3A9EFF25;border-radius:7px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--t2);line-height:1.65">
+        <strong style="color:#70B8FF">The architectural moat:</strong> 1Password is the only SaaS management platform that surfaces apps from inside a password manager vault — because only 1Password makes both. Every non-SSO app employees store credentials for in 1Password becomes a discovery signal no other SMP can access.
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+        ${[{n:'130+',l:'Avg SaaS apps in 500-person org'},{n:'34%',l:'Apps bypass SSO entirely'},{n:'20–30%',l:'Licences unused each cycle'},{n:'96',l:'Avg new apps found on first run'}].map(s=>`
+          <div style="background:var(--surface);border:1px solid #3A9EFF33;border-radius:8px;padding:12px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:#3A9EFF;margin-bottom:3px">${s.n}</div>
+            <div style="font-size:10px;color:var(--t3);line-height:1.4">${s.l}</div>
+          </div>`).join('')}
+      </div>
+      <div style="font-size:11px;color:var(--t4);text-align:center">← Select a feature from the sidebar to see full detail</div>
+    </div>`;
+}
+
+function renderTrelicaFeature(f) {
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.12em;color:#3A9EFF;margin-bottom:6px">${f.sectionLabel}</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="font-size:20px;font-weight:800;color:var(--t1)">${f.n}</span>
+        ${f.badge ? `<span style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;background:#3A9EFF18;color:#70B8FF;border:1px solid #3A9EFF33;text-transform:uppercase">${f.badge}</span>` : ''}
+      </div>
+
+      <div style="background:#EF444408;border:1px solid #EF444430;border-radius:7px;padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:5px">THE PROBLEM</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.7;font-style:italic">${f.prob}</div>
+      </div>
+
+      <div style="background:#3A9EFF08;border:1px solid #3A9EFF25;border-left:3px solid #3A9EFF;border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:5px">HOW IT WORKS</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.7">${f.how}</div>
+      </div>
+
+      ${f.stat ? `<div style="background:#10B98108;border:1px solid #10B98130;border-radius:7px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:16px">📊</span>
+        <div style="font-size:12px;font-weight:700;color:#10B981">${f.stat}</div>
+      </div>` : ''}
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div>
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:8px">USE CASES</div>
+          ${f.usecases.map(u=>`<div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:6px;font-size:11px;color:var(--t2);line-height:1.55"><span style="color:#3A9EFF;font-weight:700;flex-shrink:0">→</span>${u}</div>`).join('')}
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:8px">WHO CARES</div>
+          ${f.personas.map(p=>`<div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:5px;font-size:11px;color:var(--t2)"><span style="color:#3A9EFF;flex-shrink:0">·</span>${p}</div>`).join('')}
+          ${f.replaces ? `<div style="margin-top:12px"><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--t4);margin-bottom:5px">WHAT THIS REPLACES</div><div style="font-size:11px;color:var(--t3);line-height:1.55">${f.replaces}</div></div>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderSaaSCompetitor(cid) {
+  const C = (SAAS_MANAGER_COMPETITORS||{})[cid]; if(!C) return;
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.14em;color:#EF4444;margin-bottom:7px">⚔️ SAAS MANAGER COMPETITOR</div>
+      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:10px">${C.name}</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:16px">${C.overview}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div style="background:var(--surface);border:1px solid #10B98130;border-radius:7px;padding:12px 14px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:8px">STRENGTHS</div>
+          ${C.strengths.map(s=>`<div style="display:flex;gap:7px;font-size:11px;color:var(--t2);margin-bottom:5px"><span style="color:#10B981;font-weight:700">✓</span>${s}</div>`).join('')}
+        </div>
+        <div style="background:var(--surface);border:1px solid #EF444430;border-radius:7px;padding:12px 14px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:8px">WEAKNESSES</div>
+          ${C.weaknesses.map(w=>`<div style="display:flex;gap:7px;font-size:11px;color:var(--t2);margin-bottom:5px"><span style="color:#EF4444;font-weight:700">✗</span>${w}</div>`).join('')}
+        </div>
+      </div>
+      <div style="background:#3A9EFF08;border:1px solid #3A9EFF25;border-left:3px solid #3A9EFF;border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:6px">WHY 1PASSWORD WINS</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.7">${C.win}</div>
+      </div>
+      <div style="background:#F59E0B08;border:1px solid #F59E0B30;border-radius:7px;padding:12px 14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:6px">💡 BATTLE CARD</div>
+        <div style="font-size:13px;color:var(--t1);line-height:1.75;font-style:italic">${C.battle_card}</div>
+      </div>
+    </div>`;
+}
+
+
+function showDeviceTrustHub() {
+  document.getElementById('sidebar').style.display = '';
+  document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
+  const te = document.getElementById('tab-dt');
+  if (te) te.classList.add('active');
+
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = '';
+  const sections = [...new Set(DEVICE_TRUST_FEATURES.map(f => f.section))];
+  const sectionLabels = {};
+  DEVICE_TRUST_FEATURES.forEach(f => { sectionLabels[f.section] = f.sectionLabel; });
+
+  sections.forEach(sec => {
+    const hdr = document.createElement('div');
+    hdr.className = 'sec-hdr'; hdr.style.color = '#F59E0B';
+    hdr.textContent = sectionLabels[sec] || sec.toUpperCase();
+    sb.appendChild(hdr);
+    DEVICE_TRUST_FEATURES.filter(f => f.section === sec).forEach(f => {
+      const el = document.createElement('div');
+      el.className = 'ni';
+      el.innerHTML = `<span class="nn">${f.n}${f.badge ? ` <span style="font-size:8px;padding:1px 5px;border-radius:3px;background:#F59E0B18;color:#F59E0B;border:1px solid #F59E0B33;margin-left:4px">${f.badge}</span>` : ''}</span>`;
+      el.onclick = () => {
+        document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
+        el.classList.add('active');
+        renderDTFeature(f);
+      };
+      sb.appendChild(el);
+    });
+  });
+
+  const compHdr = document.createElement('div');
+  compHdr.className = 'sec-hdr'; compHdr.style.color = '#EF4444';
+  compHdr.textContent = '⚔️ COMPETITORS';
+  sb.appendChild(compHdr);
+  Object.entries(DEVICE_TRUST_COMPETITORS || {}).forEach(([cid, C]) => {
+    const el = document.createElement('div');
+    el.className = 'ni';
+    el.innerHTML = `<span class="nn">${C.name}</span>`;
+    el.onclick = () => {
+      document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+      renderDTCompetitor(cid);
+    };
+    sb.appendChild(el);
+  });
+
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#F59E0B;margin-bottom:7px">🛡️ 1PASSWORD DEVICE TRUST</div>
+      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Device Trust</div>
+      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:14px;max-width:600px">Everything your security team needs to ensure only known, healthy devices access company apps and data — without locking anyone out or slowing anyone down.</div>
+      <div style="background:#F59E0B0C;border:1px solid #F59E0B25;border-radius:7px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--t2);line-height:1.65">
+        <strong style="color:#F59E0B">The architectural advantage:</strong> 1Password is the only vendor that sees both the credential in the password manager AND the device trying to use it. Device Trust + EPM = enforcement at the intersection of identity and endpoint that no other vendor can match.
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+        ${[{n:'40%',l:'IT helpdesk ticket reduction'},{n:'50%',l:'Faster audit prep'},{n:'95%+',l:'Device compliance in 30 days'},{n:'$4.45M',l:'Avg breach cost avoided'}].map(s=>`
+          <div style="background:var(--surface);border:1px solid #F59E0B33;border-radius:8px;padding:12px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:#F59E0B;margin-bottom:3px">${s.n}</div>
+            <div style="font-size:10px;color:var(--t3);line-height:1.4">${s.l}</div>
+          </div>`).join('')}
+      </div>
+      <div style="font-size:11px;color:var(--t4);text-align:center">← Select a feature from the sidebar to see full detail</div>
+    </div>`;
+}
+
+function renderDTFeature(f) {
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.12em;color:#F59E0B;margin-bottom:6px">${f.sectionLabel}</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="font-size:20px;font-weight:800;color:var(--t1)">${f.n}</span>
+        ${f.badge ? `<span style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;background:#F59E0B18;color:#F59E0B;border:1px solid #F59E0B33;text-transform:uppercase">${f.badge}</span>` : ''}
+      </div>
+
+      <div style="background:#EF444408;border:1px solid #EF444430;border-radius:7px;padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:5px">THE PROBLEM</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.7;font-style:italic">${f.prob}</div>
+      </div>
+
+      <div style="background:#F59E0B08;border:1px solid #F59E0B25;border-left:3px solid #F59E0B;border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:5px">HOW IT WORKS</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.7">${f.how}</div>
+      </div>
+
+      ${f.stat ? `<div style="background:#10B98108;border:1px solid #10B98130;border-radius:7px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:16px">📊</span>
+        <div style="font-size:12px;font-weight:700;color:#10B981">${f.stat}</div>
+      </div>` : ''}
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div>
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:8px">USE CASES</div>
+          ${f.usecases.map(u=>`<div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:6px;font-size:11px;color:var(--t2);line-height:1.55"><span style="color:#F59E0B;font-weight:700;flex-shrink:0">→</span>${u}</div>`).join('')}
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:8px">WHO CARES</div>
+          ${f.personas.map(p=>`<div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:5px;font-size:11px;color:var(--t2)"><span style="color:#F59E0B;flex-shrink:0">·</span>${p}</div>`).join('')}
+          ${f.replaces ? `<div style="margin-top:12px"><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--t4);margin-bottom:5px">WHAT THIS REPLACES</div><div style="font-size:11px;color:var(--t3);line-height:1.55">${f.replaces}</div></div>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderDTCompetitor(cid) {
+  const C = (DEVICE_TRUST_COMPETITORS||{})[cid]; if(!C) return;
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.14em;color:#EF4444;margin-bottom:7px">⚔️ DEVICE TRUST COMPETITOR</div>
+      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:10px">${C.name}</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:16px">${C.overview}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div style="background:var(--surface);border:1px solid #10B98130;border-radius:7px;padding:12px 14px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:8px">STRENGTHS</div>
+          ${C.strengths.map(s=>`<div style="display:flex;gap:7px;font-size:11px;color:var(--t2);margin-bottom:5px"><span style="color:#10B981;font-weight:700">✓</span>${s}</div>`).join('')}
+        </div>
+        <div style="background:var(--surface);border:1px solid #EF444430;border-radius:7px;padding:12px 14px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:8px">WEAKNESSES</div>
+          ${C.weaknesses.length ? C.weaknesses.map(w=>`<div style="display:flex;gap:7px;font-size:11px;color:var(--t2);margin-bottom:5px"><span style="color:#EF4444;font-weight:700">✗</span>${w}</div>`).join('') : '<div style="font-size:11px;color:var(--t4)">See win section →</div>'}
+        </div>
+      </div>
+      <div style="background:#F59E0B08;border:1px solid #F59E0B25;border-left:3px solid #F59E0B;border-radius:0 7px 7px 0;padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:6px">WHY 1PASSWORD WINS</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.7">${C.win}</div>
+      </div>
+      <div style="background:#3A9EFF08;border:1px solid #3A9EFF25;border-radius:7px;padding:12px 14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:6px">💡 BATTLE CARD</div>
+        <div style="font-size:13px;color:var(--t1);line-height:1.75;font-style:italic">${C.battle_card}</div>
+      </div>
+    </div>`;
+}
+
+
+function showDeviceTrustHub() {
+  document.getElementById('sidebar').style.display = 'none';
+  document.querySelectorAll('.tab:not(.soon)').forEach(t => t.classList.remove('active'));
+  const te = document.getElementById('tab-dt');
+  if (te) te.classList.add('active');
+
+  const featureCards = DEVICE_TRUST_FEATURES.map(f => `
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #F59E0B;border-radius:8px;padding:16px 18px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:14px;font-weight:700;color:var(--t1)">${f.n}</span>
+        ${f.badge ? `<span style="font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;background:#F59E0B18;color:#F59E0B;border:1px solid #F59E0B33">${f.badge.toUpperCase()}</span>` : ''}
+      </div>
+      <div style="font-size:11px;color:#FF9999;font-style:italic;margin-bottom:8px;line-height:1.6">${f.prob}</div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:10px;line-height:1.65"><strong style="color:#F59E0B">How it works:</strong> ${f.how}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div>
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:5px">USE CASES</div>
+          ${f.usecases.map(u=>`<div style="font-size:11px;color:var(--t2);margin-bottom:3px;display:flex;gap:5px"><span style="color:#F59E0B">→</span>${u}</div>`).join('')}
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#F59E0B;margin-bottom:5px">WHO CARES</div>
+          ${f.personas.map(p=>`<div style="font-size:11px;color:var(--t2);margin-bottom:3px;display:flex;gap:5px"><span style="color:#F59E0B">·</span>${p}</div>`).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('detail').innerHTML = `
+    <div style="padding:20px 28px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#F59E0B;margin-bottom:7px">🛡️ 1PASSWORD DEVICE TRUST</div>
+      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Device Trust</div>
+      <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:6px;max-width:600px">Ensure every device accessing your apps meets security requirements — managed or unmanaged. Zero Trust enforcement without a full MDM overhaul.</div>
+      <div style="background:#F59E0B0C;border:1px solid #F59E0B25;border-radius:7px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:var(--t2);line-height:1.65">
+        <strong style="color:#F59E0B">The pitch in one sentence:</strong> 1Password is the only vendor that can see both the credential stored in the password manager and the device trying to use it — giving you enforcement at the intersection of identity and endpoint.
+      </div>
+      ${featureCards}
+    </div>`;
+}
+
+
+
+function renderIndustryProductSections(iid) {
+  // Shows relevant Trelica + Device Trust angles for this industry
+  const I = INDUSTRIES[iid]; if(!I) return '';
+  let html = '';
+
+  if (hasProduct('trelica')) {
+    const tRows = [
+      `Shadow IT discovery surfaces the non-SSO apps ${I.name} employees rely on — credential-storing apps that never touched the IdP`,
+      `Automated offboarding workflows close SaaS access gaps the moment HRIS marks a departure — critical in ${I.name} given ${I.pains?.[0] || 'high turnover'}`,
+      `Access reviews provide continuous compliance evidence for ${(I.compliance||[]).slice(0,3).join(', ')} requirements`,
+    ];
+    html += `<div class="product-section trelica" style="margin:0 28px 12px">
+      <div class="product-section-hdr"><span>🔷</span><span>TRELICA SAAS MANAGER — ${I.name.toUpperCase()}</span></div>
+      <div class="product-section-body">${tRows.map(r=>`<div class="product-section-row">${r}</div>`).join('')}</div>
+    </div>`;
+  }
+
+  if (hasProduct('dt')) {
+    const dtRows = [
+      `Device Trust verifies every device — managed, BYOD, contractor — at login time, filling the gap ${I.name} orgs face with BYOD and third-party access`,
+      `125+ real-time health checks enforce the device posture ${(I.compliance||[]).slice(0,2).join(' and ')} requirements demand`,
+      `Guided self-remediation keeps employees productive while maintaining compliance — critical in ${I.name} where IT resources are often stretched`,
+    ];
+    html += `<div class="product-section dt" style="margin:0 28px 12px">
+      <div class="product-section-hdr"><span>🛡️</span><span>DEVICE TRUST — ${I.name.toUpperCase()}</span></div>
+      <div class="product-section-body">${dtRows.map(r=>`<div class="product-section-row">${r}</div>`).join('')}</div>
+    </div>`;
+  }
+
+  return html;
+}
+
 // ── INIT ──
+productInit();
 customInit();
 switchTab('features');
 showTiles('all');
