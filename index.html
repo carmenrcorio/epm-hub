@@ -979,8 +979,25 @@ function buildFeatureSidebar(){
   });
 }
 
+function buildIntelModeBar(){
+  const bar=document.createElement('div');
+  bar.style.cssText='display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0';
+  [{id:'industry',label:'🌍 Industries',color:'#A78BFA'},
+   {id:'departments',label:'🏛️ Departments',color:'#10B981'}
+  ].forEach(m=>{
+    const btn=document.createElement('button');
+    const active=curIntelMode===m.id;
+    btn.style.cssText=`flex:1;padding:7px 4px;font-size:10px;font-weight:700;cursor:pointer;border:none;border-bottom:2px solid ${active?m.color:'transparent'};background:${active?m.color+'14':'transparent'};color:${active?m.color:'var(--t4)'};transition:all .12s`;
+    btn.textContent=m.label;
+    btn.onclick=()=>{curIntelMode=m.id;showIntelHub();};
+    bar.appendChild(btn);
+  });
+  return bar;
+}
+
 function buildIndustrySidebar(){
   const sb=document.getElementById('sidebar');sb.innerHTML='';
+  sb.appendChild(buildIntelModeBar());
   const h=document.createElement('div');h.className='sec-hdr industry';h.textContent='SELECT INDUSTRY';sb.appendChild(h);
   Object.entries(INDUSTRIES).filter(([iid,I])=>!srch||I.name.toLowerCase().includes(srch)).forEach(([iid,I])=>{
     const el=document.createElement('div');el.className=`ni ni2${curIid===iid?' active':''}`;
@@ -1383,6 +1400,7 @@ Object.assign(DEPARTMENTS,{
 let curDid=null;
 function buildDeptSidebar(){
   const sb=document.getElementById('sidebar');sb.innerHTML='';
+  sb.appendChild(buildIntelModeBar());
   const h=document.createElement('div');h.className='sec-hdr';h.style.color='#10B981';h.textContent='SELECT DEPARTMENT';sb.appendChild(h);
   Object.entries(DEPARTMENTS).filter(([did,D])=>!srch||D.name.toLowerCase().includes(srch)).forEach(([did,D])=>{
     const el=document.createElement('div');el.className=`ni${curDid===did?' active':''}`;
@@ -4100,7 +4118,26 @@ function showFeaturesHub(){
         sb.appendChild(el);
       });
     });
-    detail.innerHTML='<div style="padding:24px 28px"><div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#3A9EFF;margin-bottom:8px">🔷 SAAS MANAGER</div><div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px">SaaS Manager Features</div><div style="font-size:12px;color:var(--t3)">Select a feature from the sidebar.</div></div>';
+    let _th='<div style="padding:20px 28px;overflow-y:auto;max-height:calc(100vh - 52px)">';
+    sections.forEach(sec=>{
+      const feats=TRELICA_FEATURES.filter(f=>f.section===sec);
+      _th+=`<div style="font-size:9px;font-weight:800;letter-spacing:.14em;color:#3A9EFF;margin-bottom:10px;margin-top:18px">${labels[sec].toUpperCase()}</div><div class="tile-grid">`;
+      feats.forEach(f=>{
+        const ps=(f.prob||'').substring(0,90)+(f.prob&&f.prob.length>90?'…':'');
+        const hs=(f.how||'').replace(/\n/g,' ').substring(0,110)+(f.how&&f.how.length>110?'…':'');
+        const bg=f.badge?`<span class="tile-badge">${f.badge.toUpperCase()}</span>`:'';
+        _th+=`<div class="tile" style="cursor:pointer" onclick="renderTrelicaFeature(TRELICA_FEATURES.find(x=>x.id==='${f.id}'));document.querySelectorAll('#sidebar .ni').forEach(x=>x.classList.remove('active'))">
+          <span class="tile-sec-stripe" style="background:#3A9EFF"></span>
+          <div class="tile-top"><span class="tile-name">${f.n}</span>${bg}</div>
+          <div class="tile-prob">${ps}</div>
+          <div class="tile-sum">${hs}</div>
+          <div style="display:flex;align-items:center;margin-top:6px"><span class="tile-arrow">View full page →</span></div>
+        </div>`;
+      });
+      _th+='</div>';
+    });
+    _th+='</div>';
+    detail.innerHTML=_th;
     return;
   }
 
@@ -4117,26 +4154,32 @@ function showFeaturesHub(){
         sb.appendChild(el);
       });
     });
-    detail.innerHTML='<div style="padding:24px 28px"><div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#F59E0B;margin-bottom:8px">🛡️ 1PASSWORD DEVICE TRUST</div><div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px">Device Trust Features</div><div style="font-size:12px;color:var(--t3)">Select a feature from the sidebar.</div></div>';
+    let _dh='<div style="padding:20px 28px;overflow-y:auto;max-height:calc(100vh - 52px)">';
+    sections.forEach(sec=>{
+      const feats=DEVICE_TRUST_FEATURES.filter(f=>f.section===sec);
+      _dh+=`<div style="font-size:9px;font-weight:800;letter-spacing:.14em;color:#F59E0B;margin-bottom:10px;margin-top:18px">${labels[sec].toUpperCase()}</div><div class="tile-grid">`;
+      feats.forEach(f=>{
+        const ps=(f.prob||'').substring(0,90)+(f.prob&&f.prob.length>90?'…':'');
+        const hs=(f.how||'').replace(/\n/g,' ').substring(0,110)+(f.how&&f.how.length>110?'…':'');
+        const bg=f.badge?`<span class="tile-badge">${f.badge.toUpperCase()}</span>`:'';
+        _dh+=`<div class="tile" style="cursor:pointer" onclick="renderDTFeature(DEVICE_TRUST_FEATURES.find(x=>x.id==='${f.id}'));document.querySelectorAll('#sidebar .ni').forEach(x=>x.classList.remove('active'))">
+          <span class="tile-sec-stripe" style="background:#F59E0B"></span>
+          <div class="tile-top"><span class="tile-name">${f.n}</span>${bg}</div>
+          <div class="tile-prob">${ps}</div>
+          <div class="tile-sum">${hs}</div>
+          <div style="display:flex;align-items:center;margin-top:6px"><span class="tile-arrow">View full page →</span></div>
+        </div>`;
+      });
+      _dh+='</div>';
+    });
+    _dh+='</div>';
+    detail.innerHTML=_dh;
     return;
   }
 }
 
 function showIntelHub(){
   const sb=document.getElementById('sidebar');
-  sb.innerHTML='';
-  const bar=document.createElement('div');
-  bar.className='intel-mode-bar';
-  bar.style.cssText='display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid var(--border);flex-shrink:0';
-  ['industry','departments'].forEach(mode=>{
-    const btn=document.createElement('button');
-    const active=curIntelMode===mode;
-    btn.style.cssText=`flex:1;padding:5px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid ${active?'var(--border2)':'var(--border)'};background:${active?'var(--bg2)':'transparent'};color:${active?'var(--t1)':'var(--t4)'};transition:all .12s`;
-    btn.textContent=mode==='industry'?'🌍 Industry':'🏛️ Departments';
-    btn.onclick=()=>{curIntelMode=mode;showIntelHub();};
-    bar.appendChild(btn);
-  });
-  sb.appendChild(bar);
   if(curIntelMode==='industry'){
     buildIndustrySidebar();
     if(curIid)renderIndustry(curIid);else renderIndustry('financial');
@@ -4173,7 +4216,71 @@ function showCompeteUnified(){
       sb.appendChild(el);
     });
   });
-  if(!curCompId)detail.innerHTML='<div style="padding:24px 28px"><div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px">⚔️ Battle Cards</div><div style="font-size:12px;color:var(--t3)">EPM · SaaS Manager · Device Trust<br><br>Select a competitor from the sidebar.</div></div>';
+  if(!curCompId)detail.innerHTML=`<div style="padding:24px 28px;overflow-y:auto;max-height:calc(100vh - 52px)">
+    <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#10B981;margin-bottom:8px">⚔️ COMPETITIVE INTELLIGENCE</div>
+    <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Competitive Positioning Guide</div>
+    <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:24px;max-width:700px">Win on value, not by tearing others down. This guide ensures every competitive conversation strengthens trust and positions 1Password as the obvious choice.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px">
+      <div style="padding:16px;border-radius:8px;border:1px solid #10B98144;background:#10B9810C">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.1em;color:#10B981;margin-bottom:8px">✅ DO — LEAD WITH VALUE</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.8">
+          <div style="margin-bottom:6px">• <strong style="color:var(--t1)">Ask, don’t tell.</strong> Use discovery questions that let the customer surface their own frustrations with the incumbent.</div>
+          <div style="margin-bottom:6px">• <strong style="color:var(--t1)">Anchor on outcomes.</strong> “What would it mean for your team if onboarding took 5 minutes instead of 2 hours?”</div>
+          <div style="margin-bottom:6px">• <strong style="color:var(--t1)">Acknowledge strengths.</strong> “They do X well — but here’s where the gap is for teams at your stage.”</div>
+          <div style="margin-bottom:6px">• <strong style="color:var(--t1)">Use social proof.</strong> Reference customers who migrated and can speak to the before/after.</div>
+          <div>• <strong style="color:var(--t1)">Let the product speak.</strong> Live demos beat slides. Show the thing working.</div>
+        </div>
+      </div>
+      <div style="padding:16px;border-radius:8px;border:1px solid #EF444444;background:#EF44440C">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.1em;color:#EF4444;margin-bottom:8px">🚫 DON’T — NEVER SAY THESE</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.8">
+          <div style="margin-bottom:6px">• <strong style="color:var(--t1)">Never trash-talk.</strong> “LastPass got breached” is factual — but leading with it feels cheap and erodes trust.</div>
+          <div style="margin-bottom:6px">• <strong style="color:var(--t1)">Never claim perfection.</strong> “We’ve never had a breach” invites scrutiny. Say “Our architecture ensures a server breach can’t expose your data.”</div>
+          <div style="margin-bottom:6px">• <strong style="color:var(--t1)">Never lie about competitors.</strong> If they have a feature, acknowledge it. Credibility is the deal.</div>
+          <div style="margin-bottom:6px">• <strong style="color:var(--t1)">Never rush displacement.</strong> Switching password managers is painful. Validate that, then show the migration path.</div>
+          <div>• <strong style="color:var(--t1)">Never use “better” generically.</strong> Be specific: better at what, for whom, measured how.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:16px;border-radius:8px;border:1px solid #3A9EFF44;background:#3A9EFF0C;margin-bottom:24px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.1em;color:#3A9EFF;margin-bottom:10px">🎯 THE 1PASSWORD DISPLACEMENT FRAMEWORK</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="text-align:center;padding:10px"><div style="font-size:20px;margin-bottom:4px">🔍</div><div style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:3px">1. Discover</div><div style="font-size:10px;color:var(--t3);line-height:1.5">Ask what’s working and what isn’t. Never assume dissatisfaction — let them tell you.</div></div>
+        <div style="text-align:center;padding:10px"><div style="font-size:20px;margin-bottom:4px">💡</div><div style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:3px">2. Illuminate</div><div style="font-size:10px;color:var(--t3);line-height:1.5">Show the gap between where they are and where they need to be. Use their own words.</div></div>
+        <div style="text-align:center;padding:10px"><div style="font-size:20px;margin-bottom:4px">🛤️</div><div style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:3px">3. Bridge</div><div style="font-size:10px;color:var(--t3);line-height:1.5">Map the migration path. Address switching costs head-on. Show the POC plan.</div></div>
+        <div style="text-align:center;padding:10px"><div style="font-size:20px;margin-bottom:4px">🏆</div><div style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:3px">4. Win</div><div style="font-size:10px;color:var(--t3);line-height:1.5">Close with a champion-ready business case. ROI, timeline, quick wins in the first 30 days.</div></div>
+      </div>
+    </div>
+
+    <div style="padding:16px;border-radius:8px;border:1px solid #A78BFA44;background:#A78BFA0C;margin-bottom:24px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.1em;color:#A78BFA;margin-bottom:10px">💬 UNIVERSAL DISCOVERY QUESTIONS</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.9">
+        <div style="margin-bottom:4px">1. “Walk me through what happens when a new employee starts — how do they get access to everything they need?”</div>
+        <div style="margin-bottom:4px">2. “If an employee left today, how quickly could you confirm every credential and app they had access to was revoked?”</div>
+        <div style="margin-bottom:4px">3. “When your auditor asks for evidence of credential governance, what do you hand them?”</div>
+        <div style="margin-bottom:4px">4. “How do you handle shared credentials for team accounts — social media, AWS root, vendor portals?”</div>
+        <div>5. “What’s the biggest gap between your security posture on paper and what’s actually happening day to day?”</div>
+      </div>
+    </div>
+
+    <div style="font-size:9px;font-weight:800;letter-spacing:.14em;color:var(--t4);margin-bottom:12px">SELECT A COMPETITOR FROM THE SIDEBAR FOR DETAILED BATTLE CARDS →</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+      <div style="padding:12px;border-radius:6px;border:1px solid #10B98133;background:#10B9810A;text-align:center">
+        <div style="font-size:10px;font-weight:800;color:#10B981;margin-bottom:4px">EPM COMPETITORS</div>
+        <div style="font-size:11px;color:var(--t3)">LastPass · Bitwarden · Keeper · Dashlane · CyberArk · HashiCorp</div>
+      </div>
+      <div style="padding:12px;border-radius:6px;border:1px solid #3A9EFF33;background:#3A9EFF0A;text-align:center">
+        <div style="font-size:10px;font-weight:800;color:#3A9EFF;margin-bottom:4px">SAAS MANAGER</div>
+        <div style="font-size:11px;color:var(--t3)">Nudge Security · BetterCloud · Torii · Zylo · Productiv</div>
+      </div>
+      <div style="padding:12px;border-radius:6px;border:1px solid #F59E0B33;background:#F59E0B0A;text-align:center">
+        <div style="font-size:10px;font-weight:800;color:#F59E0B;margin-bottom:4px">DEVICE TRUST</div>
+        <div style="font-size:11px;color:var(--t3)">Jamf · Kandji · CrowdStrike · Kolide · Tanium</div>
+      </div>
+    </div>
+  </div>`;
   else{
     if(SAAS_MANAGER_COMPETITORS&&SAAS_MANAGER_COMPETITORS[curCompId])renderSaaSCompetitor(curCompId);
     else if(DEVICE_TRUST_COMPETITORS&&DEVICE_TRUST_COMPETITORS[curCompId])renderDTCompetitor(curCompId);
@@ -4418,7 +4525,7 @@ async function generatePlatPlaybook(motion){
   const sysP=`You are a senior 1Password CSM strategist. Generate a detailed, actionable playbook. Products: EPM (credentials, SCIM, SSO, secrets, CLI, Travel Mode, Watchtower, passkeys), SaaS Manager (5-source discovery, shadow IT/AI, onboarding/offboarding, access reviews, savings), Device Trust (125+ checks, BYOD, SSF integrations, self-remediation). Format as HTML with inline styles. Use colors: #10B981=EPM, #3A9EFF=SaaS Manager, #F59E0B=Device Trust, #A78BFA=platform, #EF4444=risks.`;
   const userP=`Industry: ${industry}\nProducts: ${prods.join(', ')}\nMotion: ${mLabel}\n\nGenerate:\n1. Industry Pain Points (4-5 specific)\n2. Decision Maker Profiles (2-3 with title, priorities, messaging)\n3. Product Value Map (features that matter most per product)\n4. Combined Platform Value (1+1=3 story)\n5. Step-by-step Action Plan (5-7 steps with timing)\n6. Talk Track (3 discovery questions + 3 value statements)\n7. Risk Factors + mitigations\n\nUse HTML with inline styles. Colored section headers. Make it actionable.`;
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:sysP,messages:[{role:'user',content:userP}]})});
+    const r=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:userP}],system:sysP})});
     if(!r.ok)throw new Error('API returned '+r.status);
     const d=await r.json();
     const h=(d.content||[]).map(b=>b.text||'').join('');
