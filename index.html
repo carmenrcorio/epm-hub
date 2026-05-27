@@ -4802,8 +4802,7 @@ function productSyncUI() {
 function hasProduct(pid) { return !!activeProducts[pid]; }
 
 /* customLoad/customSave defined earlier — duplicate removed */
-function customRegisterIndustry(item){if(!item||!item.id)return;if(!INDUSTRIES[item.id])INDUSTRIES[item.id]={color:item.color||'#A78BFA',emoji:item.emoji||'🏢',name:item.name||item.id,hook:item.hook||'',why:item.why||'',pains:item.pains||[],solutions:[],compliance:[],personas:[],breach:{title:'',what:'',features:[]},stack:[],questions:[],trelica:'',deviceTrust:''}}
-function customRegisterDepartment(item){if(!item||!item.id)return;if(!DEPARTMENTS[item.id])DEPARTMENTS[item.id]={emoji:item.emoji||'🏢',name:item.name||item.id,color:item.color||'#A78BFA',hook:item.hook||'',pains:item.pains||[],features:[],personas:[],stack:[]}}
+/* duplicate customRegister functions removed */
 
 // ── INIT ──
 customInit();
