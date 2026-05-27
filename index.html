@@ -946,8 +946,27 @@ function renderIndustry(iid){
 }
 
 // ─── SIDEBARS ─────────────────────────────────────────────────
+function buildFeatProductBar(){
+  const bar=document.createElement('div');
+  bar.className='feat-product-tabbar';
+  bar.style.cssText='display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0';
+  [{id:'epm',label:'EPM',color:'#10B981'},
+   {id:'trelica',label:'SaaS Manager',color:'#3A9EFF'},
+   {id:'dt',label:'Device Trust',color:'#F59E0B'}
+  ].forEach(p=>{
+    const btn=document.createElement('button');
+    const active=curFeatProduct===p.id;
+    btn.style.cssText=`flex:1;padding:7px 4px;font-size:10px;font-weight:700;cursor:pointer;border:none;border-bottom:2px solid ${active?p.color:'transparent'};background:${active?p.color+'14':'transparent'};color:${active?p.color:'var(--t4)'};transition:all .12s`;
+    btn.textContent=p.label;
+    btn.onclick=()=>{curFeatProduct=p.id;showFeaturesHub();};
+    bar.appendChild(btn);
+  });
+  return bar;
+}
+
 function buildFeatureSidebar(){
   const sb=document.getElementById('sidebar');sb.innerHTML='';
+  sb.appendChild(buildFeatProductBar());
   [{k:'admin',l:'🛡 ADMIN CONTROLS',cl:'na'},{k:'enduser',l:'👤 END-USER TOOLS',cl:'ne'},{k:'developer',l:'⚙️ DEVELOPER POWER',cl:'nd'}].forEach(({k,l,cl})=>{
     const h=document.createElement('div');h.className=`sec-hdr ${k}`;h.textContent=l;sb.appendChild(h);
     FEATURES.filter(f=>f.s===k&&(!srch||f.n.toLowerCase().includes(srch))).forEach(f=>{
@@ -4038,21 +4057,7 @@ function showFeaturesHub(){
   if(!['epm','trelica','dt'].includes(curFeatProduct)) curFeatProduct='epm';
 
   sb.innerHTML='';
-  const bar=document.createElement('div');
-  bar.className='feat-product-tabbar';
-  bar.style.cssText='display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0';
-  [{id:'epm',label:'EPM',color:'#10B981'},
-   {id:'trelica',label:'SaaS Manager',color:'#3A9EFF'},
-   {id:'dt',label:'Device Trust',color:'#F59E0B'}
-  ].forEach(p=>{
-    const btn=document.createElement('button');
-    const active=curFeatProduct===p.id;
-    btn.style.cssText=`flex:1;padding:7px 4px;font-size:10px;font-weight:700;cursor:pointer;border:none;border-bottom:2px solid ${active?p.color:'transparent'};background:${active?p.color+'14':'transparent'};color:${active?p.color:'var(--t4)'};transition:all .12s`;
-    btn.textContent=p.label;
-    btn.onclick=()=>{curFeatProduct=p.id;showFeaturesHub();};
-    bar.appendChild(btn);
-  });
-  sb.appendChild(bar);
+  sb.appendChild(buildFeatProductBar());
 
   if(curFeatProduct==='epm'){
     const _srch=srch||'';
