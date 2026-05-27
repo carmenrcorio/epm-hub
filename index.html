@@ -498,13 +498,11 @@ body{background:var(--bg)!important;color:var(--t2)!important}
 .bad-canvas-wrap{flex:1;overflow:auto;position:relative;background:var(--bg)}
 .bad-canvas-wrap::-webkit-scrollbar{width:5px;height:5px}
 .bad-canvas-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.bad-canvas{position:relative;min-width:1400px;min-height:900px;
-  background-image:radial-gradient(circle,var(--border2) 1px,transparent 1px);
-  background-size:28px 28px}
-.bad-empty-canvas{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:600px;gap:12px;color:var(--t4)}
-.bad-empty-canvas-ico{font-size:48px;opacity:.25}
-.bad-empty-canvas-t{font-size:14px;font-weight:700;color:var(--t3)}
-.bad-empty-canvas-s{font-size:12px;color:var(--t4);text-align:center;max-width:360px;line-height:1.65}
+.bad-canvas{position:relative;background:#fff;background-image:none}
+.bad-empty-canvas{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:600px;gap:12px;color:#5A8BB0}
+.bad-empty-canvas-ico{font-size:48px;opacity:.35}
+.bad-empty-canvas-t{font-size:14px;font-weight:700;color:#3A6080}
+.bad-empty-canvas-s{font-size:12px;color:#5A8BB0;text-align:center;max-width:360px;line-height:1.65}
 /* Widget */
 .bad-widget{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 4px 20px #00000030;min-width:240px;min-height:120px;display:flex;flex-direction:column;transition:box-shadow .12s}
 .bad-widget:hover{box-shadow:0 6px 28px #00000050}
@@ -2812,7 +2810,7 @@ function showBAD(toggleHTML) {
         <div style="height:18px;width:${cW}px;margin-left:18px;background:var(--surface);border:1px solid var(--border);border-bottom:none;position:relative;overflow:hidden">${rH}</div>
         <div style="display:flex">
           <div style="width:18px;height:${cH}px;background:var(--surface);border:1px solid var(--border);border-right:none;position:relative;overflow:hidden">${rV}</div>
-          <div class="bad-canvas" id="bad-canvas" style="width:${cW}px;height:${cH}px;min-height:${cH}px;border:2px dashed var(--border2);background:var(--bg1);position:relative;overflow:hidden"></div>
+          <div class="bad-canvas" id="bad-canvas" style="width:${cW}px;height:${cH}px;min-height:${cH}px;border:2px dashed #3A608066;background:#fff;position:relative;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.4)"></div>
         </div>
       </div>
     </div>
@@ -2977,7 +2975,7 @@ function customRegisterIndustry(item) {
       why: item.why || item.hook || '',
       pains: item.pains || [],
       solutions: [],
-      compliance: item.compliance ? item.compliance.split(',').map(s=>s.trim()) : [],
+      compliance: item.compliance ? (Array.isArray(item.compliance) ? item.compliance : item.compliance.split(',').map(s=>s.trim())) : [],
       breach: { name: 'No documented breach', date: '', body: 'Custom industry entry.', sources: '', prevention: '', features: [] },
       personas: [],
       stats: [],
@@ -3786,11 +3784,11 @@ const TRELICA_FEATURES = [
   { id:'trelica-epm-integration', section:'ai', sectionLabel:'🤖 AI & Platform',
     n:'1Password EPM Integration (The Moat)', badge:'unique', color:'#10B981',
     prob:'"Our SaaS manager only sees what our IdP knows about. That\'s maybe 40% of real app usage. The other 60% — including every AI tool, every shadow subscription, every non-SSO app — is invisible."',
-    how:'Apps employees store credentials for in 1Password vaults surface automatically in Trelica as discovered apps — including non-SSO tools IT has never seen. Vault discovery signal flags apps IT has no prior record of, sourced from credential storage. Competitor password manager detection identifies employees using non-standard PWM tools alongside 1Password. Browser extension tracks work app logins (work email only — personal sites are never monitored). This is an architectural moat: only 1Password SaaS Manager can surface apps from inside a password manager vault because only 1Password makes both products.',
+    how:'Apps employees store credentials for in 1Password vaults surface automatically in SaaS Manager as discovered apps — including non-SSO tools IT has never seen. Vault discovery signal flags apps IT has no prior record of, sourced from credential storage. Competitor password manager detection identifies employees using non-standard PWM tools alongside 1Password. Browser extension tracks work app logins (work email only — personal sites are never monitored). This is an architectural moat: only 1Password SaaS Manager can surface apps from inside a password manager vault because only 1Password makes both products.',
     stat:'Customers using EPM + browser extension find 30–50% more apps than IdP and OAuth alone · The only SMP with vault-level discovery',
     adoption:'EPM integration active on day one for existing 1Password customers. Browser extension deployed to 50%+ of workforce within 30 days. New app notification from vault source confirmed within 14 days.',
     replaces:'The blind spot between IdP-managed apps and the long tail of apps employees use with credentials that live outside your identity infrastructure.',
-    usecases:['Every AI API key stored in 1Password vaults surfaces as a discovered app in Trelica','Non-SSO tools employees store credentials for become visible to IT for the first time','Competitor password manager detection: flag employees using LastPass, Bitwarden alongside 1Password','Browser discovery: work-email logins tracked, personal sites never monitored'],
+    usecases:['Every AI API key stored in 1Password vaults surfaces as a discovered app in SaaS Manager','Non-SSO tools employees store credentials for become visible to IT for the first time','Competitor password manager detection: flag employees using LastPass, Bitwarden alongside 1Password','Browser discovery: work-email logins tracked, personal sites never monitored'],
     personas:['IT Admin','CISO / Security Lead','Security Operations','Any 1Password EPM customer'] },
 ];
 const DEVICE_TRUST_FEATURES = [
@@ -4529,7 +4527,7 @@ async function generatePlatPlaybook(motion){
   const sysP=`You are a senior 1Password CSM strategist. Generate a detailed, actionable playbook. Products: EPM (credentials, SCIM, SSO, secrets, CLI, Travel Mode, Watchtower, passkeys), SaaS Manager (5-source discovery, shadow IT/AI, onboarding/offboarding, access reviews, savings), Device Trust (125+ checks, BYOD, SSF integrations, self-remediation). Format as HTML with inline styles. Use colors: #10B981=EPM, #3A9EFF=SaaS Manager, #F59E0B=Device Trust, #A78BFA=platform, #EF4444=risks.`;
   const userP=`Industry: ${industry}\nProducts: ${prods.join(', ')}\nMotion: ${mLabel}\n\nGenerate:\n1. Industry Pain Points (4-5 specific)\n2. Decision Maker Profiles (2-3 with title, priorities, messaging)\n3. Product Value Map (features that matter most per product)\n4. Combined Platform Value (1+1=3 story)\n5. Step-by-step Action Plan (5-7 steps with timing)\n6. Talk Track (3 discovery questions + 3 value statements)\n7. Risk Factors + mitigations\n\nUse HTML with inline styles. Colored section headers. Make it actionable.`;
   try{
-    const r=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:userP}],system:sysP})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:sysP,messages:[{role:'user',content:userP}]})});
     if(!r.ok)throw new Error('API returned '+r.status);
     const d=await r.json();
     const h=(d.content||[]).map(b=>b.text||'').join('');
@@ -4537,7 +4535,7 @@ async function generatePlatPlaybook(motion){
     _platCache[ck]=w;out.innerHTML=w;
     try{localStorage.setItem('_platCache',JSON.stringify(_platCache));}catch(e){}
   }catch(err){
-    out.innerHTML=`<div style="padding:14px;background:#EF444410;border:1px solid #EF444430;border-radius:7px;color:#EF4444;font-size:12px"><strong>API Error:</strong> ${err.message}<br><span style="color:var(--t4);font-size:11px">Ensure /api/claude serverless function is deployed and ANTHROPIC_API_KEY is set in Vercel env vars.</span></div>`;
+    out.innerHTML=`<div style="padding:14px;background:#EF444410;border:1px solid #EF444430;border-radius:7px;color:#EF4444;font-size:12px"><strong>API Error:</strong> ${err.message}<br><span style="color:var(--t4);font-size:11px">Ensure /api/chat serverless function is deployed and ANTHROPIC_API_KEY is set in Vercel env vars.</span></div>`;
   }
 }
 try{const pc=JSON.parse(localStorage.getItem('_platCache')||'{}');if(pc&&typeof pc==='object')_platCache=pc;}catch(e){}
@@ -4803,6 +4801,427 @@ function hasProduct(pid) { return !!activeProducts[pid]; }
 
 /* customLoad/customSave defined earlier — duplicate removed */
 /* duplicate customRegister functions removed */
+
+// =============================================================================
+// EPM HUB v2 UPGRADES
+// =============================================================================
+(function(){
+'use strict';
+function _ext(o,f){if(o)Object.assign(o,f);}
+
+
+// ═══ EPM COMPETITOR BATTLE CARD DATA ═══
+_ext(COMPETITORS.lastpass,{pricing:[{tier:'Teams (≤50 users)',them:'$4/user/mo',us:'$7.99/user/mo',note:'LastPass Teams lacks enterprise SSO + advanced MFA'},{tier:'Business',them:'$6/user/mo',us:'$7.99/user/mo',note:'1Password Business includes Families free; LastPass charges extra'},{tier:'Enterprise',them:'$8–12/user/mo (custom)',us:'$19.95/user/mo',note:'1Password Enterprise adds Secrets Automation, CLI, SDK; Families included'}],churn_reasons:['Post-breach trust collapse — security teams cannot defend renewal after the 2022–2023 incidents to their board','Compliance failure — auditors and SOC 2 assessors specifically flag LastPass exposure; renewal creates documentation risk','Price increases post-GoTo acquisition — multiple rounds with no meaningful feature improvement','Developer abandonment — weak CLI and no Secrets Automation pushes dev teams to champion alternatives','Executive mandate — CISOs forcing migration as reputational risk after $37M in crypto losses tied to the breach'],trap_questions:['"When did you last audit which employees were affected by the 2022 breach? Have all impacted users rotated credentials?"','"If an auditor asked you to prove your vault data was not decrypted in the LastPass incident, what evidence could you produce?"','"Does your current tool store 2FA codes in the same vault as passwords? What is your exposure if both are compromised?"','"What master password iteration count does your current tool use? What does NIST 800-63B recommend?"','"If you had to migrate your entire org off your current tool in 30 days, how confident are you in the migration path?"'],displacement_playbook:[{step:1,action:'Incident audit framing — ask if they ran a formal review of breach scope. Most have not. This surfaces urgency without FUD.',timeline:'Week 1'},{step:2,action:'Architecture demo — show Secret Key model vs PBKDF2/100k iterations. Not "they are bad" but "here is why our architecture is structurally different."',timeline:'Week 1–2'},{step:3,action:'Migration demo — run the LastPass importer live. The "switching is hard" objection dies in 10 minutes.',timeline:'Week 2'},{step:4,action:'POC — deploy to IT/DevOps/Legal. Run Watchtower report. Capture testimonial from champion.',timeline:'Week 3–4'},{step:5,action:'Business case — TCO comparison (include Families value), architecture one-pager for CISO, migration timeline.',timeline:'Week 4–6'}],not_to_say:['"LastPass got hacked" — too aggressive. Instead: "The 2022–2023 incidents revealed a specific architectural gap."','"We have never had a breach" — invites skepticism. Say: "Our architecture means a server breach alone cannot decrypt vault data."','"You should switch immediately" — creates pressure. Say: "The right time to evaluate is before your next audit cycle."','Citing $37M crypto losses in first call with non-technical buyer — reserve for CISO deep-dives.']});
+
+_ext(COMPETITORS.bitwarden,{pricing:[{tier:'Free',them:'Free (personal)',us:'N/A (business only)',note:'Bitwarden free tier drives bottom-up pressure'},{tier:'Teams',them:'$3/user/mo',us:'$7.99/user/mo',note:'Price gap real but Bitwarden Teams lacks hosted SCIM, advanced SSO, no Families'},{tier:'Enterprise',them:'$5/user/mo',us:'$7.99/user/mo',note:'1Password includes Families ($4.99 retail/family/mo) — TCO narrows with household count'}],churn_reasons:['Enterprise deployment complexity — self-hosted creates infrastructure overhead IT teams do not want long-term','Support gap — community support vs 1Password dedicated CSM matters at 2am incidents','Developer tooling plateau — lacks Secrets Automation, Secret References, VS Code integration','No Travel Mode — meaningful gap for global orgs with international executives','SCIM and SSO complexity — advanced provisioning requires self-managed infrastructure'],trap_questions:['"Who owns your Bitwarden infrastructure if you self-host? What is your DR plan for vault server?"','"What is your admin support SLA when a department is locked out during a critical incident?"','"How do developers manage secrets in CI/CD pipelines — in Bitwarden or separate secrets manager?"','"How many employees have Families equivalent at home? What does that cost vs. including it in enterprise seat?"'],displacement_playbook:[{step:1,action:'Total cost calculation — license + infrastructure + IT admin time. Add Families value to our side.',timeline:'Week 1'},{step:2,action:'Developer champion — show Secrets Automation and Secret References. Bitwarden has no equivalent.',timeline:'Week 1–2'},{step:3,action:'Travel Mode demo — conversation stopper for orgs with international executives.',timeline:'Week 2'},{step:4,action:'Support comparison — 1Password dedicated CSM vs community forum.',timeline:'Week 2–3'},{step:5,action:'Migration + POC — import from Bitwarden. POC on IT + DevOps. Build TCO business case.',timeline:'Week 3–5'}],not_to_say:['"Bitwarden is not secure" — it is. This destroys credibility.','"Open source is a risk" — many security teams see it as a feature.','"The price difference is worth it" — let the buyer calculate TCO.','"Bitwarden cannot handle enterprise" — it can at basic level. Be specific about gaps.']});
+
+_ext(COMPETITORS.keeper,{pricing:[{tier:'Business Starter',them:'$4/user/mo',us:'$7.99/user/mo',note:'Keeper Starter lacks advanced reporting and BreachWatch'},{tier:'Business',them:'$6/user/mo',us:'$7.99/user/mo',note:'1Password includes Families; Keeper Families is separate paid add-on'},{tier:'Enterprise',them:'Custom (~$8–12)',us:'$19.95/user/mo',note:'Keeper adds BreachWatch; 1Password adds Secrets Automation and CLI'},{tier:'BreachWatch add-on',them:'$3–4/user/mo extra',us:'Watchtower included free',note:'Watchtower standard in every plan; BreachWatch is paid add-on'}],churn_reasons:['BreachWatch add-on fatigue — core value gated behind expensive add-ons inflating actual cost','Complexity overload — KeeperPAM, KeeperMSP create admin confusion and license sprawl','No Travel Mode — hard blocker for international executive travel','Developer tooling gap — secrets management lags Secrets Automation and CLI','UX friction — functional but dated vs 1Password, leading to low adoption'],trap_questions:['"What is your all-in per-user cost including BreachWatch, reporting, and MSP layers?"','"How do developers manage secrets in production pipelines — in Keeper or separate system?"','"If an executive travels to a country with data sovereignty laws, how does your tool protect credential access?"','"Have you audited which employees actually use Keeper vs maintaining parallel personal systems?"'],displacement_playbook:[{step:1,action:'True cost audit — map all add-ons. Compare to 1Password Business with Families. Gap usually closes.',timeline:'Week 1'},{step:2,action:'Developer champion — show CLI and Secrets Automation. Keeper has no real equivalent.',timeline:'Week 1–2'},{step:3,action:'Travel Mode demo — unique to 1Password.',timeline:'Week 2'},{step:4,action:'POC side-by-side — Watchtower vs BreachWatch, admin setup time, developer satisfaction.',timeline:'Week 2–4'},{step:5,action:'Business case — TCO with add-ons, architecture comparison, migration timeline.',timeline:'Week 4–6'}],not_to_say:['"Keeper is insecure" — solid security record. Attacking credibility destroys yours.','"Keeper is just for consumers" — has real enterprise product. Be specific about gaps.','"BreachWatch does not work" — it does. Say: "We include equivalent monitoring in every plan."']});
+
+_ext(COMPETITORS.dashlane,{pricing:[{tier:'Starter (≤10)',them:'$2/user/mo',us:'N/A',note:'Limited; micro-teams only'},{tier:'Team',them:'$5/user/mo',us:'$7.99/user/mo',note:'1Password includes Families'},{tier:'Business',them:'$8/user/mo',us:'$7.99/user/mo',note:'Price parity; 1Password wins on developer tooling'}],churn_reasons:['VPN bundling confusion — creates policy conflicts in enterprise environments','Mobile-first design does not translate to enterprise admin needs','No Secrets Automation — developer teams hit ceiling','Dark Web Monitoring is table stakes vs Watchtower','GoTo acquisition shadow — buyers confuse with LastPass situation'],trap_questions:['"How does your VPN integration interact with your corporate VPN policy?"','"How do developers manage application secrets and CI/CD credentials?"','"Have you audited highest-privilege accounts (AWS root, GitHub admin) — in Dashlane or separate?"'],displacement_playbook:[{step:1,action:'VPN conflict audit — surface compliance/security issue.',timeline:'Week 1'},{step:2,action:'Developer conversation — show Secrets Automation. No equivalent.',timeline:'Week 1–2'},{step:3,action:'Watchtower vs Monitoring — breach monitoring is table stakes at no extra cost.',timeline:'Week 2'},{step:4,action:'POC — admin console depth, SCIM/SSO setup, developer onboarding.',timeline:'Week 2–4'},{step:5,action:'Champion package — TCO, developer productivity, Families value.',timeline:'Week 4–6'}],not_to_say:['"Dashlane is a consumer product" — has genuine enterprise tier.','Do not conflate Dashlane with LastPass/GoTo — separate companies.']});
+
+_ext(COMPETITORS.cyberark,{pricing:[{tier:'Workforce Identity',them:'$5–8/user/mo (MFA/SSO)',us:'N/A (different category)',note:'CyberArk Workforce is IAM; 1Password is EPM'},{tier:'Privilege Cloud (PAM)',them:'$20–50+/user/mo',us:'$19.95/user/mo',note:'CyberArk PAM is 3–5x price with 6–12 month implementation'},{tier:'Implementation',them:'$50K–500K+ PS',us:'$0 (self-service)',note:'TCO often 3–10x 1Password'}],churn_reasons:['Implementation failure — PAM projects run 6–18 months over timeline, 2–5x over budget','Complexity for mid-market — built for Fortune 500; mid-market IT lacks headcount','User adoption collapse — complex check-out processes lead to workarounds','Budget scrutiny — PAM cost challenged in budget cycles','EPM gap — does not address end-user password management'],trap_questions:['"What percentage of employees are covered by CyberArk vs browser autofill for day-to-day credentials?"','"How long did your implementation take vs original timeline?"','"For non-privileged users — how are they managing passwords today?"','"What happens if your dedicated CyberArk admin leaves?"'],displacement_playbook:[{step:1,action:'Scope clarification — is this PAM replacement or EPM? If EPM, CyberArk is overbuilt.',timeline:'Week 1'},{step:2,action:'Coverage gap — identify employees NOT covered (usually 80%+). These need 1Password.',timeline:'Week 1–2'},{step:3,action:'Total cost comparison — PAM total vs 1Password for end-user coverage.',timeline:'Week 2'},{step:4,action:'Developer champion — show Secrets Automation. CyberArk DX is painful.',timeline:'Week 2–3'},{step:5,action:'Executive brief — "right tool for right job." 1Password covers the human credential layer.',timeline:'Week 3–5'}],not_to_say:['"CyberArk is overkill" — for large enterprise PAM, it may be appropriate.','"You do not need CyberArk" — never say existing security investment was wrong.','Do not get into PAM vs EPM feature war — 1Password does not win at enterprise PAM.']});
+
+_ext(COMPETITORS.hashicorp,{pricing:[{tier:'HCP Vault (cloud)',them:'$0.03/hr + $0.10/secrets/mo',us:'Secrets Automation in Enterprise',note:'Cost opaque and spikes with volume'},{tier:'Vault Enterprise',them:'$50K–500K+/yr',us:'$19.95/user/mo',note:'Requires significant infrastructure and PS'},{tier:'Scope',them:'Full secrets platform',us:'Human + app secrets for mid-market',note:'Not apples-to-apples'}],churn_reasons:['BSL license change triggered enterprise re-evaluation','Complexity for mid-market — requires dedicated security engineers','IBM acquisition created roadmap uncertainty','Human credential gap — does not address password management','Operational overhead — HA clusters, seal/unseal require dedicated headcount'],trap_questions:['"How do developers actually inject secrets into CI/CD today — Vault, env vars, or something else?"','"What is your Vault operations overhead — dedicated engineers and what happens if they leave?"','"Since BSL change and IBM acquisition, have you reviewed your long-term Vault commitment?"','"For human credentials — non-developer passwords — how are those managed?"'],displacement_playbook:[{step:1,action:'Scope actual Vault usage — map what is NOT in Vault. This is 1Password scope.',timeline:'Week 1'},{step:2,action:'License concern leverage — IBM/BSL concern opens discussion for Secrets Automation alternative.',timeline:'Week 1–2'},{step:3,action:'Developer champion — Secrets Automation and CLI in simpler package.',timeline:'Week 2'},{step:4,action:'Human credential layer — "Vault for infrastructure, 1Password for everyone."',timeline:'Week 2–3'},{step:5,action:'Business case — Vault total cost vs 1Password for human credentials.',timeline:'Week 3–5'}],not_to_say:['"Vault is outdated" — it is the industry standard. Kills credibility.','"1Password can replace Vault" — cannot for infrastructure secrets at scale.','"IBM acquisition means Vault is dying" — speculation.']});
+
+// ═══ SAAS MANAGER COMPETITOR DATA ═══
+_ext(SAAS_MANAGER_COMPETITORS.nudge_security,{pricing:[{tier:'Standard',them:'~$5/user/mo',us:'SaaS Manager (contract)',note:'Cheaper but narrower — no access review automation'}],churn_reasons:['Discovery without governance — nudging does not offboard','No workflow automation — IT still manually executes','No EPM integration — vault discovery signal missing'],trap_questions:['"When a user leaves, how do you confirm removal from every SaaS app Nudge found?"','"What percentage of shadow IT findings actually get acted on?"'],displacement_playbook:[{step:1,action:'Governance gap audit — what happens after Nudge finds shadow IT? Usually: email.',timeline:'Week 1–2'},{step:2,action:'EPM discovery demo — vault-based discovery finds what OAuth scanning misses.',timeline:'Week 2'},{step:3,action:'Offboarding POC — simulated offboarding comparison.',timeline:'Week 3–4'}],not_to_say:['"Nudge is just notification" — be specific about automation gaps.']});
+
+_ext(SAAS_MANAGER_COMPETITORS.bettercloud,{pricing:[{tier:'Business',them:'$15–25/user/mo',us:'SaaS Manager (contact)',note:'Expensive at scale; sticker shock at renewal'}],churn_reasons:['Google-centric — M365 integrations lag','Price vs value at renewal','No EPM integration'],trap_questions:['"How much BetterCloud usage is Google-specific vs broader SaaS stack?"','"How does BetterCloud handle credential-based apps (not OAuth)?"'],displacement_playbook:[{step:1,action:'Audit Google-centricity — gap is usually 40–60% of SaaS stack.',timeline:'Week 1'},{step:2,action:'Spend intelligence demo — savings tracker and CFO reporting.',timeline:'Week 2'},{step:3,action:'Vault discovery differentiator.',timeline:'Week 2–3'}],not_to_say:['"BetterCloud is only for Google" — covers M365 too, just not as well.']});
+
+_ext(SAAS_MANAGER_COMPETITORS.torii,{pricing:[{tier:'Business',them:'~$8–15/user/mo',us:'SaaS Manager (contact)',note:'Mid-market; lacks enterprise depth'}],churn_reasons:['Workflow limitations at scale','Limited device visibility','Smaller vendor support coverage'],trap_questions:['"For complex offboarding (50+ apps), what does Torii automate vs manual?"'],displacement_playbook:[{step:1,action:'Offboarding complexity mapping.',timeline:'Week 1–2'},{step:2,action:'Device correlation demo — Device Trust + SaaS Manager together.',timeline:'Week 2–3'}],not_to_say:['"Torii is too small" — focus on capability gaps, not size.']});
+
+_ext(SAAS_MANAGER_COMPETITORS.zylo,{pricing:[{tier:'Enterprise',them:'$15–30+/user/mo (spend-based)',us:'SaaS Manager (contact)',note:'Pricing tied to managed spend; unpredictable'}],churn_reasons:['Finance-first — weak on IT governance and offboarding','No workflow automation for IT','Price grows with SaaS portfolio'],trap_questions:['"When Zylo finds redundant subscription, what is the workflow to cancel and offboard?"','"How does IT vs Finance team use Zylo differently?"'],displacement_playbook:[{step:1,action:'IT vs Finance gap — Finance loves it; IT does not.',timeline:'Week 1'},{step:2,action:'IT workflow demo — offboarding, access reviews.',timeline:'Week 2'}],not_to_say:['"Zylo does not work" — strong spend intelligence. Gap is IT governance.']});
+
+_ext(SAAS_MANAGER_COMPETITORS.productiv,{pricing:[{tier:'Enterprise',them:'$10–25/user/mo',us:'SaaS Manager (contact)',note:'Analytics-first; limited workflow automation'}],churn_reasons:['Analytics without action','No offboarding automation','App-centric not identity-centric'],trap_questions:['"When Productiv shows 20% utilization, what is the next step?"'],displacement_playbook:[{step:1,action:'Action gap — find a Productiv finding, ask what happened next.',timeline:'Week 1–2'},{step:2,action:'Access review demo — discovery to offboarding in single platform.',timeline:'Week 2–3'}],not_to_say:['"Productiv analytics are not useful" — engagement data IS useful.']});
+
+// ═══ JAMF PRICING + CHURN DATA ═══
+_ext(DEVICE_TRUST_COMPETITORS.jamf,{pricing:[{tier:'Jamf Pro',them:'$9.33/device/mo',us:'Device Trust in Enterprise',note:'Jamf Pro is MDM; 1Password DT is health checks at login'},{tier:'Jamf Protect',them:'$5.50/device/mo',us:'DT covers health checks',note:'Different layers'},{tier:'Jamf Trust (ZTNA)',them:'$9/device/mo',us:'Device Trust for access gating',note:'Most direct comparison — both enforce device posture'}],churn_reasons:['Apple-only — Windows and Linux BYOD are afterthoughts','BYOD friction — MDM enrollment on personal devices creates pushback','Lockout model — no self-remediation path; helpdesk escalations','Cost stacking — Pro + Protect + Trust adds up vs DT included in Enterprise'],trap_questions:['"What percentage of devices are Windows/Linux vs Mac?"','"For BYOD, what is your enrollment experience? Have you measured opt-out rate?"','"When a device fails health check, how do users resolve without helpdesk?"','"What is combined per-device cost for MDM + endpoint + ZTNA?"'],displacement_playbook:[{step:1,action:'Device coverage audit — map Apple vs non-Apple vs BYOD.',timeline:'Week 1'},{step:2,action:'BYOD experience comparison — DT does not require MDM enrollment.',timeline:'Week 2'},{step:3,action:'Self-remediation demo — guided fix steps vs lockout.',timeline:'Week 2–3'},{step:4,action:'TCO model — Jamf Pro+Protect+Trust vs 1Password DT.',timeline:'Week 3–4'}]});
+
+// ═══ REMAINING DT COMPETITORS ═══
+_ext(DEVICE_TRUST_COMPETITORS.jamf,{not_to_say:[
+  "\"Jamf is only for Apple\" — it\'s the gold standard for Apple fleet management. Be specific about gaps for mixed/BYOD environments.",
+  "\"MDM is dead\" — MDM is still required for device provisioning. 1Password DT is complementary for access gating, not a full MDM replacement.",
+  "\"Jamf can\'t do ZTNA\" — Jamf Trust is real ZTNA. Our differentiator is BYOD handling and self-remediation, not ZTNA absence."
+]});
+
+_ext(DEVICE_TRUST_COMPETITORS.kandji,{
+  pricing:[{tier:'Kandji MDM',them:'$9–15/device/mo (est)',us:'Device Trust in Enterprise',note:'Kandji is Apple MDM; 1Password DT is device health at login. Different layers for Apple-heavy orgs.'}],
+  churn_reasons:['Apple-only coverage creates gaps when Windows/Linux devices join the fleet','MDM enrollment friction for BYOD and contractor devices drives employee complaints','No login-time health check enforcement — MDM compliance is periodic, not real-time at authentication','Growing price per device as fleet scales makes budget conversations difficult at renewal'],
+  trap_questions:['"What percentage of devices accessing your apps are non-Apple? How are those covered today?"','"When a contractor brings a personal Windows laptop, what is the enrollment experience vs. a corporate Mac?"','"How do you verify device health at the moment of authentication — or is compliance checked on a schedule?"'],
+  displacement_playbook:[
+    {step:1,action:'Fleet diversity audit — map Apple vs Windows vs Linux vs BYOD. Kandji gaps on non-Apple create the 1Password DT opening.',timeline:'Week 1'},
+    {step:2,action:'Real-time vs periodic — show how 1Password DT checks device health at every login vs Kandji\'s periodic MDM compliance scans.',timeline:'Week 2'},
+    {step:3,action:'Self-remediation demo — user fails a check, gets guided fix steps. Kandji MDM doesn\'t have this for access gating scenarios.',timeline:'Week 2–3'}
+  ],
+  not_to_say:['"Kandji is just Apple MDM" — it does Apple fleet management extremely well. Be specific about cross-platform and BYOD gaps.','"You don\'t need MDM" — many orgs need both MDM and device trust. Position as complementary layers.']
+});
+
+_ext(DEVICE_TRUST_COMPETITORS.crowdstrike_go,{
+  pricing:[{tier:'Falcon Go',them:'$5–8/device/mo (est)',us:'Device Trust in Enterprise',note:'CrowdStrike Falcon Go is endpoint security; 1Password DT is access health gating. Different problem space.'},
+  {tier:'Falcon Identity',them:'$10–20/device/mo (est)',us:'Device Trust + EPM',note:'Identity threat detection vs device posture at login. CrowdStrike is reactive; 1Password DT is preventive.'}],
+  churn_reasons:['Endpoint security ≠ access trust — CrowdStrike detects threats but doesn\'t gate app access based on device posture','Agent-heavy model creates performance complaints on developer machines and older hardware','Falcon Go is SMB-tier and lacks the depth of full Falcon; teams outgrow it and face steep upgrade pricing','No self-remediation — threats detected trigger alerts to IT, not guided user fixes'],
+  trap_questions:['"When CrowdStrike detects a device compliance issue, does it block the user from accessing SaaS apps — or just alert IT?"','"How do your developers feel about the CrowdStrike agent\'s impact on build times and system performance?"','"What happens when a BYOD device doesn\'t have the CrowdStrike agent installed? Can they still access your apps?"'],
+  displacement_playbook:[
+    {step:1,action:'Detection vs prevention framing — CrowdStrike detects threats. 1Password DT prevents unhealthy devices from accessing apps. Frame as complementary.',timeline:'Week 1'},
+    {step:2,action:'BYOD gap — CrowdStrike requires agent installation. BYOD/contractor devices often don\'t have it. Show 1Password DT agentless checks.',timeline:'Week 2'},
+    {step:3,action:'Self-remediation comparison — CrowdStrike alerts go to IT. 1Password DT guides the user to fix it themselves.',timeline:'Week 2–3'}
+  ],
+  not_to_say:['"CrowdStrike is just antivirus" — it\'s a leading endpoint platform. Don\'t diminish it.','"You don\'t need endpoint security" — you do. 1Password DT is the access layer, not the threat detection layer.']
+});
+
+_ext(DEVICE_TRUST_COMPETITORS.kolide,{
+  pricing:[{tier:'Kolide (now 1Password DT)',them:'Acquired by 1Password',us:'Device Trust',note:'Kolide was acquired by 1Password in 2024. Former Kolide customers should migrate to 1Password Device Trust.'}],
+  churn_reasons:['Product is now 1Password Device Trust — Kolide standalone is being sunset','Slack-based enforcement model had limitations for enterprise scale','Integration depth with 1Password EPM + SaaS Manager creates value Kolide standalone never had'],
+  trap_questions:['"Are you still running Kolide standalone, or have you migrated to 1Password Device Trust? What\'s blocking the migration?"','"How does your current Kolide deployment integrate with your password manager and SaaS governance — or are those separate tools?"'],
+  displacement_playbook:[
+    {step:1,action:'Migration path — Kolide is now part of 1Password. Show the natural migration to Device Trust with EPM integration benefits.',timeline:'Week 1'},
+    {step:2,action:'Platform value — demonstrate how DT + EPM + SaaS Manager together provide coverage Kolide standalone never could.',timeline:'Week 2'}
+  ],
+  not_to_say:['"Kolide was inferior" — we acquired it because it was excellent. The team and technology became 1Password Device Trust.']
+});
+
+_ext(DEVICE_TRUST_COMPETITORS.tanium,{
+  pricing:[{tier:'Tanium Core Platform',them:'$15–30+/endpoint/mo (est)',us:'Device Trust in Enterprise',note:'Tanium is enterprise endpoint management for large IT ops teams. Different scale and buyer than 1Password DT.'},
+  {tier:'Tanium Comply',them:'Add-on pricing',us:'Compliance checks included in DT',note:'Tanium compliance module is an add-on; 1Password DT includes 125+ checks in base product'}],
+  churn_reasons:['Massive overkill for mid-market — Tanium is built for 50K+ endpoint environments; smaller orgs drown in complexity','Implementation timelines measured in quarters, not days — significant PS investment required','Agent performance impact — Tanium\'s real-time query engine is powerful but resource-intensive on endpoints','Cost structure designed for Fortune 500 — mid-market buyers face sticker shock at renewal'],
+  trap_questions:['"How many dedicated FTEs manage your Tanium deployment today? What happens if one of them leaves?"','"What is your actual implementation timeline vs. what was originally scoped?"','"For your compliance checks — how many are you actually using vs. how many are available in the platform?"'],
+  displacement_playbook:[
+    {step:1,action:'Scope the actual usage — Tanium can do everything but most orgs use 20% of it. Map what they actually use for device compliance vs the full platform cost.',timeline:'Week 1'},
+    {step:2,action:'Speed comparison — show 1Password DT deployed in hours vs Tanium in months. For the specific use case of device health at login, the ROI is immediate.',timeline:'Week 2'},
+    {step:3,action:'Self-remediation — Tanium remediates via IT-pushed scripts. 1Password DT guides users to self-fix. Different philosophy, lower helpdesk load.',timeline:'Week 2–3'}
+  ],
+  not_to_say:['"Tanium is bloated" — for large enterprise IT ops, it\'s powerful. Be specific about the mid-market fit gap.','"You\'re overpaying" — let them calculate the TCO delta. Show the math, don\'t assert the conclusion.']
+});
+
+// ═══ BATTLE CARD RENDER PATCH ═══
+const _origRenderComp = typeof renderCompetitor === 'function' ? renderCompetitor : null;
+const _origRenderSaaS = typeof renderSaaSCompetitor === 'function' ? renderSaaSCompetitor : null;
+const _origRenderDT = typeof renderDTCompetitor === 'function' ? renderDTCompetitor : null;
+
+function battleCardHTML(C,name){
+  if(!C) return '';
+  let h='';
+  if(C.pricing&&C.pricing.length){
+    h+=`<div style="margin-top:20px;padding:16px;border-radius:8px;border:1px solid #10B98144;background:#10B9810C">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.12em;color:#10B981;margin-bottom:10px">💰 PRICING COMPARISON</div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px 8px;color:var(--t4);font-weight:700">Tier</th><th style="text-align:left;padding:6px 8px;color:#EF4444;font-weight:700">${name||'Them'}</th><th style="text-align:left;padding:6px 8px;color:#10B981;font-weight:700">1Password</th><th style="text-align:left;padding:6px 8px;color:var(--t4);font-weight:700">Note</th></tr>
+        ${C.pricing.map(p=>`<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 8px;color:var(--t1);font-weight:600">${p.tier}</td><td style="padding:6px 8px;color:var(--t2)">${p.them}</td><td style="padding:6px 8px;color:#10B981;font-weight:600">${p.us}</td><td style="padding:6px 8px;color:var(--t3);font-size:10px">${p.note}</td></tr>`).join('')}
+      </table></div>`;
+  }
+  if(C.churn_reasons&&C.churn_reasons.length){
+    h+=`<div style="margin-top:14px;padding:16px;border-radius:8px;border:1px solid #F59E0B44;background:#F59E0B0C">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.12em;color:#F59E0B;margin-bottom:10px">📤 WHY CUSTOMERS LEAVE ${(name||'THEM').toUpperCase()}</div>
+      ${C.churn_reasons.map(r=>`<div style="display:flex;gap:8px;margin-bottom:8px;font-size:11px;line-height:1.6"><span style="color:#F59E0B;flex-shrink:0;font-weight:700">→</span><span style="color:var(--t1)">${r}</span></div>`).join('')}
+    </div>`;
+  }
+  if(C.trap_questions&&C.trap_questions.length){
+    h+=`<div style="margin-top:14px;padding:16px;border-radius:8px;border:1px solid #3A9EFF44;background:#3A9EFF0C">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.12em;color:#3A9EFF;margin-bottom:10px">🪤 TRAP QUESTIONS</div>
+      ${C.trap_questions.map((q,i)=>`<div style="display:flex;gap:8px;margin-bottom:10px;font-size:11px;line-height:1.7"><span style="color:#3A9EFF;font-weight:800;flex-shrink:0">${i+1}.</span><span style="color:var(--t1);font-style:italic">${q}</span></div>`).join('')}
+    </div>`;
+  }
+  if(C.displacement_playbook&&C.displacement_playbook.length){
+    h+=`<div style="margin-top:14px;padding:16px;border-radius:8px;border:1px solid #A78BFA44;background:#A78BFA0C">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.12em;color:#A78BFA;margin-bottom:10px">🗺️ DISPLACEMENT PLAYBOOK</div>
+      ${C.displacement_playbook.map(s=>`<div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start">
+        <div style="min-width:60px;padding:3px 8px;border-radius:4px;background:#A78BFA18;color:#A78BFA;font-size:9px;font-weight:800;text-align:center;flex-shrink:0">${s.timeline}</div>
+        <div style="font-size:11px;color:var(--t1);line-height:1.6"><strong style="color:#A78BFA">Step ${s.step}:</strong> ${s.action}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+  if(C.not_to_say&&C.not_to_say.length){
+    h+=`<div style="margin-top:14px;padding:16px;border-radius:8px;border:1px solid #EF444444;background:#EF44440C">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.12em;color:#EF4444;margin-bottom:10px">🚫 WHAT NOT TO SAY</div>
+      ${C.not_to_say.map(n=>`<div style="display:flex;gap:8px;margin-bottom:8px;font-size:11px;line-height:1.6"><span style="color:#EF4444;flex-shrink:0;font-weight:700">✕</span><span style="color:var(--t1)">${n}</span></div>`).join('')}
+    </div>`;
+  }
+  return h;
+}
+
+// Patch renderCompetitor
+if(_origRenderComp){
+  window.renderCompetitor = function(cid){
+    _origRenderComp(cid);
+    const C=COMPETITORS[cid];if(!C)return;
+    const det=document.getElementById('detail');
+    if(!det)return;
+    const extra=battleCardHTML(C,C.name);
+    if(extra){
+      const wrapper=document.createElement('div');
+      wrapper.style.cssText='padding:0 28px 20px;max-width:820px';
+      wrapper.innerHTML=extra;
+      det.querySelector('.fp,.detail')?.appendChild(wrapper) || det.appendChild(wrapper);
+    }
+  };
+}
+
+// Patch renderSaaSCompetitor
+if(_origRenderSaaS){
+  window.renderSaaSCompetitor = function(cid){
+    _origRenderSaaS(cid);
+    const C=SAAS_MANAGER_COMPETITORS[cid];if(!C)return;
+    const det=document.getElementById('detail');if(!det)return;
+    const extra=battleCardHTML(C,C.name);
+    if(extra){const w=document.createElement('div');w.style.cssText='padding:0 28px 20px';w.innerHTML=extra;det.appendChild(w);}
+  };
+}
+
+// Patch renderDTCompetitor
+if(_origRenderDT){
+  window.renderDTCompetitor = function(cid){
+    _origRenderDT(cid);
+    const C=DEVICE_TRUST_COMPETITORS[cid];if(!C)return;
+    const det=document.getElementById('detail');if(!det)return;
+    const extra=battleCardHTML(C,C.name);
+    if(extra){const w=document.createElement('div');w.style.cssText='padding:0 28px 20px';w.innerHTML=extra;det.appendChild(w);}
+  };
+}
+
+// ═══ SO WHAT? INDUSTRY NARRATIVES ═══
+const SO_WHAT={
+  financial:`Financial services buyers care about one thing: audit evidence. Every conversation should start with "when was your last audit?" and end with "here's what 1Password produces for your auditor automatically." Don't lead with features — lead with the fact that their current tool can't produce a SOC 2 evidence package.|CALL OPENER: "When your auditor asks for evidence of credential governance across your trading platforms, what do you hand them today?"`,
+  healthcare:`Healthcare buyers are driven by HIPAA fear and clinician workflow. The conversation is never about passwords — it's about PHI access on shared workstations and contractor devices. Lead with "how do you manage credentials on shared nursing stations?" and watch the room change.|CALL OPENER: "Walk me through what happens when a traveling nurse needs access to your EHR system on day one — how do they get credentials?"`,
+  'tech-saas':`SaaS companies think they've solved identity because they have Okta. The gap is everything Okta doesn't cover: shared credentials, API keys in .env files, developer secrets in CI/CD. Lead with developer workflow, not admin features.|CALL OPENER: "How do your developers currently share API keys and service account credentials across teams — is that in your IdP or somewhere else?"`,
+  legal:`Law firms care about privilege. Attorney-client privilege is breached the moment a credential is shared via email or Slack. Lead with "how do your partners share matter credentials?" — the answer is always insecure.|CALL OPENER: "When a partner crosses an international border with full access to client matter credentials, what controls exist to protect privilege?"`,
+  retail:`Retail is about PCI-DSS and seasonal workforce. Every holiday season, thousands of temporary employees get credentials that are never properly revoked. Lead with "what happened to your seasonal workers' access after last January?"|CALL OPENER: "When your seasonal workforce wrapped up last January, how did you confirm their credential access was fully revoked?"`,
+  manufacturing:`Manufacturing cares about OT/IT convergence and vendor access. Third-party HVAC and equipment vendors routinely get credentials that live forever. Lead with the Target breach — it was an HVAC vendor credential.|CALL OPENER: "How many third-party vendors currently have credentials to access your plant floor systems — and when were those last audited?"`,
+  education:`Education is about FERPA compliance and a workforce that resists security friction. Faculty won't use complex tools. Lead with "how do your professors share course system credentials?" — the answer is always sticky notes or email.|CALL OPENER: "When a professor retires or goes on sabbatical, how quickly can you confirm all their system access has been transferred and revoked?"`,
+  nonprofit:`Nonprofits have tight budgets and high staff turnover. The conversation is about doing more with less. Lead with "what happens to donor database access when a program coordinator leaves?" — the answer reveals the gap.|CALL OPENER: "With your staff turnover rate, how confident are you that departed employees no longer have access to your donor management system?"`,
+  government:`Government buyers need FedRAMP, NIST 800-171, and CMMC compliance. The conversation starts and ends with compliance frameworks. If you can't map features to NIST controls, you won't get past procurement.|CALL OPENER: "Which NIST 800-171 controls does your current credential management approach satisfy — and which ones are you documenting exceptions for?"`,
+  insurance:`Insurance is financial services with healthcare data complexity. They handle PII, PHI, and financial records simultaneously. Lead with "how do your adjusters access claims systems in the field?" — mobile credential management is usually the gap.|CALL OPENER: "When a field adjuster accesses your claims system from a personal device, what credential and device controls are enforced?"`,
+  'media-entertainment':`Media companies have freelancers, agencies, and shared social accounts. Lead with "who has access to your brand's social media credentials right now?" — the answer is always terrifying.|CALL OPENER: "If a freelancer who managed your social channels last quarter still has the login credentials, would you know?"`,
+  'energy-utilities':`Energy and utilities face NERC CIP compliance for critical infrastructure. Shared credentials on SCADA systems are the nightmare scenario. Lead with operational technology access.|CALL OPENER: "How are credentials managed for your SCADA and operational technology systems — are those in the same system as your corporate passwords?"`,
+  'life-sciences':`Life sciences faces FDA 21 CFR Part 11 requirements for electronic records. Every credential event needs an audit trail. Lead with "can you prove who accessed what system during your last FDA audit?"|CALL OPENER: "When FDA auditors ask for electronic access records during an inspection, how quickly can you produce credential audit evidence?"`,
+  'hospitality-travel':`Hospitality has massive seasonal staffing, shared workstations, and franchise complexity. Lead with "how do your front desk staff share reservation system credentials across shifts?"|CALL OPENER: "Across your properties, how many shared credentials exist for front desk, POS, and reservation systems — and who tracks rotation?"`,
+  'professional-services':`Professional services firms have partner-level access, client confidentiality, and contractor churn. Lead with "how do you manage client system credentials when an engagement ends?"|CALL OPENER: "When an engagement team rolls off a client, how do you ensure all client system credentials are revoked — not just deactivated in your IdP?"`,
+  'fintech-crypto':`Fintech handles financial data with startup-speed engineering. Lead with "how do your developers manage production database credentials and API keys?" — the answer reveals secrets sprawl.|CALL OPENER: "How many production API keys and database credentials are currently in environment variables or config files instead of a secrets manager?"`,
+  'real-estate':`Real estate has agents, brokers, and property management staff accessing multiple MLS systems and client portals. Lead with "how do your agents manage credentials for the 12+ systems they access daily?"|CALL OPENER: "When an agent leaves your brokerage, how many different system credentials need to be revoked — and who tracks that list?"`,
+  'biotech-labs':`Biotech labs have strict IP protection requirements and regulatory audit needs. Lead with "how do you control access to your research data systems and electronic lab notebooks?"|CALL OPENER: "If a researcher left for a competitor, how quickly could you confirm they no longer have access to your proprietary research systems?"`,
+  'msp':`MSPs manage credentials for dozens or hundreds of client environments. Lead with "how do your technicians manage credentials across all your client environments — and what happens when a tech leaves?"|CALL OPENER: "When one of your technicians leaves, how many client environments need credential rotation — and how long does that take?"`,
+  retail_custom:'',
+};
+
+// Patch renderIndustry to add So What? at bottom
+const _origRenderInd = typeof renderIndustry === 'function' ? renderIndustry : null;
+if(_origRenderInd){
+  window.renderIndustry = function(iid){
+    _origRenderInd(iid);
+    const narrative = SO_WHAT[iid];
+    if(!narrative)return;
+    const parts=narrative.split('|');
+    const det=document.getElementById('detail');if(!det)return;
+    const box=document.createElement('div');
+    box.style.cssText='margin:20px 28px;padding:18px 20px;border-radius:10px;background:linear-gradient(135deg,#1769FF0C,#A78BFA12);border:1px solid #A78BFA33';
+    box.innerHTML=`<div style="font-size:10px;font-weight:800;letter-spacing:.14em;color:#A78BFA;margin-bottom:10px">🎯 SO WHAT? — PRE-CALL NARRATIVE</div>
+      <div style="font-size:13px;color:var(--t1);line-height:1.8;margin-bottom:12px">${parts[0]}</div>
+      ${parts[1]?`<div style="padding:10px 14px;border-radius:6px;background:#10B9810C;border:1px solid #10B98133"><div style="font-size:9px;font-weight:800;color:#10B981;margin-bottom:4px">${parts[1].split(':')[0]}:</div><div style="font-size:12px;color:var(--t1);font-style:italic;line-height:1.6">${parts[1].split(':').slice(1).join(':').trim()}</div></div>`:''}`;
+    det.appendChild(box);
+  };
+}
+
+// ═══ ASK THE HUB RAG CHAT ═══
+const askBtn=document.createElement('div');
+askBtn.id='ask-hub-btn';
+askBtn.innerHTML='🔮';
+askBtn.title='Ask the Hub';
+askBtn.style.cssText='position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1769FF,#A78BFA);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(23,105,255,.4);z-index:9999;transition:transform .15s';
+askBtn.onmouseenter=()=>askBtn.style.transform='scale(1.1)';
+askBtn.onmouseleave=()=>askBtn.style.transform='scale(1)';
+askBtn.onclick=()=>{
+  const existing=document.getElementById('ask-hub-panel');
+  if(existing){existing.remove();return;}
+  const panel=document.createElement('div');
+  panel.id='ask-hub-panel';
+  panel.style.cssText='position:fixed;bottom:80px;right:20px;width:380px;max-height:520px;background:var(--bg1,#0A1929);border:1px solid var(--border,#1A3050);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.5);z-index:9999;display:flex;flex-direction:column;overflow:hidden';
+  panel.innerHTML=`<div style="padding:12px 16px;background:linear-gradient(135deg,#1769FF18,#A78BFA18);border-bottom:1px solid var(--border,#1A3050);display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:13px;font-weight:800;color:var(--t1,#F0F6FF)">🔮 Ask the Hub</div>
+    <button onclick="document.getElementById('ask-hub-panel').remove()" style="background:none;border:none;color:var(--t4);cursor:pointer;font-size:16px">✕</button>
+  </div>
+  <div id="ask-hub-msgs" style="flex:1;overflow-y:auto;padding:12px;min-height:200px;max-height:360px">
+    <div style="font-size:11px;color:var(--t3,#8CB8DD);margin-bottom:12px">Ask anything about 1Password products, competitors, industries, or strategy.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+      ${['How do we beat LastPass?','Healthcare pain points','SaaS Manager vs Nudge','Device Trust for BYOD'].map(q=>`<button onclick="askHubSend('${q}')" style="padding:4px 10px;border-radius:12px;font-size:10px;border:1px solid var(--border);background:var(--surface);color:var(--t2);cursor:pointer">${q}</button>`).join('')}
+    </div>
+  </div>
+  <div style="padding:8px 12px;border-top:1px solid var(--border,#1A3050);display:flex;gap:6px">
+    <input id="ask-hub-input" placeholder="Ask a question..." style="flex:1;padding:7px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit;outline:none" onkeydown="if(event.key==='Enter')askHubSend(this.value)"/>
+    <button onclick="askHubSend(document.getElementById('ask-hub-input').value)" style="padding:6px 14px;border-radius:6px;background:#1769FF;border:none;color:#fff;font-size:11px;font-weight:700;cursor:pointer">Send</button>
+  </div>`;
+  document.body.appendChild(panel);
+};
+document.body.appendChild(askBtn);
+
+window.askHubSend = async function(q){
+  if(!q||!q.trim())return;
+  const msgs=document.getElementById('ask-hub-msgs');
+  const input=document.getElementById('ask-hub-input');
+  if(input)input.value='';
+  msgs.innerHTML+=`<div style="margin-bottom:8px;text-align:right"><span style="display:inline-block;padding:6px 12px;border-radius:10px 10px 2px 10px;background:#1769FF22;color:var(--t1);font-size:12px;max-width:280px;text-align:left">${q}</span></div>`;
+  msgs.innerHTML+=`<div id="ask-hub-loading" style="margin-bottom:8px"><span style="display:inline-block;padding:6px 12px;border-radius:10px 10px 10px 2px;background:var(--surface);color:var(--t3);font-size:11px">Thinking...</span></div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  const sysP=`You are a 1Password CSM expert assistant embedded in the EPM Hub. Answer questions using your knowledge of: 1Password EPM features (34), SaaS Manager features (14), Device Trust features (12), 16 competitors (LastPass, Bitwarden, Keeper, Dashlane, CyberArk, HashiCorp, Nudge Security, BetterCloud, Torii, Zylo, Productiv, Jamf, Kandji, CrowdStrike, Kolide, Tanium), 18 industries, and 14 departments. Be specific, actionable, and cite specific features/data. Keep answers under 300 words. Format with bold and bullet points for readability.`;
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,system:sysP,messages:[{role:'user',content:q}]})});
+    const d=await r.json();
+    const text=(d.content||[]).map(b=>b.text||'').join('').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n- /g,'\n• ').replace(/\n/g,'<br>');
+    const el=document.getElementById('ask-hub-loading');
+    if(el)el.outerHTML=`<div style="margin-bottom:8px"><span style="display:inline-block;padding:8px 12px;border-radius:10px 10px 10px 2px;background:var(--surface);border:1px solid var(--border);color:var(--t1);font-size:12px;line-height:1.6;max-width:320px">${text}</span></div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  }catch(e){
+    const el=document.getElementById('ask-hub-loading');
+    if(el)el.outerHTML=`<div style="margin-bottom:8px"><span style="display:inline-block;padding:6px 12px;border-radius:10px;background:#EF444410;border:1px solid #EF444430;color:#EF4444;font-size:11px">Error: ${e.message}</span></div>`;
+  }
+};
+
+// ═══ PREP ME FOR THIS CALL ═══
+window.showPrepMe = function(toggleHTML){
+  document.getElementById('sidebar').style.display='none';
+  const indOpts=Object.entries(INDUSTRIES).map(([id,I])=>`<option value="${id}">${I.name}</option>`).join('');
+  const compOpts=[...Object.entries(COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`),...Object.entries(SAAS_MANAGER_COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`),...Object.entries(DEVICE_TRUST_COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`)].join('');
+  document.getElementById('detail').innerHTML=`${toggleHTML||''}
+  <div style="padding:20px 28px;max-width:700px;overflow-y:auto;max-height:calc(100vh - 100px)">
+    <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#10B981;margin-bottom:8px">📋 PREP ME FOR THIS CALL</div>
+    <div style="font-size:18px;font-weight:800;color:var(--t1);margin-bottom:4px">Call Prep 1-Pager</div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:20px">Claude generates a structured cheat sheet with talk points, landmines, and upsell opportunities.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">COMPANY NAME</div><input id="prep-company" placeholder="e.g. First National Bank" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit"/></div>
+      <div><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">INDUSTRY</div><select id="prep-industry" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit"><option value="">— Select —</option>${indOpts}</select></div>
+    </div>
+    <div style="margin-bottom:14px"><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">PRODUCTS THEY OWN</div>
+      <div style="display:flex;gap:8px">
+        <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t2);cursor:pointer"><input type="checkbox" id="prep-epm" checked/> EPM</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t2);cursor:pointer"><input type="checkbox" id="prep-saas"/> SaaS Manager</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t2);cursor:pointer"><input type="checkbox" id="prep-dt"/> Device Trust</label>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px">
+      <div><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">COMPETITOR THREAT</div><select id="prep-competitor" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit"><option value="">— None —</option>${compOpts}</select></div>
+      <div><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">RENEWAL DATE (optional)</div><input id="prep-renewal" type="date" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit"/></div>
+    </div>
+    <button onclick="generatePrepSheet()" style="padding:10px 24px;border-radius:6px;background:#10B981;border:none;color:#fff;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:16px">📋 Generate Call Prep</button>
+    <div id="prep-output"></div>
+  </div>`;
+};
+
+window.generatePrepSheet = async function(){
+  const company=document.getElementById('prep-company')?.value||'Unknown';
+  const industry=document.getElementById('prep-industry')?.value||'';
+  const prods=[];
+  if(document.getElementById('prep-epm')?.checked)prods.push('EPM');
+  if(document.getElementById('prep-saas')?.checked)prods.push('SaaS Manager');
+  if(document.getElementById('prep-dt')?.checked)prods.push('Device Trust');
+  const competitor=document.getElementById('prep-competitor')?.value||'';
+  const renewal=document.getElementById('prep-renewal')?.value||'';
+  const out=document.getElementById('prep-output');if(!out)return;
+  out.innerHTML=`<div style="text-align:center;padding:20px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:#10B981;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px"></div><div style="font-size:12px;color:#10B981">Generating call prep for ${company}...</div></div>`;
+  const indName=INDUSTRIES[industry]?.name||industry;
+  const compName=(COMPETITORS[competitor]||SAAS_MANAGER_COMPETITORS[competitor]||DEVICE_TRUST_COMPETITORS[competitor])?.name||competitor;
+  const sysP='You are a 1Password CSM preparing for a customer call. Generate a structured 1-page call prep cheat sheet. Use HTML with inline styles. Be specific and actionable.';
+  const userP=`Company: ${company}\nIndustry: ${indName}\nProducts owned: ${prods.join(', ')||'Unknown'}\nCompetitor threat: ${compName||'None identified'}\nRenewal date: ${renewal||'Not specified'}\n\nGenerate:\n1. TOP 3 THINGS TO BRING UP (specific to their industry + products)\n2. TOP 3 THINGS TO AVOID (landmines for this scenario)\n3. UPSELL OPPORTUNITY (which product to pitch next and why)\n4. COMPETITIVE INTELLIGENCE (if competitor specified)\n5. CALL OPENER (one specific question to start the conversation)`;
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system:sysP,messages:[{role:'user',content:userP}]})});
+    const d=await r.json();
+    const html=(d.content||[]).map(b=>b.text||'').join('');
+    out.innerHTML=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;line-height:1.7;color:var(--t2);font-size:12px">${html}</div>`;
+  }catch(e){out.innerHTML=`<div style="padding:14px;background:#EF444410;border:1px solid #EF444430;border-radius:7px;color:#EF4444;font-size:12px">Error: ${e.message}</div>`;}
+};
+
+// ═══ PATCH BUILD TAB TO ADD PREP ME ═══
+const _origShowBuild = typeof showBuild === 'function' ? showBuild : null;
+if(_origShowBuild){
+  window.showBuild = function(mode){
+    if(!mode) mode = curBuildMode || 'cb';
+    curBuildMode = mode;
+    const toggleHTML=`<div style="display:flex;align-items:center;gap:8px;padding:10px 18px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0">
+      <button onclick="showBuild('cb')" style="padding:6px 14px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid ${mode==='cb'?'#A78BFA55':'var(--border)'};background:${mode==='cb'?'#A78BFA18':'transparent'};color:${mode==='cb'?'#A78BFA':'var(--t4)'}">✨ Customer Builder</button>
+      <button onclick="showBuild('bad')" style="padding:6px 14px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid ${mode==='bad'?'#3A9EFF55':'var(--border)'};background:${mode==='bad'?'#3A9EFF18':'transparent'};color:${mode==='bad'?'#3A9EFF':'var(--t4)'}">📄 Build a Doc</button>
+      <button onclick="showBuild('prep')" style="padding:6px 14px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid ${mode==='prep'?'#10B98155':'var(--border)'};background:${mode==='prep'?'#10B98118':'transparent'};color:${mode==='prep'?'#10B981':'var(--t4)'}">📋 Prep Me</button>
+    </div>`;
+    if(mode==='prep'){showPrepMe(toggleHTML);return;}
+    if(mode==='cb')showCustomerBuilder(toggleHTML);
+    else showBAD(toggleHTML);
+  };
+}
+
+// ═══ FEATURE COMPARISON MATRIX ═══
+const FEATURE_MATRIX={
+  categories:[
+    {name:'EPM Core',features:[
+      {name:'Zero-Knowledge Architecture',us:true,lp:false,bw:true,kp:true,dl:true,ca:'partial',hc:'partial',note_lp:'PBKDF2/100K iterations; vault data exfiltrated in 2022 breach',note_ca:'PAM focused; different architecture',note_hc:'Vault is infrastructure secrets, different model'},
+      {name:'Travel Mode',us:true,lp:false,bw:false,kp:false,dl:false,ca:false,hc:false,note_us:'Unique to 1Password — no competitor has equivalent'},
+      {name:'Families for Business',us:true,lp:'partial',bw:false,kp:'partial',dl:false,ca:false,hc:false,note_lp:'Paid add-on (and Families was breached)',note_kp:'Paid add-on ($4.99/family)'},
+      {name:'Watchtower / Breach Monitor',us:true,lp:'partial',bw:true,kp:'partial',dl:true,ca:false,hc:false,note_kp:'BreachWatch is $3-4/user/mo add-on'}
+    ]},
+    {name:'Developer',features:[
+      {name:'Secrets Automation + CLI',us:true,lp:false,bw:'partial',kp:false,dl:false,ca:'partial',hc:true,note_bw:'Basic CLI, no Secrets Automation',note_ca:'PAM secrets, not developer-focused',note_hc:'Full secrets platform (but complex)'},
+      {name:'Secret References in CI/CD',us:true,lp:false,bw:false,kp:false,dl:false,ca:false,hc:true}
+    ]},
+    {name:'Identity & Provisioning',features:[
+      {name:'Hosted SCIM Bridge',us:true,lp:true,bw:'partial',kp:true,dl:true,ca:true,hc:false,note_bw:'Self-hosted SCIM required'},
+      {name:'SSO + Unlock with IdP',us:true,lp:true,bw:true,kp:true,dl:true,ca:true,hc:false}
+    ]},
+    {name:'Compliance',features:[
+      {name:'SOC 2 Evidence Package',us:true,lp:'partial',bw:false,kp:'partial',dl:false,ca:true,hc:true,note_lp:'Limited audit evidence',note_kp:'Compliance reporting is add-on'},
+      {name:'Events API → SIEM',us:true,lp:true,bw:'partial',kp:true,dl:true,ca:true,hc:true}
+    ]}
+  ]
+};
+
+window.showFeatureMatrix = function(){
+  curCompId=null;
+  const compKeys=[{k:'lastpass',l:'LastPass',short:'lp'},{k:'bitwarden',l:'Bitwarden',short:'bw'},{k:'keeper',l:'Keeper',short:'kp'},{k:'dashlane',l:'Dashlane',short:'dl'},{k:'cyberark',l:'CyberArk',short:'ca'},{k:'hashicorp',l:'HashiCorp',short:'hc'}];
+  if(!window._matrixComp) window._matrixComp='lp';
+  const cur=window._matrixComp;
+  const tabs=compKeys.map(c=>`<button onclick="window._matrixComp='${c.short}';showFeatureMatrix()" style="padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid ${cur===c.short?'#EF444455':'var(--border)'};background:${cur===c.short?'#EF444418':'transparent'};color:${cur===c.short?'#EF4444':'var(--t4)'}">${c.l}</button>`).join('');
+  const curLabel=compKeys.find(c=>c.short===cur)?.l||'Competitor';
+  let rows='';
+  FEATURE_MATRIX.categories.forEach(cat=>{
+    rows+=`<tr><td colspan="3" style="padding:10px 8px 4px;font-size:9px;font-weight:800;letter-spacing:.12em;color:#A78BFA;border-bottom:1px solid var(--border)">${cat.name.toUpperCase()}</td></tr>`;
+    cat.features.forEach(f=>{
+      const usVal=f.us===true?'✅':f.us==='partial'?'⚠️':'❌';
+      const thVal=f[cur]===true?'✅':f[cur]==='partial'?'⚠️':'❌';
+      const noteKey='note_'+cur;
+      const note=f[noteKey]||f.note_us||'';
+      rows+=`<tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:8px;font-size:11px;color:var(--t1);font-weight:600">${f.name}${note?`<div style="font-size:9px;color:var(--t3);margin-top:2px;font-weight:400">${note}</div>`:''}</td>
+        <td style="padding:8px;text-align:center;font-size:14px">${usVal}</td>
+        <td style="padding:8px;text-align:center;font-size:14px">${thVal}</td>
+      </tr>`;
+    });
+  });
+  document.getElementById('detail').innerHTML=`<div style="padding:20px 28px;overflow-y:auto;max-height:calc(100vh-52px)">
+    <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#A78BFA;margin-bottom:8px">📊 FEATURE COMPARISON</div>
+    <div style="font-size:18px;font-weight:800;color:var(--t1);margin-bottom:4px">1Password vs ${curLabel}</div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:14px">Side-by-side feature comparison. Select a competitor to compare.</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px">${tabs}</div>
+    <table style="width:100%;border-collapse:collapse">
+      <tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:8px;font-size:10px;font-weight:800;color:var(--t4)">Feature</th><th style="text-align:center;padding:8px;font-size:10px;font-weight:800;color:#10B981;width:80px">1Password</th><th style="text-align:center;padding:8px;font-size:10px;font-weight:800;color:#EF4444;width:80px">${curLabel}</th></tr>
+      ${rows}
+    </table>
+  </div>`;
+};
+
+// Add Feature Matrix to compete sidebar
+const _origShowCompUnified = typeof showCompeteUnified === 'function' ? showCompeteUnified : null;
+if(_origShowCompUnified){
+  window.showCompeteUnified = function(){
+    _origShowCompUnified();
+    const sb=document.getElementById('sidebar');if(!sb)return;
+    const toolsHdr=document.createElement('div');
+    toolsHdr.className='sec-hdr';toolsHdr.style.color='#A78BFA';toolsHdr.textContent='TOOLS';
+    const matrixBtn=document.createElement('div');
+    matrixBtn.className='ni';
+    matrixBtn.innerHTML='<span style="display:inline-flex;align-items:center;flex-shrink:0;font-size:14px">📊</span><span class="nn" style="margin-left:2px">Feature Comparison Matrix</span>';
+    matrixBtn.onclick=()=>{document.querySelectorAll('#sidebar .ni').forEach(x=>x.classList.remove('active'));matrixBtn.classList.add('active');showFeatureMatrix();};
+    sb.appendChild(toolsHdr);
+    sb.appendChild(matrixBtn);
+  };
+}
+
+console.log('EPM Hub v2 upgrades loaded: Battle cards, Ask the Hub, So What, Prep Me, Feature Matrix');
+})();
+
 
 // ── INIT ──
 customInit();
