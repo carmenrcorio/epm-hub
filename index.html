@@ -256,7 +256,7 @@ textarea.cb-input{resize:vertical;min-height:70px;line-height:1.6}
 :root{
   --bg:#1B3050;--bg2:#132540;--surface:#1F3D5C;--surface2:#17324F;
   --border:#2D5480;--border2:#3A6699;
-  --t1:#EAF3FF;--t2:#9CC4E8;--t3:#5E8CB4;--t4:#3A6080;
+  --t1:#F0F6FF;--t2:#C8DFFA;--t3:#8CB8DD;--t4:#5A8BB0;
   --blue:#3A9EFF;--blue2:#1769FF;
 }
 body{background:var(--bg)!important;color:var(--t2)!important}
@@ -272,7 +272,7 @@ body{background:var(--bg)!important;color:var(--t2)!important}
 .ni{border-left-color:transparent}
 .ni:hover{background:#2A4B6E!important}
 .ni.active{background:#243F60!important}
-.ni .nn{color:var(--t3)!important}
+.ni .nn{color:var(--t2)!important}
 .ni:hover .nn,.ni.active .nn{color:var(--t1)!important}
 .ni.active .nn{font-weight:700!important}
 .detail{background:var(--bg)!important}
@@ -459,10 +459,10 @@ body{background:var(--bg)!important;color:var(--t2)!important}
 .gov-panel-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .gov-panel-ico{font-size:14px}
 .gov-panel-title{font-size:10px;font-weight:800;letter-spacing:.12em;color:#A78BFA}
-.gov-panel-sub{font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.6}
+.gov-panel-sub{font-size:11px;color:var(--t2);margin-bottom:8px;line-height:1.6}
 .gov-rule{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px;font-size:11px}
 .gov-rule-ico{flex-shrink:0;font-size:12px}
-.gov-rule-text{color:var(--t2);line-height:1.55}
+.gov-rule-text{color:var(--t1);line-height:1.55}
 .gov-rule-text strong{color:var(--t1)}
 .gov-frameworks{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .gov-fw{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;background:#1769FF14;color:#70B8FF;border:1px solid #1769FF25}
@@ -3619,17 +3619,21 @@ function cbUpdateGovernancePanels() {
     const panel = document.createElement('div');
     panel.className = 'gov-panel';
     panel.style.borderColor = (I?.color || '#A78BFA') + '40';
+    const panelId = 'gov-panel-' + iid;
     panel.innerHTML = `
-      <div class="gov-panel-hdr">
+      <div class="gov-panel-hdr" style="cursor:pointer;user-select:none" onclick="const b=this.nextElementSibling;const a=this.querySelector('.gov-chevron');if(b.style.display==='none'){b.style.display='block';a.textContent='▼'}else{b.style.display='none';a.textContent='▶'}">
         <span class="gov-panel-ico">${I?.emoji||'🏢'}</span>
         <span class="gov-panel-title">${intel.title}</span>
+        <span class="gov-chevron" style="margin-left:auto;font-size:9px;color:var(--t4)">▶</span>
       </div>
-      <div class="gov-panel-sub">Why 1Password credential governance is non-negotiable in this vertical — and how to explain it to your champion.</div>
-      ${intel.rules.map(r => `<div class="gov-rule"><span class="gov-rule-ico">${r.ico}</span><span class="gov-rule-text">${r.text}</span></div>`).join('')}
-      <div class="gov-frameworks">${intel.frameworks.map(f=>`<span class="gov-fw">${f}</span>`).join('')}</div>
-      <div class="cb-edu-section">
-        <div class="cb-edu-title">💡 CSM EDUCATION — WHAT TO KNOW & SAY</div>
-        ${intel.edu.map(e=>`<div class="cb-edu-row">${e}</div>`).join('')}
+      <div style="display:none">
+        <div class="gov-panel-sub">Why 1Password credential governance is non-negotiable in this vertical — and how to explain it to your champion.</div>
+        ${intel.rules.map(r => `<div class="gov-rule"><span class="gov-rule-ico">${r.ico}</span><span class="gov-rule-text">${r.text}</span></div>`).join('')}
+        <div class="gov-frameworks">${intel.frameworks.map(f=>`<span class="gov-fw">${f}</span>`).join('')}</div>
+        <div class="cb-edu-section">
+          <div class="cb-edu-title">💡 CSM EDUCATION — WHAT TO KNOW & SAY</div>
+          ${intel.edu.map(e=>`<div class="cb-edu-row">${e}</div>`).join('')}
+        </div>
       </div>`;
     container.appendChild(panel);
   });
@@ -4614,6 +4618,7 @@ function renderTrelicaFeature(f) {
   const badgeColor = f.badge === 'security critical' ? '#EF4444' : '#3A9EFF';
   document.getElementById('detail').innerHTML = `
     <div style="padding:20px 28px;max-width:820px">
+      <button onclick="curFeatProduct='trelica';showFeaturesHub();" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--t2);margin-bottom:14px">← Back to SaaS Manager</button>
       <div style="font-size:9px;font-weight:800;letter-spacing:.12em;color:#3A9EFF;margin-bottom:8px">${f.sectionLabel}</div>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
         <span style="font-size:20px;font-weight:800;color:var(--t1)">${f.n}</span>
@@ -4657,6 +4662,7 @@ function renderTrelicaFeature(f) {
 function renderDTFeature(f) {
   document.getElementById('detail').innerHTML = `
     <div style="padding:20px 28px;max-width:820px">
+      <button onclick="curFeatProduct='dt';showFeaturesHub();" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--t2);margin-bottom:14px">← Back to Device Trust</button>
       <div style="font-size:9px;font-weight:800;letter-spacing:.12em;color:#F59E0B;margin-bottom:8px">${f.sectionLabel}</div>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
         <span style="font-size:20px;font-weight:800;color:var(--t1)">${f.n}</span>
