@@ -1426,8 +1426,9 @@ function showDept(did){curDid=did;buildDeptSidebar();renderDept(did);}
 let cbDepts = new Set();
 let cbLastResult = null;
 
-function showCustomerBuilder() {
+function showCustomerBuilder(toggleHTML) {
   document.getElementById('sidebar').style.display = 'none';
+  const _cbToggle = toggleHTML || '';
 
   const deptChecks = Object.entries(DEPARTMENTS).map(([did,D]) =>
     `<label class="cb-check${cbDepts.has(did)?' checked':''}" id="cbck-${did}" onclick="toggleDept('${did}')">
@@ -1437,7 +1438,7 @@ function showCustomerBuilder() {
 
   const presetNames = ['Health System','Regional Bank','Law Firm','SaaS Startup','Retail Chain','Gov Contractor','University','Manufacturer','Hospital + Pharma','Media Co'];
 
-  document.getElementById('detail').innerHTML = `
+  document.getElementById('detail').innerHTML = _cbToggle + `
   <div class="cb-layout">
     <div class="cb-form">
 
@@ -2743,24 +2744,40 @@ function makeDeptWidget(did, section) {
   return {type:'dept',color:D.color,title:`${D.emoji} ${D.name}: ${sec.title}`,did,section,w:360,h:sec.h||200,render:sec.render};
 }
 
-function showBAD() {
+let badOrientation='portrait';
+function showBAD(toggleHTML) {
   ensureBADProject();
   document.getElementById('sidebar').style.display = 'none';
   const projectOpts = BAD.projects.map(p=>`<option value="${p.id}"${p.id===BAD.currentProjectId?' selected':''}>${p.name}</option>`).join('');
+  const isLand=badOrientation==='landscape';
+  const cW=isLand?1056:816, cH=isLand?816:1056;
+  const oS=(o)=>`padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid ${badOrientation===o?'#3A9EFF66':'var(--border)'};background:${badOrientation===o?'#3A9EFF18':'transparent'};color:${badOrientation===o?'#3A9EFF':'var(--t4)'}`;
+  const rH=Array.from({length:Math.ceil(cW/72)},(_,i)=>`<div style="position:absolute;left:${i*72}px;bottom:0;height:10px;border-left:1px solid var(--t4);font-size:7px;color:var(--t4);padding-left:2px">${i}"</div>`).join('');
+  const rV=Array.from({length:Math.ceil(cH/72)},(_,i)=>`<div style="position:absolute;top:${i*72}px;left:0;width:10px;border-top:1px solid var(--t4);font-size:7px;color:var(--t4);writing-mode:vertical-lr;padding-top:2px">${i}"</div>`).join('');
   document.getElementById('detail').innerHTML = `
+  ${toggleHTML||''}
   <div class="bad-layout">
     <div class="bad-toolbar">
       <select class="bad-project-select" id="bad-project-select" onchange="BAD.currentProjectId=this.value;renderBAD()">${projectOpts}</select>
       <button class="bad-btn" onclick="badNewProject()">+ New Doc</button>
       <button class="bad-btn" onclick="badRenameProject()">✏️ Rename</button>
       <button class="bad-btn danger" onclick="badDeleteProject()">🗑 Delete</button>
+      <span style="width:1px;height:18px;background:var(--border);margin:0 4px"></span>
+      <button style="${oS('portrait')}" onclick="badOrientation='portrait';showBuild('bad')">📄 Portrait</button>
+      <button style="${oS('landscape')}" onclick="badOrientation='landscape';showBuild('bad')">📃 Landscape</button>
       <div style="flex:1"></div>
       <button class="bad-btn" onclick="badAddTextWidget()">+ Text</button>
       <button class="bad-btn" onclick="badAddTitleWidget()">+ Title</button>
       <button class="bad-btn primary" onclick="badExportPDF()">⬇️ Export PDF</button>
     </div>
-    <div class="bad-canvas-wrap" id="bad-canvas-wrap">
-      <div class="bad-canvas" id="bad-canvas"></div>
+    <div style="overflow:auto;flex:1;background:#060E1A;padding:20px;display:flex;justify-content:center">
+      <div style="position:relative;flex-shrink:0">
+        <div style="height:18px;width:${cW}px;margin-left:18px;background:var(--surface);border:1px solid var(--border);border-bottom:none;position:relative;overflow:hidden">${rH}</div>
+        <div style="display:flex">
+          <div style="width:18px;height:${cH}px;background:var(--surface);border:1px solid var(--border);border-right:none;position:relative;overflow:hidden">${rV}</div>
+          <div class="bad-canvas" id="bad-canvas" style="width:${cW}px;height:${cH}px;min-height:${cH}px;border:2px dashed var(--border2);background:var(--bg1);position:relative;overflow:hidden"></div>
+        </div>
+      </div>
     </div>
   </div>`;
   renderBAD();
@@ -3943,6 +3960,22 @@ const DEVICE_TRUST_COMPETITORS = {
     battle_card: '"Tanium is a 6-month deployment for 10,000+ employee enterprises. Device Trust is live in days for 500–5,000 employee orgs. If the timeline, budget, and org size don\'t fit Tanium, Device Trust is the right tool. And Device Trust adds guided employee self-remediation Tanium\'s model doesn\'t."'
   }
 };
+
+const COMP_DOMAINS={
+  lastpass:'lastpass.com',bitwarden:'bitwarden.com',keeper:'keepersecurity.com',
+  dashlane:'dashlane.com',cyberark:'cyberark.com',hashicorp:'hashicorp.com',
+  nudge_security:'nudgesecurity.com',bettercloud:'bettercloud.com',torii:'toriihq.com',
+  zylo:'zylo.com',productiv:'productiv.com',
+  jamf:'jamf.com',kandji:'kandji.io',crowdstrike_go:'crowdstrike.com',
+  kolide:'kolide.com',tanium:'tanium.com'
+};
+function compLogo(cid,size){
+  size=size||22;const d=COMP_DOMAINS[cid];
+  if(!d)return '<span style="font-size:'+size+'px">⚔️</span>';
+  const initial=((typeof COMPETITORS!=="undefined"&&COMPETITORS[cid])||(typeof SAAS_MANAGER_COMPETITORS!=="undefined"&&SAAS_MANAGER_COMPETITORS[cid])||(typeof DEVICE_TRUST_COMPETITORS!=="undefined"&&DEVICE_TRUST_COMPETITORS[cid])||{name:'?'}).name[0];
+  return '<img src="https://logo.clearbit.com/'+d+'?size='+(size*2)+'" width="'+size+'" height="'+size+'" style="border-radius:4px;object-fit:contain;background:#fff;flex-shrink:0" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"/><span style="display:none;width:'+size+'px;height:'+size+'px;border-radius:4px;background:#3A9EFF33;color:#3A9EFF;font-size:'+(size*0.5)+'px;font-weight:800;align-items:center;justify-content:center;flex-shrink:0">'+initial+'</span>';
+}
+
 const DEFAULT_ROADMAP = {
   items: [
     { id:'rm1', product:'epm', name:'Google Workspace Provisioning', status:'shipping', quarter:'Q2 2026',
@@ -4009,7 +4042,7 @@ function showFeaturesHub(){
   bar.className='feat-product-tabbar';
   bar.style.cssText='display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0';
   [{id:'epm',label:'EPM',color:'#10B981'},
-   {id:'trelica',label:'Trelica',color:'#3A9EFF'},
+   {id:'trelica',label:'SaaS Manager',color:'#3A9EFF'},
    {id:'dt',label:'Device Trust',color:'#F59E0B'}
   ].forEach(p=>{
     const btn=document.createElement('button');
@@ -4062,7 +4095,7 @@ function showFeaturesHub(){
         sb.appendChild(el);
       });
     });
-    detail.innerHTML='<div style="padding:24px 28px"><div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#3A9EFF;margin-bottom:8px">🔷 TRELICA · SAAS MANAGER</div><div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px">SaaS Manager Features</div><div style="font-size:12px;color:var(--t3)">Select a feature from the sidebar.</div></div>';
+    detail.innerHTML='<div style="padding:24px 28px"><div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#3A9EFF;margin-bottom:8px">🔷 SAAS MANAGER</div><div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px">SaaS Manager Features</div><div style="font-size:12px;color:var(--t3)">Select a feature from the sidebar.</div></div>';
     return;
   }
 
@@ -4123,7 +4156,7 @@ function showCompeteUnified(){
       const el=document.createElement('div');
       el.className='ni'+(curCompId===cid?' active':'');
       if(curCompId===cid)el.style.borderLeftColor=group.color;
-      el.innerHTML='<span style="font-size:15px;flex-shrink:0">'+(C.emoji||'⚔️')+'</span><span class="nn">'+C.name+'</span>';
+      el.innerHTML='<span style="display:inline-flex;align-items:center;flex-shrink:0">'+compLogo(cid,20)+'</span><span class="nn" style="margin-left:2px">'+C.name+'</span>';
       el.onclick=()=>{
         curCompId=cid;
         document.querySelectorAll('#sidebar .ni').forEach(x=>{x.classList.remove('active');x.style.borderLeftColor='';});
@@ -4135,7 +4168,7 @@ function showCompeteUnified(){
       sb.appendChild(el);
     });
   });
-  if(!curCompId)detail.innerHTML='<div style="padding:24px 28px"><div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px">⚔️ Battle Cards</div><div style="font-size:12px;color:var(--t3)">EPM · Trelica SaaS Manager · Device Trust<br><br>Select a competitor from the sidebar.</div></div>';
+  if(!curCompId)detail.innerHTML='<div style="padding:24px 28px"><div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px">⚔️ Battle Cards</div><div style="font-size:12px;color:var(--t3)">EPM · SaaS Manager · Device Trust<br><br>Select a competitor from the sidebar.</div></div>';
   else{
     if(SAAS_MANAGER_COMPETITORS&&SAAS_MANAGER_COMPETITORS[curCompId])renderSaaSCompetitor(curCompId);
     else if(DEVICE_TRUST_COMPETITORS&&DEVICE_TRUST_COMPETITORS[curCompId])renderDTCompetitor(curCompId);
@@ -4162,7 +4195,7 @@ function showRoadmap(){
 
   const pBadge=(p)=>{
     const c={epm:'#10B981',trelica:'#3A9EFF',dt:'#F59E0B'}[p]||'#6B7280';
-    const l={epm:'EPM',trelica:'Trelica',dt:'Device Trust'}[p]||p;
+    const l={epm:'EPM',trelica:'SaaS Manager',dt:'Device Trust'}[p]||p;
     return`<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;background:${c}18;color:${c};border:1px solid ${c}33;letter-spacing:.06em">${l}</span>`;
   };
 
@@ -4308,13 +4341,18 @@ function showRoadmap(){
     </div>`;
 }
 
+let _platCache={};
+let _platIndustry='';
+let _platProducts={epm:true,saas:false,dt:false};
+const PLAT_INDUSTRIES=['Financial Services','Healthcare','Technology & SaaS','Legal & Prof Services','Retail & E-Commerce','Manufacturing','Education','Nonprofit & NGO','Government & Public Sector','Insurance','Media & Entertainment','Energy & Utilities','Transportation & Logistics','Hospitality & Travel','Pharma & Life Sciences'];
+
 function showPlatformView(){
   document.getElementById('sidebar').style.display='none';
   const steps=[
     {key:'epm',label:'FOUNDATION · ACTIVE',name:'Enterprise Password Manager',color:'#10B981',
      desc:'Credentials, secrets, vaults, lifecycle. The base layer every customer starts with.',
      features:['Vault management + SCIM provisioning','Secrets Automation + CLI','Events API + SIEM','Travel Mode + Guest Accounts','Watchtower + Passkeys']},
-    {key:'trelica',label:'NEXT STEP',name:'Trelica · SaaS Manager',color:'#3A9EFF',
+    {key:'trelica',label:'NEXT STEP',name:'SaaS Manager',color:'#3A9EFF',
      desc:'Discover and govern every app, including shadow IT and AI tools.',
      features:['Multi-source SaaS discovery (5 signals incl. EPM vault)','Shadow IT + Shadow AI detection','Automated onboarding/offboarding workflows','Access reviews for SOC 2, ISO 27001, HIPAA','Savings tracker + CFO reporting']},
     {key:'dt',label:'NEXT STEP',name:'1Password Device Trust',color:'#F59E0B',
@@ -4330,14 +4368,63 @@ function showPlatformView(){
     <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-bottom:10px">${s.desc}</div>
     ${s.features.map(f=>`<div style="display:flex;gap:5px;font-size:10px;color:var(--t2);margin-bottom:3px"><span style="color:${s.color}">✓</span>${f}</div>`).join('')}
   </div>`).join('<div style="display:flex;align-items:center;padding:0 8px;color:var(--t4);font-size:16px">→</div>');
-  document.getElementById('detail').innerHTML=`<div style="padding:20px 28px">
+
+  const indOpts=PLAT_INDUSTRIES.map(i=>`<option value="${i}"${_platIndustry===i?' selected':''}>${i}</option>`).join('');
+  const prodCk=(key,label,color)=>{const ch=_platProducts[key];return`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 12px;border-radius:6px;border:1px solid ${ch?color+'66':'var(--border)'};background:${ch?color+'14':'transparent'}" onclick="event.preventDefault();_platProducts.${key}=!_platProducts.${key};showPlatformView()"><span style="width:14px;height:14px;border-radius:3px;border:2px solid ${ch?color:'var(--t4)'};background:${ch?color:'transparent'};display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff">${ch?'✓':''}</span><span style="font-size:11px;font-weight:700;color:${ch?color:'var(--t4)'}">${label}</span></label>`;};
+  const motions=['win','nurture','grow','retain'];
+  const mLabels={win:'🏆 Win',nurture:'🌱 Nurture',grow:'📈 Grow',retain:'🔒 Retain'};
+  const mBtns=motions.map(m=>`<button id="plat-${m}" onclick="generatePlatPlaybook('${m}')" style="flex:1;padding:8px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--t2);transition:all .15s">${mLabels[m]}</button>`).join('');
+
+  document.getElementById('detail').innerHTML=`<div style="padding:20px 28px;overflow-y:auto;max-height:calc(100vh - 52px)">
     <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#A78BFA;margin-bottom:8px">◆ THE 1PASSWORD PLATFORM</div>
     <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:6px">Extended Access Management</div>
-    <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:24px;max-width:600px">Start with EPM. Layer in Trelica and Device Trust. Arrive at XAM.</div>
+    <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:24px;max-width:600px">Start with EPM. Layer in SaaS Manager and Device Trust. Arrive at XAM.</div>
     <div style="display:flex;gap:12px;align-items:stretch;overflow-x:auto;padding-bottom:8px">${stepsHTML}</div>
+    <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border)">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.14em;color:#A78BFA;margin-bottom:6px">🎯 PLAYBOOK GENERATOR</div>
+      <div style="font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px">Industry Engagement Playbook</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:16px">Select an industry and product combo. Claude generates a full action plan — how to win, nurture, grow, and retain.</div>
+      <div style="display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px">
+        <div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--t4);margin-bottom:5px">INDUSTRY</div>
+          <select id="plat-industry" onchange="_platIndustry=this.value" style="padding:7px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;min-width:220px;font-family:inherit"><option value="">— Select industry —</option>${indOpts}</select></div>
+        <div><div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--t4);margin-bottom:5px">PRODUCTS IN PLAY</div>
+          <div style="display:flex;gap:6px">${prodCk('epm','EPM','#10B981')}${prodCk('saas','SaaS Manager','#3A9EFF')}${prodCk('dt','Device Trust','#F59E0B')}</div></div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:16px">${mBtns}</div>
+      <div id="plat-output" style="min-height:40px"></div>
+    </div>
   </div>`;
+  const ck=_platIndustry+'|'+Object.entries(_platProducts).filter(([k,v])=>v).map(([k])=>k).join(',');
+  if(_platCache[ck]){const o=document.getElementById('plat-output');if(o)o.innerHTML=_platCache[ck];}
 }
 
+async function generatePlatPlaybook(motion){
+  const industry=document.getElementById('plat-industry')?.value||_platIndustry;
+  if(!industry){alert('Select an industry first.');return;}
+  _platIndustry=industry;
+  const prods=Object.entries(_platProducts).filter(([k,v])=>v).map(([k])=>({epm:'Enterprise Password Manager (EPM)',saas:'SaaS Manager',dt:'1Password Device Trust'}[k]));
+  if(!prods.length){alert('Select at least one product.');return;}
+  const mLabel={win:'Win (new deal)',nurture:'Nurture (early-stage)',grow:'Grow (expand)',retain:'Retain (prevent churn)'}[motion];
+  const out=document.getElementById('plat-output');if(!out)return;
+  out.innerHTML=`<div style="padding:20px;text-align:center"><div class="spinner" style="width:28px;height:28px;border:3px solid var(--border);border-top-color:#A78BFA;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px"></div><div style="font-size:13px;color:#A78BFA;margin-bottom:4px">Generating ${mLabel} playbook for ${industry}…</div><div style="font-size:11px;color:var(--t4)">Claude is building your action plan</div></div>`;
+  ['win','nurture','grow','retain'].forEach(m=>{const b=document.getElementById('plat-'+m);if(b)b.style.cssText=m===motion?'flex:1;padding:8px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #A78BFA66;background:#A78BFA22;color:#A78BFA':'flex:1;padding:8px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--t2)';});
+  const ck=industry+'|'+Object.entries(_platProducts).filter(([k,v])=>v).map(([k])=>k).join(',')+'>'+motion;
+  if(_platCache[ck]){out.innerHTML=_platCache[ck];return;}
+  const sysP=`You are a senior 1Password CSM strategist. Generate a detailed, actionable playbook. Products: EPM (credentials, SCIM, SSO, secrets, CLI, Travel Mode, Watchtower, passkeys), SaaS Manager (5-source discovery, shadow IT/AI, onboarding/offboarding, access reviews, savings), Device Trust (125+ checks, BYOD, SSF integrations, self-remediation). Format as HTML with inline styles. Use colors: #10B981=EPM, #3A9EFF=SaaS Manager, #F59E0B=Device Trust, #A78BFA=platform, #EF4444=risks.`;
+  const userP=`Industry: ${industry}\nProducts: ${prods.join(', ')}\nMotion: ${mLabel}\n\nGenerate:\n1. Industry Pain Points (4-5 specific)\n2. Decision Maker Profiles (2-3 with title, priorities, messaging)\n3. Product Value Map (features that matter most per product)\n4. Combined Platform Value (1+1=3 story)\n5. Step-by-step Action Plan (5-7 steps with timing)\n6. Talk Track (3 discovery questions + 3 value statements)\n7. Risk Factors + mitigations\n\nUse HTML with inline styles. Colored section headers. Make it actionable.`;
+  try{
+    const r=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:userP}],system:sysP})});
+    if(!r.ok)throw new Error('API returned '+r.status);
+    const d=await r.json();
+    const h=(d.content||[]).map(b=>b.text||'').join('');
+    const w=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;line-height:1.7;color:var(--t2);font-size:12px">${h}</div>`;
+    _platCache[ck]=w;out.innerHTML=w;
+    try{localStorage.setItem('_platCache',JSON.stringify(_platCache));}catch(e){}
+  }catch(err){
+    out.innerHTML=`<div style="padding:14px;background:#EF444410;border:1px solid #EF444430;border-radius:7px;color:#EF4444;font-size:12px"><strong>API Error:</strong> ${err.message}<br><span style="color:var(--t4);font-size:11px">Ensure /api/claude serverless function is deployed and ANTHROPIC_API_KEY is set in Vercel env vars.</span></div>`;
+  }
+}
+try{const pc=JSON.parse(localStorage.getItem('_platCache')||'{}');if(pc&&typeof pc==='object')_platCache=pc;}catch(e){}
 function roadmapLoad(){try{return JSON.parse(localStorage.getItem(ROADMAP_KEY))||DEFAULT_ROADMAP;}catch(e){return DEFAULT_ROADMAP;}}
 
 function roadmapSave(data){try{localStorage.setItem(ROADMAP_KEY,JSON.stringify(data));}catch(e){}}
@@ -4581,7 +4668,7 @@ function toggleProduct(pid) {
   else if (tab === 'trelica') showTrelicaHub();
   else if (tab === 'dt') showDeviceTrustHub();
   // Give visual feedback
-  const name = pid === 'trelica' ? 'Trelica' : 'Device Trust';
+  const name = pid === 'trelica' ? 'SaaS Manager' : 'Device Trust';
   showCustomSuccessToast(activeProducts[pid] ? `✓ ${name} activated` : `${name} deactivated`);
 }
 
@@ -4596,8 +4683,7 @@ function productSyncUI() {
 
 function hasProduct(pid) { return !!activeProducts[pid]; }
 
-function customLoad(){try{return JSON.parse(localStorage.getItem('1p_epm_hub_custom_v1'))||{industries:[],departments:{}}}catch(e){return{industries:[],departments:{}}}}
-function customSave(d){try{localStorage.setItem('1p_epm_hub_custom_v1',JSON.stringify(d))}catch(e){}}
+/* customLoad/customSave defined earlier — duplicate removed */
 function customRegisterIndustry(item){if(!item||!item.id)return;if(!INDUSTRIES[item.id])INDUSTRIES[item.id]={color:item.color||'#A78BFA',emoji:item.emoji||'🏢',name:item.name||item.id,hook:item.hook||'',why:item.why||'',pains:item.pains||[],solutions:[],compliance:[],personas:[],breach:{title:'',what:'',features:[]},stack:[],questions:[],trelica:'',deviceTrust:''}}
 function customRegisterDepartment(item){if(!item||!item.id)return;if(!DEPARTMENTS[item.id])DEPARTMENTS[item.id]={emoji:item.emoji||'🏢',name:item.name||item.id,color:item.color||'#A78BFA',hook:item.hook||'',pains:item.pains||[],features:[],personas:[],stack:[]}}
 
