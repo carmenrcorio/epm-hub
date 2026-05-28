@@ -40,7 +40,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .detail{flex:1;overflow-y:auto}
 .detail::-webkit-scrollbar{width:4px}.detail::-webkit-scrollbar-thumb{background:#1A3050;border-radius:2px}
 /* Feature page */
-.fp{max-width:860px;padding:24px 32px 56px}
+.fp{padding:24px 32px 56px}
 .fp-ref{font-size:10px;color:#2A4060;font-family:monospace;margin-bottom:14px}
 .prob{background:#EF444410;border:1px solid #EF444430;border-radius:6px;padding:12px 16px;margin-bottom:18px}
 .prob-l{font-size:9px;font-weight:800;letter-spacing:.14em;color:#EF4444;margin-bottom:4px}
@@ -597,19 +597,27 @@ body{background:var(--bg)!important;color:var(--t2)!important}
 
 
 /* Force readable text in Claude API output on dark theme */
-.claude-output{color:#E2E8F0!important;line-height:1.7}
+.claude-output{color:#C8DFFA!important;line-height:1.75;font-size:13px}
 .claude-output *{color:inherit!important}
-.claude-output h1,.claude-output h2,.claude-output h3,.claude-output h4{color:#F0F6FF!important;font-weight:700!important}
+.claude-output h1{color:#3A9EFF!important;font-weight:800!important;font-size:18px!important;margin:24px 0 12px!important;padding-bottom:8px!important;border-bottom:1px solid #1A3050!important}
+.claude-output h2{color:#10B981!important;font-weight:800!important;font-size:15px!important;margin:20px 0 10px!important;letter-spacing:.03em!important}
+.claude-output h3{color:#F59E0B!important;font-weight:700!important;font-size:13px!important;margin:14px 0 6px!important}
+.claude-output h4{color:#A78BFA!important;font-weight:700!important;font-size:12px!important}
 .claude-output strong,.claude-output b{color:#F0F6FF!important}
-.claude-output li,.claude-output p,.claude-output td,.claude-output span,.claude-output div{color:#E2E8F0!important}
+.claude-output li,.claude-output p,.claude-output td,.claude-output span,.claude-output div{color:#C8DFFA!important}
+.claude-output em,.claude-output blockquote{color:#8CB8DD!important}
 .claude-output a{color:#3A9EFF!important}
 .claude-output table{border-collapse:collapse;width:100%}
 .claude-output th{color:#F0F6FF!important;text-align:left;padding:8px;border-bottom:1px solid #1A3050}
 .claude-output td{padding:6px 8px;border-bottom:1px solid #1A3050}
-.claude-output ul,.claude-output ol{padding-left:18px}
-.claude-output li{margin-bottom:4px}
-.claude-output [style*="background"]{background:transparent!important;border:1px solid #1A3050!important;border-radius:8px!important;padding:12px!important;margin:8px 0!important}
-.claude-output [style*="border-left"]{border-left:3px solid #3A9EFF!important;background:#0A192908!important;padding:10px 14px!important;border-radius:0 6px 6px 0!important}
+.claude-output ul,.claude-output ol{padding-left:18px;margin:6px 0}
+.claude-output li{margin-bottom:6px}
+.claude-output [style*="background"]{background:#0D1E33!important;border:1px solid #1A3050!important;border-radius:8px!important;padding:14px 16px!important;margin:10px 0!important}
+.claude-output [style*="border-left"]{border-left:3px solid #3A9EFF!important;background:#0D1E33!important;padding:12px 16px!important;border-radius:0 6px 6px 0!important;margin:10px 0!important}
+.claude-output [style*="border-left"][style*="red"],.claude-output [style*="border-left"][style*="EF4444"]{border-left-color:#EF4444!important}
+.claude-output [style*="border-left"][style*="green"],.claude-output [style*="border-left"][style*="10B981"]{border-left-color:#10B981!important}
+.claude-output [style*="border-left"][style*="orange"],.claude-output [style*="border-left"][style*="F59E0B"]{border-left-color:#F59E0B!important}
+.claude-output [style*="border-left"][style*="purple"],.claude-output [style*="border-left"][style*="A78BFA"]{border-left-color:#A78BFA!important}
 
 @media print{
   .topbar,.sidebar,.filter-bar,.bad-toolbar,.add-bad-btn,.bad-wbtn,.bad-resize,.bad-widget-footer{display:none!important}
@@ -4465,12 +4473,12 @@ async function generatePlatPlaybook(motion){
     const raw2=(d.content||[]).map(b=>b.text||'').join('');const h=mdToHtml(raw2);
     const w=`<div class="claude-output" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;line-height:1.7;font-size:12px">${h}</div>`;
     _platCache[ck]=w;out.innerHTML=w;
-    try{localStorage.setItem('_platCache_v3',JSON.stringify(_platCache));}catch(e){}
+    try{localStorage.setItem('_platCache_v4',JSON.stringify(_platCache));}catch(e){}
   }catch(err){
     out.innerHTML=`<div style="padding:14px;background:#EF444410;border:1px solid #EF444430;border-radius:7px;color:#EF4444;font-size:12px"><strong>API Error:</strong> ${err.message}<br><span style="color:var(--t4);font-size:11px">Ensure /api/chat serverless function is deployed and ANTHROPIC_API_KEY is set in Vercel env vars.</span></div>`;
   }
 }
-try{const pc=JSON.parse(localStorage.getItem('_platCache_v3')||'{}');if(pc&&typeof pc==='object')_platCache=pc;}catch(e){}
+try{const pc=JSON.parse(localStorage.getItem('_platCache_v4')||'{}');if(pc&&typeof pc==='object')_platCache=pc;}catch(e){}
 
 
 function showRoadmap(){
@@ -5249,7 +5257,7 @@ window.showPrepMe = function(toggleHTML){
   const indOpts=Object.entries(INDUSTRIES).map(([id,I])=>`<option value="${id}">${I.name}</option>`).join('');
   const compOpts=[...Object.entries(COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`),...Object.entries(SAAS_MANAGER_COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`),...Object.entries(DEVICE_TRUST_COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`)].join('');
   document.getElementById('detail').innerHTML=`${toggleHTML||''}
-  <div style="padding:20px 28px;max-width:760px;overflow-y:auto;max-height:calc(100vh - 100px)">
+  <div style="padding:20px 28px;overflow-y:auto;max-height:calc(100vh - 100px)">
     <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#10B981;margin-bottom:8px">📋 PREP ME FOR THIS CALL</div>
     <div style="font-size:18px;font-weight:800;color:var(--t1);margin-bottom:4px">Feature-Focused Call Prep</div>
     <div style="font-size:12px;color:var(--t3);margin-bottom:20px">Generate a call prep that leads with specific 1Password features mapped to the customer's pain. Designed to showcase expertise, uncover use cases, and grow our knowledge base.</div>
