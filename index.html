@@ -5205,10 +5205,10 @@ window.showPrepMe = function(toggleHTML){
   const indOpts=Object.entries(INDUSTRIES).map(([id,I])=>`<option value="${id}">${I.name}</option>`).join('');
   const compOpts=[...Object.entries(COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`),...Object.entries(SAAS_MANAGER_COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`),...Object.entries(DEVICE_TRUST_COMPETITORS).map(([id,C])=>`<option value="${id}">${C.name}</option>`)].join('');
   document.getElementById('detail').innerHTML=`${toggleHTML||''}
-  <div style="padding:20px 28px;max-width:700px;overflow-y:auto;max-height:calc(100vh - 100px)">
+  <div style="padding:20px 28px;max-width:760px;overflow-y:auto;max-height:calc(100vh - 100px)">
     <div style="font-size:9px;font-weight:800;letter-spacing:.16em;color:#10B981;margin-bottom:8px">📋 PREP ME FOR THIS CALL</div>
-    <div style="font-size:18px;font-weight:800;color:var(--t1);margin-bottom:4px">Call Prep 1-Pager</div>
-    <div style="font-size:12px;color:var(--t3);margin-bottom:20px">Claude generates a structured cheat sheet with talk points, landmines, and upsell opportunities.</div>
+    <div style="font-size:18px;font-weight:800;color:var(--t1);margin-bottom:4px">Feature-Focused Call Prep</div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:20px">Generate a call prep that leads with specific 1Password features mapped to the customer's pain. Designed to showcase expertise, uncover use cases, and grow our knowledge base.</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
       <div><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">COMPANY NAME</div><input id="prep-company" placeholder="e.g. First National Bank" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit"/></div>
       <div><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">INDUSTRY</div><select id="prep-industry" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit"><option value="">— Select —</option>${indOpts}</select></div>
@@ -5220,11 +5220,18 @@ window.showPrepMe = function(toggleHTML){
         <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t2);cursor:pointer"><input type="checkbox" id="prep-dt"/> Device Trust</label>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
       <div><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">COMPETITOR THREAT</div><select id="prep-competitor" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit"><option value="">— None —</option>${compOpts}</select></div>
       <div><div style="font-size:9px;font-weight:800;color:var(--t4);margin-bottom:4px">RENEWAL DATE (optional)</div><input id="prep-renewal" type="date" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit"/></div>
     </div>
-    <button onclick="generatePrepSheet()" style="padding:10px 24px;border-radius:6px;background:#10B981;border:none;color:#fff;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:16px">📋 Generate Call Prep</button>
+    <div style="margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div style="font-size:9px;font-weight:800;color:var(--t4)">ACCOUNT BRIEF</div>
+        <span style="font-size:9px;color:var(--t4);font-style:italic">— paste context from CRM, prior calls, AI summaries, or account notes</span>
+      </div>
+      <textarea id="prep-brief" rows="6" placeholder="Paste any existing account context here. Examples:&#10;&#10;• CRM notes: 'CISO mentioned LastPass breach concerns in Q1 QBR. 2,400 seats. Using Okta for SSO but 40% of apps not federated. Budget approved for credential governance.'&#10;&#10;• AI account summary: 'Healthcare system, 12 hospitals, 35K employees. Running Keeper Business. Compliance team flagged HIPAA credential governance gap.'&#10;&#10;• Prior call notes: 'VP of IT interested in developer secrets for CI/CD. Currently using .env files.'" style="width:100%;padding:10px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);font-size:12px;font-family:inherit;line-height:1.5;resize:vertical"></textarea>
+    </div>
+    <button onclick="generatePrepSheet()" style="padding:10px 24px;border-radius:6px;background:#10B981;border:none;color:#fff;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:16px">📋 Generate Feature-Focused Call Prep</button>
     <div id="prep-output"></div>
   </div>`;
 };
@@ -5232,6 +5239,7 @@ window.showPrepMe = function(toggleHTML){
 window.generatePrepSheet = async function(){
   const company=document.getElementById('prep-company')?.value||'Unknown';
   const industry=document.getElementById('prep-industry')?.value||'';
+  const brief=document.getElementById('prep-brief')?.value||'';
   const prods=[];
   if(document.getElementById('prep-epm')?.checked)prods.push('EPM');
   if(document.getElementById('prep-saas')?.checked)prods.push('SaaS Manager');
@@ -5239,14 +5247,42 @@ window.generatePrepSheet = async function(){
   const competitor=document.getElementById('prep-competitor')?.value||'';
   const renewal=document.getElementById('prep-renewal')?.value||'';
   const out=document.getElementById('prep-output');if(!out)return;
-  out.innerHTML=`<div style="text-align:center;padding:20px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:#10B981;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px"></div><div style="font-size:12px;color:#10B981">Generating call prep for ${company}...</div></div>`;
+  out.innerHTML=`<div style="text-align:center;padding:20px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:#10B981;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px"></div><div style="font-size:12px;color:#10B981">Generating feature-focused call prep for ${company}...</div></div>`;
   const indName=INDUSTRIES[industry]?.name||industry;
   const compName=(COMPETITORS[competitor]||SAAS_MANAGER_COMPETITORS[competitor]||DEVICE_TRUST_COMPETITORS[competitor])?.name||competitor;
-  const sysP='You are a 1Password CSM preparing for a customer call. Generate a structured 1-page call prep cheat sheet. Use HTML with inline styles. Be specific and actionable.';
-  const userP=`Company: ${company}\nIndustry: ${indName}\nProducts owned: ${prods.join(', ')||'Unknown'}\nCompetitor threat: ${compName||'None identified'}\nRenewal date: ${renewal||'Not specified'}\n\nGenerate:\n1. TOP 3 THINGS TO BRING UP (specific to their industry + products)\n2. TOP 3 THINGS TO AVOID (landmines for this scenario)\n3. UPSELL OPPORTUNITY (which product to pitch next and why)\n4. COMPETITIVE INTELLIGENCE (if competitor specified)\n5. CALL OPENER (one specific question to start the conversation)`;
+  const sysP=`You are a senior 1Password CSM preparing a feature-focused call prep. Your goal is to help the CSM showcase deep product expertise, map specific 1Password features to the customer's pain points, and uncover new use cases for our database.
+
+PRODUCT KNOWLEDGE:
+- EPM features: Vault management, SCIM Bridge, Hosted SCIM, Events API, Watchtower, Travel Mode, Guest Accounts, Item Expiry, 1Password CLI, Secrets Automation, Secret References, Passkeys, QR Sign-In, Families for Business
+- SaaS Manager features: Multi-source Discovery (5 signals incl EPM vault), Shadow IT + Shadow AI Detection, Automated Onboarding/Offboarding, Access Reviews, Savings Tracker, CFO Reporting, Workflow Builder
+- Device Trust features: 125+ real-time health checks, BYOD without MDM, SSF integrations (Zscaler/Duo/Netskope/Okta), Guided Self-Remediation, Compliance Reporting, Linux + Non-Standard Device Support
+
+FORMAT: Use clean HTML with inline styles. Color codes: #10B981=feature callouts, #3A9EFF=discovery questions, #EF4444=landmines, #F59E0B=upsell, #A78BFA=use case discovery.`;
+
+  const userP=`Company: ${company}
+Industry: ${indName}
+Products owned: ${prods.join(', ')||'Unknown'}
+Competitor threat: ${compName||'None identified'}
+Renewal date: ${renewal||'Not specified'}
+${brief ? `\nACCOUNT BRIEF (context from CRM/prior calls/AI summary):\n${brief}\n` : ''}
+Generate a FEATURE-FOCUSED CALL PREP with these sections:
+
+1. 🎯 FEATURE SPOTLIGHT — Top 3 specific 1Password features to demo or discuss on this call. For each: the feature name, why it matters for THIS customer's situation${brief?' (use the account brief context)':''}, and the exact pain point it solves. Be specific — name the feature, not a category.
+
+2. 🚫 LANDMINES — Top 3 things to NOT bring up or avoid on this call. Be specific to this customer's situation${brief?' based on the account brief':''}. Include why each is a landmine.
+
+3. 📈 UPSELL OPPORTUNITY — Which product to pitch next (EPM → SaaS Manager → Device Trust expansion path) and WHY for this specific customer. Include the specific feature within that product that would resonate most and the business case for it.
+
+4. ${compName?`⚔️ COMPETITIVE POSITIONING — How to position against ${compName} without trash-talking. Include one specific feature advantage and one trap question.`:'⚔️ COMPETITIVE POSITIONING — Key differentiators to emphasize if a competitor comes up.'}
+
+5. 💬 CALL OPENER — One specific opening question that demonstrates expertise in their industry and gets them talking about pain points.
+
+6. 🔍 USE CASE DISCOVERY QUESTIONS — 4 questions designed to uncover NEW use cases we haven't documented yet. These should probe for: (a) workflows we haven't mapped, (b) departments/teams we haven't reached, (c) compliance requirements we haven't addressed, (d) integration scenarios we haven't built for. Frame each question to surface actionable intelligence for our use case database.`;
+
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system:sysP,messages:[{role:'user',content:userP}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3000,system:sysP,messages:[{role:'user',content:userP}]})});
     const d=await r.json();
+    if(!r.ok)throw new Error(d.error?.message||'API error '+r.status);
     const html=(d.content||[]).map(b=>b.text||'').join('');
     out.innerHTML=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;line-height:1.7;color:var(--t2);font-size:12px">${html}</div>`;
   }catch(e){out.innerHTML=`<div style="padding:14px;background:#EF444410;border:1px solid #EF444430;border-radius:7px;color:#EF4444;font-size:12px">Error: ${e.message}</div>`;}
