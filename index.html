@@ -560,6 +560,30 @@ body{background:var(--bg)!important;color:var(--t2)!important}
 .bw-context{font-size:9px;font-weight:800;letter-spacing:.12em;color:var(--t4);margin-bottom:6px}
 
 /* Print / PDF styles */
+/* ═══ MOBILE RESPONSIVE ═══ */
+@media(max-width:768px){
+  .topbar{padding:0 10px;height:40px;overflow-x:auto;gap:0}
+  .tab{padding:0 8px;font-size:10px;white-space:nowrap}
+  .layout{flex-direction:column}
+  .sidebar{width:100%;max-height:35vh;border-right:none;border-bottom:1px solid var(--border)}
+  .detail{width:100%;height:auto;max-height:none;overflow-y:auto}
+  .sw{display:none}
+  .tile-grid{grid-template-columns:1fr!important}
+  .fp{padding:14px 16px!important}
+  .meta3{grid-template-columns:1fr!important}
+  .blk{padding:12px 14px}
+  .xref-grid{grid-template-columns:1fr!important}
+  .bad-toolbar{flex-wrap:wrap;gap:4px}
+  .comp-dashboard{grid-template-columns:1fr!important;max-height:none!important}
+  #ask-hub-btn{width:40px;height:40px;font-size:18px;bottom:12px;right:12px}
+  #ask-hub-panel{width:calc(100vw - 24px)!important;right:12px!important;bottom:64px!important;max-height:60vh!important}
+}
+@media(max-width:480px){
+  .topbar{height:36px}
+  .tab{font-size:9px;padding:0 6px}
+  .sidebar{max-height:30vh}
+}
+
 @media print{
   .topbar,.sidebar,.filter-bar,.bad-toolbar,.add-bad-btn,.bad-wbtn,.bad-resize,.bad-widget-footer{display:none!important}
   body{background:#fff!important;color:#1A2E47!important}
@@ -582,7 +606,7 @@ body{background:var(--bg)!important;color:var(--t2)!important}
   <div class="tab" id="tab-build" onclick="switchTab('build')">✨ Build</div>
   <div class="tab" id="tab-platform" onclick="switchTab('platform')">◆ Platform</div>
   <div class="topbar-right">
-    <div class="sw"><span class="si">🔍</span><input type="text" id="srch-input" placeholder="Search..." oninput="doSearch(this.value)"/></div>
+    <div class="sw"><span class="si">🔍</span><input type="text" id="srch-input" placeholder="Search features, industries, competitors…" oninput="doSearch(this.value)"/></div>
   </div>
 </div>
 <div class="layout">
@@ -1606,10 +1630,21 @@ function showCustomerBuilder(toggleHTML) {
       </div>
     </div>
     <div class="cb-output" id="cb-output">
-      <div class="cb-empty">
-        <div class="cb-empty-ico">⚡</div>
-        <div class="cb-empty-t">Strategy will appear here</div>
-        <div class="cb-empty-s">Select one or more industries — governance panels will appear explaining why credential security is critical for each vertical. Then fill in the account details and build your strategy.</div>
+      <div style="padding:18px 20px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.14em;color:#A78BFA">📋 SAMPLE OUTPUT — WHAT YOUR STRATEGY WILL LOOK LIKE</div>
+          <span style="padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;background:#A78BFA18;color:#A78BFA;border:1px solid #A78BFA33">EXAMPLE</span>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;opacity:.7">
+          <div style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:6px">🏦 Acme Financial Group — Account Strategy</div>
+          <div style="font-size:11px;color:var(--t2);line-height:1.7;margin-bottom:10px">Acme is a regional bank with 2,000 employees across 45 branches. They run LastPass Business and are 6 months from renewal. Their CISO flagged the 2022 breach as a board-level concern. Priority: credential governance for SOC 2 audit evidence.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+            <div style="padding:8px 10px;border-radius:6px;border-left:3px solid #10B981;background:#10B9810A;font-size:10px;color:var(--t2);line-height:1.5"><strong style="color:#10B981">LEAD WITH:</strong> Events API → SIEM for SOC 2 evidence. Auditors are asking for credential access logs they can't produce today.</div>
+            <div style="padding:8px 10px;border-radius:6px;border-left:3px solid #EF4444;background:#EF44440A;font-size:10px;color:var(--t2);line-height:1.5"><strong style="color:#EF4444">AVOID:</strong> Don't lead with the LastPass breach. The CISO knows. Lead with what 1Password produces that LastPass can't — audit evidence.</div>
+          </div>
+          <div style="padding:8px 10px;border-radius:6px;border-left:3px solid #3A9EFF;background:#3A9EFF0A;font-size:10px;color:var(--t2);line-height:1.5"><strong style="color:#3A9EFF">UPSELL:</strong> SaaS Manager — branch employees use 30+ apps not governed by SSO. Shadow IT discovery reveals credential sprawl the IT team doesn't know about.</div>
+        </div>
+        <div style="text-align:center;font-size:11px;color:var(--t4);padding:8px">↑ Fill in the form on the left and click <strong style="color:#A78BFA">Generate Strategy</strong> to get a tailored version for your account</div>
       </div>
     </div>
   </div>`;
@@ -2611,7 +2646,7 @@ function renderCompetitorDashboard(C, accent, catLabel) {
       <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:4px">${C.name}</div>
       <div style="font-size:12px;color:var(--t3);font-style:italic">${C.tagline||''}</div>
     </div>
-    <div style="display:grid;grid-template-columns:3fr 2fr;gap:20px;padding:20px 24px;align-items:start;overflow-y:auto;max-height:calc(100vh - 120px)">
+    <div class="comp-dashboard" style="display:grid;grid-template-columns:3fr 2fr;gap:20px;padding:20px 24px;align-items:start;overflow-y:auto;max-height:calc(100vh - 120px)">
 
       <!-- LEFT 60% — Intel Profile -->
       <div style="display:flex;flex-direction:column;gap:12px">
@@ -5397,6 +5432,46 @@ console.log('EPM Hub v2 upgrades loaded: Battle cards, Ask the Hub, So What, Pre
 customInit();
 switchTab('features');
 showTiles('all');
+
+// ═══ START HERE — Onboarding Guide (shows once) ═══
+if(!localStorage.getItem('epm_hub_onboarded')){
+  const guide=document.createElement('div');
+  guide.id='onboard-overlay';
+  guide.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px';
+  guide.innerHTML=`<div style="background:var(--bg1,#0A1929);border:1px solid var(--border,#1A3050);border-radius:14px;max-width:640px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6);overflow:hidden">
+    <div style="padding:24px 28px;background:linear-gradient(135deg,#1769FF12,#A78BFA12);border-bottom:1px solid var(--border)">
+      <div style="font-size:22px;font-weight:800;color:var(--t1,#F0F6FF);margin-bottom:4px">👋 Welcome to EPM Hub</div>
+      <div style="font-size:13px;color:var(--t3,#8CB8DD)">Your one-stop shop for product knowledge, competitive intel, and account strategy.</div>
+    </div>
+    <div style="padding:20px 28px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="padding:12px;border-radius:8px;border:1px solid var(--border)">
+          <div style="font-size:13px;margin-bottom:4px">📖 <strong style="color:var(--t1)">Features</strong></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.5">Browse EPM, SaaS Manager, and Device Trust features. Every card leads with the customer problem.</div>
+        </div>
+        <div style="padding:12px;border-radius:8px;border:1px solid var(--border)">
+          <div style="font-size:13px;margin-bottom:4px">🌍 <strong style="color:var(--t1)">Intel</strong></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.5">Industry pain points + department playbooks. Pre-call prep in 30 seconds.</div>
+        </div>
+        <div style="padding:12px;border-radius:8px;border:1px solid var(--border)">
+          <div style="font-size:13px;margin-bottom:4px">⚔️ <strong style="color:var(--t1)">Compete</strong></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.5">30 competitor battle cards with pricing, trap questions, and displacement playbooks. Start with the Feature Matrix for a quick scan.</div>
+        </div>
+        <div style="padding:12px;border-radius:8px;border:1px solid var(--border)">
+          <div style="font-size:13px;margin-bottom:4px">✨ <strong style="color:var(--t1)">Build</strong></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.5">Customer Strategy Builder (Claude-powered), Build a Doc canvas, and Prep Me for This Call cheat sheets.</div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;border-radius:8px;background:#A78BFA0C;border:1px solid #A78BFA33;margin-bottom:16px">
+        <div style="font-size:11px;color:var(--t2);line-height:1.6">💡 <strong style="color:#A78BFA">Pro tip:</strong> Use the 🔮 <strong>Ask the Hub</strong> button (bottom-right corner) to ask any question — "How do we beat Keeper in healthcare?" — and get an instant answer from all hub data.</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end">
+        <button onclick="localStorage.setItem('epm_hub_onboarded','1');document.getElementById('onboard-overlay').remove()" style="padding:10px 28px;border-radius:6px;background:#1769FF;border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer">Got it — let's go →</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.appendChild(guide);
+}
 </script>
 </body>
 </html>
